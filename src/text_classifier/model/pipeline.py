@@ -5,8 +5,11 @@ from sklearn.preprocessing import MinMaxScaler
 
 
 def get_preprocessor(
-    target_cols: list[str] = ["days_since_start"],
+    target_cols: list[str] | None = None,
 ) -> ColumnTransformer:
+    if target_cols is None:
+        target_cols = ["days_since_start"]
+
     return ColumnTransformer(
         [
             ("scaler", MinMaxScaler(), target_cols),

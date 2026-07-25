@@ -16,7 +16,7 @@ def preprocess_string(string: str) -> str:
 
 
 def preprocess_text(
-    df: pd.DataFrame, target_cols: list[str] = ["title", "description", "tag"]
+    df: pd.DataFrame, target_cols: list[str] | None = None
 ) -> pd.DataFrame:
     """Preprocesses text in target_cols
 
@@ -27,6 +27,8 @@ def preprocess_text(
     Returns:
         pd.DataFrame: The modified dataframe
     """
+    if target_cols is None:
+        target_cols = ["title", "description", "tag"]
 
     df[target_cols] = df[target_cols].apply(lambda col: col.apply(preprocess_string))
 

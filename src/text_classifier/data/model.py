@@ -8,8 +8,11 @@ from text_classifier.schema import TrainingData
 
 
 def get_pre_pipe_model_data(
-    drop_cols: list[str] = ["created_on", "title", "description", "text"],
+    drop_cols: list[str] | None = None,
 ) -> pd.DataFrame:
+    if drop_cols is None:
+        drop_cols = ["created_on", "title", "description", "text"]
+
     df = get_raw_dataset()
     df = data_pipeline()
     df = df.drop(drop_cols, axis=1)
