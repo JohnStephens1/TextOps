@@ -1,9 +1,10 @@
+from pathlib import Path
+
 import pandas as pd
 
-from pathlib import Path
+from text_classifier import config
 from text_classifier.data.features import add_features
 from text_classifier.data.preprocessing import preprocess_data
-from text_classifier import config
 
 
 def get_raw_dataset(ds_path: Path | None = None) -> pd.DataFrame:
@@ -17,7 +18,7 @@ def get_raw_dataset(ds_path: Path | None = None) -> pd.DataFrame:
     """
     if ds_path is None:
         ds_path = config.DATASET_PATH
-    
+
     return pd.read_csv(ds_path)
 
 

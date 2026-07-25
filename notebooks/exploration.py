@@ -17,12 +17,12 @@
 # #### imports
 
 # %%
-import pandas as pd
+from pathlib import Path
+
 import matplotlib.pyplot as plt
 import numpy as np
-
+import pandas as pd
 from sentence_transformers import SentenceTransformer
-from pathlib import Path
 
 from text_classifier.data.data import data_pipeline
 from text_classifier.data.model import get_model_data
@@ -58,7 +58,7 @@ from text_classifier.data.model import get_model_data
 # ...
 
 # %% [markdown]
-# #### running 
+# #### running
 
 # %%
 df = data_pipeline()
@@ -70,10 +70,11 @@ X_train.head()
 
 # %%
 # data pipeline
-from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.pipeline import Pipeline
 from collections.abc import Callable
 from typing import Any
+
+from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.pipeline import Pipeline
 
 
 # %%
@@ -97,12 +98,13 @@ def set_index(df: pd.DataFrame) -> pd.DataFrame:
 from text_classifier.data.features import add_features
 from text_classifier.data.preprocessing import preprocess_data
 
-
-Pipeline([
-    ("set_index", FunctionTransformer(set_index)),
-    ("preprocess_data", FunctionTransformer(preprocess_data)),
-    ("add_features", FunctionTransformer(add_features)),
-])
+Pipeline(
+    [
+        ("set_index", FunctionTransformer(set_index)),
+        ("preprocess_data", FunctionTransformer(preprocess_data)),
+        ("add_features", FunctionTransformer(add_features)),
+    ]
+)
 
 # %%
 # modeling
@@ -134,7 +136,7 @@ from xgboost import XGBClassifier
 
 # %%
 model_params = dict(
-    objective="multi:softprob",   # multiclass classification
+    objective="multi:softprob",  # multiclass classification
     num_class=4,
     n_estimators=300,
     max_depth=6,
@@ -142,19 +144,22 @@ model_params = dict(
     subsample=0.8,
     colsample_bytree=0.8,
     eval_metric="mlogloss",
-    random_state=42
+    random_state=42,
 )
 
 # %%
-from typing import Any, Mapping
+from collections.abc import Mapping
+from typing import Any
+
 
 def get_model(model_params: Mapping[str, Any]):
     model = XGBClassifier(**model_params)
 
     return model
 
+
 model_params = dict(
-    objective="multi:softprob",   # multiclass classification
+    objective="multi:softprob",  # multiclass classification
     num_class=4,
     n_estimators=300,
     max_depth=6,
@@ -162,17 +167,14 @@ model_params = dict(
     subsample=0.8,
     colsample_bytree=0.8,
     eval_metric="mlogloss",
-    random_state=42
+    random_state=42,
 )
 
 model = get_model(model_params)
 
 
 # %%
-def print_pred_report(
-    y: np.typing.ArrayLike,
-    y_pred: np.typing.ArrayLike
-):
+def print_pred_report(y: np.typing.ArrayLike, y_pred: np.typing.ArrayLike):
     print(f"Accuracy: {accuracy_score(y, y_pred)}\n")
 
     print("Classification Report")
@@ -199,6 +201,7 @@ print_pred_report(y_train, y_train_pred)
 # %%
 from text_classifier.data.data import get_raw_dataset
 
+
 def get_test_df():
     df = get_raw_dataset()
     df = df.drop(["created_on", "description", "tag"], axis=1)
@@ -212,9 +215,7 @@ def save_test_df(df: pd.DataFrame):
 
 
 # %%
-def lets_keep_u_for_now(
-        model_str: str = "all-MiniLM-L6-v2"
-    ):
+def lets_keep_u_for_now(model_str: str = "all-MiniLM-L6-v2"):
     test_df: pd.DataFrame = pd.read_pickle("test_df")
     test_df = test_df.set_index("id")
     test_df.loc[16] = "helloo"
@@ -228,24 +229,17 @@ def lets_keep_u_for_now(
     embedding_df = pd.DataFrame(
         cache_embeddings,
         index=cache_ids,
-        columns=[f"embedding_{i}" for i in range(cache_embeddings.shape[1])]
+        columns=[f"embedding_{i}" for i in range(cache_embeddings.shape[1])],
     )
 
-    missing_df = test_df.loc[
-        ~test_df.index.isin(embedding_df.index)
-    ]
+    missing_df = test_df.loc[~test_df.index.isin(embedding_df.index)]
 
     model = SentenceTransformer(model_str)
-    
-    new_embeddings = model.encode(
-        missing_df["title"].tolist(),
-        convert_to_numpy=True
-    )
+
+    new_embeddings = model.encode(missing_df["title"].tolist(), convert_to_numpy=True)
 
     new_embedding_df = pd.DataFrame(
-        new_embeddings,
-        index=missing_df.index,
-        columns=embedding_df.columns
+        new_embeddings, index=missing_df.index, columns=embedding_df.columns
     )
 
     result_df = test_df.combine_first(embedding_df).combine_first(new_embedding_df)
@@ -255,6 +249,7 @@ def lets_keep_u_for_now(
 
 # %%
 from text_classifier.data.embeddings import add_text_embeddings
+
 
 def test_add_text_embeddings(file_path: Path = Path("test_embeddings.npz")):
     test_df: pd.DataFrame = pd.read_pickle("test_df")
@@ -283,6 +278,7 @@ def show_created_on_distribution():
     plt.ylabel("Count")
     plt.show()
 
+
 show_created_on_distribution()
 
 
@@ -292,10 +288,17 @@ def show_entries_by_weekday():
         df["created_on"]
         .dt.day_name()
         .value_counts()
-        .reindex([
-            "Monday", "Tuesday", "Wednesday",
-            "Thursday", "Friday", "Saturday", "Sunday"
-        ])
+        .reindex(
+            [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday",
+                "Sunday",
+            ]
+        )
     )
 
     weekday_counts.plot(kind="bar")
@@ -303,6 +306,7 @@ def show_entries_by_weekday():
     plt.xlabel("Weekday")
     plt.ylabel("Number of entries")
     plt.show()
+
 
 show_entries_by_weekday()
 
@@ -319,7 +323,7 @@ df.dtypes
 # all of type str except id
 
 # %%
-df.describe(include='all')
+df.describe(include="all")
 # tag has 4 unique values
 
 # %%

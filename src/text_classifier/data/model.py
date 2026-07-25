@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
-
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
+
 from text_classifier.data.data import data_pipeline, get_raw_dataset
 from text_classifier.schema import TrainingData
 

@@ -1,11 +1,10 @@
 import numpy as np
-
 from sklearn.metrics import (
     accuracy_score,
-    f1_score,
-    roc_auc_score,
     classification_report,
     confusion_matrix,
+    f1_score,
+    roc_auc_score,
 )
 
 
@@ -33,7 +32,7 @@ def print_pred_report(
     y_proba: np.typing.ArrayLike | None = None,
 ):
     metrics = get_classification_metrics(y_true, y_pred, y_proba)
-    
+
     print(f"Accuracy: {metrics['accuracy']}")
     print(f"F1: {metrics['f1']}")
 
@@ -44,4 +43,3 @@ def print_pred_report(
 
     print(f"Classification Report:\n{classification_report(y_true, y_pred)}")
     print(f"Confusion Matrix:\n{confusion_matrix(y_true, y_pred)}")
-    

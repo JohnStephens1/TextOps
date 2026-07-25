@@ -1,10 +1,11 @@
+import os
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
-import os
-
-from pathlib import Path
 from sentence_transformers import SentenceTransformer
-from text_classifier.config import EMBEDDING_DIM, EMBEDDINGS_PATH, EMBEDDING_MODEL_STR
+
+from text_classifier.config import EMBEDDING_DIM, EMBEDDING_MODEL_STR, EMBEDDINGS_PATH
 
 
 def save_embeddings(
