@@ -17,4 +17,5 @@ RUN uv sync --frozen --group notebook
 
 FROM notebook AS dev
 
+RUN uv sync --frozen --group notebook --group dev
 RUN uv tool install rust-just
