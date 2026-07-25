@@ -17,15 +17,21 @@
 # #### imports
 
 # %%
+from collections.abc import Callable
 from pathlib import Path
+from typing import Any
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from sentence_transformers import SentenceTransformer
+from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.pipeline import Pipeline
 
 from text_classifier.data.data import data_pipeline
-from text_classifier.data.model import get_model_data
+from text_classifier.data.features import add_features
+from text_classifier.data.model import get_encoder_train_data
+from text_classifier.data.preprocessing import preprocess_data
 
 # %%
 # automatically reloads imported packages when changes are made to them
@@ -65,16 +71,12 @@ df = data_pipeline()
 df.head()
 
 # %%
-scaler, encoder, X_train, X_test, y_train, y_test = get_model_data()
-X_train.head()
+encoder, train_data = get_encoder_train_data()
+train_data.X_train.head()
+
 
 # %%
 # data pipeline
-from collections.abc import Callable
-from typing import Any
-
-from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.pipeline import Pipeline
 
 
 # %%
@@ -95,9 +97,6 @@ def set_index(df: pd.DataFrame) -> pd.DataFrame:
 
 
 # %%
-from text_classifier.data.features import add_features
-from text_classifier.data.preprocessing import preprocess_data
-
 Pipeline(
     [
         ("set_index", FunctionTransformer(set_index)),
@@ -108,10 +107,6 @@ Pipeline(
 
 # %%
 # modeling
-
-# %%
-from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
-from xgboost import XGBClassifier
 
 # %%
 # could use dataclass for model params instead
@@ -135,65 +130,15 @@ from xgboost import XGBClassifier
 # model = XGBClassifier(**asdict(model_params))
 
 # %%
-model_params = dict(
-    objective="multi:softprob",  # multiclass classification
-    num_class=4,
-    n_estimators=300,
-    max_depth=6,
-    learning_rate=0.05,
-    subsample=0.8,
-    colsample_bytree=0.8,
-    eval_metric="mlogloss",
-    random_state=42,
-)
+# model.fit(X_train, y_train)
 
 # %%
-from collections.abc import Mapping
-from typing import Any
-
-
-def get_model(model_params: Mapping[str, Any]):
-    model = XGBClassifier(**model_params)
-
-    return model
-
-
-model_params = dict(
-    objective="multi:softprob",  # multiclass classification
-    num_class=4,
-    n_estimators=300,
-    max_depth=6,
-    learning_rate=0.05,
-    subsample=0.8,
-    colsample_bytree=0.8,
-    eval_metric="mlogloss",
-    random_state=42,
-)
-
-model = get_model(model_params)
-
+# y_pred = model.predict(X_test)
+# print_pred_report(y_test, y_pred)
 
 # %%
-def print_pred_report(y: np.typing.ArrayLike, y_pred: np.typing.ArrayLike):
-    print(f"Accuracy: {accuracy_score(y, y_pred)}\n")
-
-    print("Classification Report")
-    print(classification_report(y, y_pred))
-
-    print("Confusion Matrix")
-    print(confusion_matrix(y, y_pred))
-
-
-# %%
-model.fit(X_train, y_train)
-
-# %%
-y_pred = model.predict(X_test)
-print_pred_report(y_test, y_pred)
-
-# %%
-y_train_pred = model.predict(X_train)
-print_pred_report(y_train, y_train_pred)
+# y_train_pred = model.predict(X_train)
+# print_pred_report(y_train, y_train_pred)
 
 # %% [markdown]
 # #### embeddings experiments
@@ -314,12 +259,12 @@ show_entries_by_weekday()
 df.head()
 
 # %%
-df.columns
+print(df.columns)
 # 5 columns, named
 # ['id', 'created_on', 'title', 'description', 'tag']
 
 # %%
-df.dtypes
+print(df.dtypes)
 # all of type str except id
 
 # %%
