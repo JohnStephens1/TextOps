@@ -1,6 +1,6 @@
+from sklearn.base import BaseEstimator
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-from sklearn.base import BaseEstimator
 from sklearn.preprocessing import MinMaxScaler
 
 

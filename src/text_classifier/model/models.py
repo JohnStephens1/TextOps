@@ -1,6 +1,8 @@
-from typing import Any, Mapping
+from collections.abc import Mapping
+from typing import Any
+
+from scipy.stats import loguniform, randint, uniform  # type: ignore
 from xgboost import XGBClassifier
-from scipy.stats import randint, uniform, loguniform  # type: ignore
 
 
 def get_xgboost_param_distribution() -> dict[str, Any]:

@@ -1,15 +1,16 @@
+import typing
+
 import numpy as np
 import pandas as pd
-import typing
-from sklearn.model_selection import cross_val_score, StratifiedKFold, RandomizedSearchCV
+from sklearn.model_selection import RandomizedSearchCV, StratifiedKFold, cross_val_score
 from sklearn.pipeline import Pipeline
 
-from text_classifier.model.pipeline import get_model_pipe
 from text_classifier.data.model import get_encoder_train_data
 from text_classifier.model.models import (
     get_model_XGBClassifier,
     get_xgboost_param_distribution,
 )
+from text_classifier.model.pipeline import get_model_pipe
 
 
 def get_cv_splitter() -> StratifiedKFold:
