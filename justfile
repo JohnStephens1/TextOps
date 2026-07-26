@@ -4,3 +4,9 @@ sync:
 fix:
     uv run ruff check . --fix
     uv run ruff format .
+
+commit:
+    just fix
+    git add .
+    git status
+    
