@@ -34,7 +34,7 @@ def get_cv_score(
 def get_random_search(
     pipe: Pipeline,
     param_distribution: dict[str, typing.Any],
-):
+) -> RandomizedSearchCV:
     return RandomizedSearchCV(
         pipe,
         param_distribution,
