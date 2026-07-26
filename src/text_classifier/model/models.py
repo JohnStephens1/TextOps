@@ -2,6 +2,7 @@ from collections.abc import Mapping
 from typing import Any
 
 from scipy.stats import loguniform, randint, uniform  # type: ignore
+from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
 
 
@@ -32,3 +33,17 @@ def get_model_XGBClassifier(
     model = XGBClassifier(**model_params)
 
     return model
+
+
+def get_param_dist_random_forest():
+    return dict(  # noqa: C408
+        n_estimators=[10],
+        max_depth=[5, 10],
+        min_samples_split=[3, 8],
+        min_samples_leaf=[2, 4],
+        max_features=["sqrt"],
+    )
+
+
+def get_model_random_forest():
+    return RandomForestClassifier()
