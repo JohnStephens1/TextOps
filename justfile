@@ -9,4 +9,10 @@ commit:
     just fix
     git add .
     git status
-    
+
+host:
+    mlflow ui \
+     --host 0.0.0.0 \
+     --port 5000 \
+     --default-artifact-root ./mlruns \
+     --backend-store-uri sqlite:///./mlruns/mlflow.db
