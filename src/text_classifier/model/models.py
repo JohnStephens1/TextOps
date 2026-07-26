@@ -37,11 +37,11 @@ def get_model_XGBClassifier(
 
 def get_param_dist_random_forest():
     return dict(  # noqa: C408
-        n_estimators=[10],
-        max_depth=[5, 10],
-        min_samples_split=[3, 8],
-        min_samples_leaf=[2, 4],
-        max_features=["sqrt"],
+        model__n_estimators=[10],
+        model__max_depth=[5, 10],
+        model__min_samples_split=[3, 8],
+        model__min_samples_leaf=[2, 4],
+        model__max_features=["sqrt"],
     )
 
 
