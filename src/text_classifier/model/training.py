@@ -46,6 +46,7 @@ def get_random_search(
     )
 
 
+# TODO associate type of search with model
 # GridSearchCV
 # RandomizedSearchCV
 
