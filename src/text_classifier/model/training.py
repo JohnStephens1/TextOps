@@ -4,13 +4,14 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import RandomizedSearchCV, StratifiedKFold, cross_val_score
 from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import LabelEncoder
 
 from text_classifier.data.model import get_encoder_train_data
 from text_classifier.model.models import (
-    get_model_XGBClassifier,
-    get_xgboost_param_distribution,
+    ModelBase,
 )
 from text_classifier.model.pipeline import get_model_pipe
+from text_classifier.schema import TrainingData
 
 
 def get_cv_splitter() -> StratifiedKFold:
@@ -49,17 +50,12 @@ def get_random_search(
 # RandomizedSearchCV
 
 
-def train_qm():
+def train_qm(
+    my_model: ModelBase,
+) -> tuple[LabelEncoder, TrainingData, RandomizedSearchCV]:
     encoder, train_data = get_encoder_train_data()
-
-    pipe = get_model_pipe(get_model_XGBClassifier())
-
-    param_distribution = get_xgboost_param_distribution()
-
-    search = get_random_search(pipe, param_distribution)
-
+    pipe = get_model_pipe(my_model.model)
+    search = get_random_search(pipe, my_model.default_param_dist_w_model_prefix)
     search.fit(train_data.X_train, train_data.y_train)
-
-    # TODO classify .
 
     return encoder, train_data, search
