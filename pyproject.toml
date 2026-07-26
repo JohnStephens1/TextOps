@@ -5,9 +5,9 @@ description = "A practical MLOps demonstration project for building and managing
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "mlflow>=1.27.0",
+    "mlflow==3.14",
     "numpy>=2.5.1",
-    "pandas>=3.0.3",
+    "pandas>=2,<3",
     "scikit-learn>=1.9.0",
     "scipy>=1.18.0",
     "sentence-transformers>=5.6.0",
