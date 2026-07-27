@@ -30,6 +30,7 @@ class ModelBase(ABC):
         super().__init__()
 
         self.model_name = model_cls.__name__
+        self.search_name = search_cls.__name__
 
         self.default_params = model_default_params
         self.default_param_dist = search_param_dist
@@ -83,6 +84,10 @@ class RandomForestModel(ModelBase):
             search_cls=GridSearchCV,
             instantiate_w_default_params=instantiate_w_default_params,
         )
+
+
+# hiimforest = RandomForestModel()
+# print(hiimforest.search)
 
 
 # def prefix_mpt_keys_with_model(
