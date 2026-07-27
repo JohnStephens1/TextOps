@@ -1,7 +1,7 @@
 from typing import Any
 
 import mlflow
-from sklearn.model_selection import RandomizedSearchCV, StratifiedKFold
+from sklearn.model_selection import GridSearchCV, RandomizedSearchCV, StratifiedKFold
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
 
@@ -30,6 +30,38 @@ def get_random_search(
         scoring="f1_macro",
         random_state=42,
         verbose=1,
+    )
+
+
+def get_grid_search(
+    pipe: Pipeline,
+    param_distribution: dict[str, Any],
+) -> GridSearchCV:
+    return GridSearchCV(
+        pipe,
+        param_distribution,
+        cv=get_cv_splitter(),
+        scoring="f1_macro",
+        verbose=1,
+    )
+
+
+def get_search(
+    pipe: Pipeline,
+    param_dist: dict[str, Any],
+    Search: type[RandomizedSearchCV | GridSearchCV],
+    additional_params: dict[str, Any],
+) -> RandomizedSearchCV | GridSearchCV:
+    # for random search, add n_iter=10
+    # could make current default arguments
+    # even pass down to splitter
+    return Search(
+        pipe,
+        param_dist,
+        cv=get_cv_splitter(),
+        scoring="f1_macro",
+        verbose=1,
+        **additional_params,
     )
 
 
