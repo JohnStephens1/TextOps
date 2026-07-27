@@ -47,7 +47,9 @@ def add_time_features(df: pd.DataFrame, time_col: str = "created_on") -> pd.Data
     df["is_weekend"] = df[time_col].dt.day_of_week >= 5
 
     # days since start
-    df["days_since_start"] = (df[time_col] - df[time_col].min()).dt.days
+    df["days_since_start"] = ((df[time_col] - df[time_col].min()).dt.days).astype(
+        "float64"
+    )
 
     return df
 
