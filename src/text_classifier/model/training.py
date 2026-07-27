@@ -38,10 +38,10 @@ def train_core(
 ) -> tuple[TrainingData, RandomizedSearchCV | GridSearchCV, dict[str, Any]]:
     search = get_search_full(
         my_model.model_cls,
-        my_model.default_param_dist_w_model_prefix,
+        my_model.search_param_dist_w_model_prefix,
         my_model.search_cls,
         my_model.search_params,
-        my_model.default_params,
+        my_model.model_default_params,
     )
     search.fit(train_data.X_train, train_data.y_train)
 

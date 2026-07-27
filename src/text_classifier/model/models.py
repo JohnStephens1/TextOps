@@ -30,24 +30,24 @@ class ModelBase(ABC):
         super().__init__()
 
         self.model_name = model_cls.__name__
-        self.search_name = search_cls.__name__
-
         self.model_cls = model_cls
-        self.search_cls = search_cls
 
-        self.default_params = model_default_params
-        self.default_param_dist = search_param_dist
-        self.default_params_w_model_prefix = prefix_dict_keys_with_model(
+        self.search_name = search_cls.__name__
+        self.search_cls = search_cls
+        self.search_params = search_params
+
+        self.model_default_params = model_default_params
+        self.model_default_params_w_model_prefix = prefix_dict_keys_with_model(
             model_default_params
         )
-        self.default_param_dist_w_model_prefix = prefix_dict_keys_with_model(
+
+        self.search_param_dist = search_param_dist
+        self.search_param_dist_w_model_prefix = prefix_dict_keys_with_model(
             search_param_dist
         )
 
-        self.search_params = search_params
-
         self.model = (
-            model_cls(**self.default_params)
+            model_cls(**self.model_default_params)
             if instantiate_w_default_params
             else model_cls()
         )
@@ -56,7 +56,7 @@ class ModelBase(ABC):
         self.search = get_search(
             self.pipe,
             self.search_cls,
-            self.default_param_dist_w_model_prefix,
+            self.search_param_dist_w_model_prefix,
             self.search_params,
         )
 
