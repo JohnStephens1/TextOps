@@ -10,14 +10,6 @@ from text_classifier.model.models import (
 )
 from text_classifier.schema import TrainingData
 
-# TODO associate type of search with model
-# GridSearchCV
-# RandomizedSearchCV
-# properties
-# search name
-# model name
-
-
 # TODO
 # dump encoder with joblib
 # add to mlflow with
