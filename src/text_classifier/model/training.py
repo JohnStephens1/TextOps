@@ -89,9 +89,14 @@ def train_w_tracking(
     train_data: TrainingData,
     my_model: ModelBase,
 ) -> tuple[TrainingData, RandomizedSearchCV, dict[str, Any]]:
-    # experiment name?
     mlflow.set_tracking_uri("http://localhost:5000")
     mlflow.sklearn.autolog()  # type: ignore
+
+    mlflow.set_experiment("domain-classification")
+    # mlflow.set_tags({
+    #     "model": "RandomForestClassifier",
+    #     "search": "GridSearchCV"
+    # })
 
     with mlflow.start_run():
         train_data, search, metrics = train_core(train_data, my_model)
