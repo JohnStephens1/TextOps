@@ -92,13 +92,8 @@ def train_w_tracking(
     my_model: ModelBase,
 ) -> tuple[TrainingData, RandomizedSearchCV, dict[str, Any]]:
     mlflow.set_tracking_uri("http://localhost:5000")
-    mlflow.sklearn.autolog()  # type: ignore
-
     mlflow.set_experiment("domain-classification")
-    # mlflow.set_tags({
-    #     "model": "RandomForestClassifier",
-    #     "search": "GridSearchCV"
-    # })
+    mlflow.sklearn.autolog()  # type: ignore
 
     with mlflow.start_run():
         train_data, search, metrics = train_core(train_data, my_model)
@@ -107,6 +102,13 @@ def train_w_tracking(
         # mlflow.log_metric("cv_score", search.best_score_)
         # mlflow.sklearn.log_model(search.best_estimator_, "model")
         # mlflow.sklearn.log_model(search, "search")
+
+        mlflow.set_tags(
+            {
+                "model": my_model.model_name,
+                # "search": "GridSearchCV"
+            }
+        )
 
     return train_data, search, metrics
 
