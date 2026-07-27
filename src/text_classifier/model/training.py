@@ -1,69 +1,17 @@
 from typing import Any
 
 import mlflow
-from sklearn.model_selection import GridSearchCV, RandomizedSearchCV, StratifiedKFold
-from sklearn.pipeline import Pipeline
+from sklearn.model_selection import RandomizedSearchCV
 from sklearn.preprocessing import LabelEncoder
 
 from text_classifier.data.model import get_encoder_train_data
 from text_classifier.evaluation.metrics import get_classification_metrics
+from text_classifier.model.model_selection import get_random_search
 from text_classifier.model.models import (
     ModelBase,
 )
 from text_classifier.model.pipeline import get_model_pipe
 from text_classifier.schema import TrainingData
-
-
-def get_cv_splitter() -> StratifiedKFold:
-    return StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
-
-
-def get_random_search(
-    pipe: Pipeline,
-    param_distribution: dict[str, Any],
-) -> RandomizedSearchCV:
-    return RandomizedSearchCV(
-        pipe,
-        param_distribution,
-        n_iter=10,
-        cv=get_cv_splitter(),
-        scoring="f1_macro",
-        random_state=42,
-        verbose=1,
-    )
-
-
-def get_grid_search(
-    pipe: Pipeline,
-    param_distribution: dict[str, Any],
-) -> GridSearchCV:
-    return GridSearchCV(
-        pipe,
-        param_distribution,
-        cv=get_cv_splitter(),
-        scoring="f1_macro",
-        verbose=1,
-    )
-
-
-def get_search(
-    pipe: Pipeline,
-    param_dist: dict[str, Any],
-    Search: type[RandomizedSearchCV | GridSearchCV],
-    additional_params: dict[str, Any],
-) -> RandomizedSearchCV | GridSearchCV:
-    # for random search, add n_iter=10
-    # could make current default arguments
-    # even pass down to splitter
-    return Search(
-        pipe,
-        param_dist,
-        cv=get_cv_splitter(),
-        scoring="f1_macro",
-        verbose=1,
-        **additional_params,
-    )
-
 
 # TODO associate type of search with model
 # GridSearchCV
