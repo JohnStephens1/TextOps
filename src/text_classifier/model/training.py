@@ -1,6 +1,6 @@
 import typing
 
-import mlflow  # type: ignore
+import mlflow
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import RandomizedSearchCV, StratifiedKFold, cross_val_score
@@ -53,13 +53,18 @@ def get_random_search(
 # RandomizedSearchCV
 
 
+# Next up:
+# isolate train_core
+# wrap for mlflow tracking
+
+
 def train_qm(
     my_model: ModelBase,
 ) -> tuple[LabelEncoder, TrainingData, RandomizedSearchCV]:
     encoder, train_data = get_encoder_train_data()
 
     mlflow.set_tracking_uri("http://localhost:5000")
-    mlflow.sklearn.autolog()
+    mlflow.sklearn.autolog()  # type: ignore
 
     with mlflow.start_run() as run:
         print(run.info.artifact_uri)
