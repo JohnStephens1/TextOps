@@ -3,6 +3,7 @@ from collections.abc import Mapping
 from typing import Any
 
 from scipy.stats import loguniform, randint, uniform  # type: ignore
+from sklearn.base import BaseEstimator
 from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
 
@@ -17,7 +18,7 @@ class ModelBase(ABC):
         self,
         default_params: dict[str, Any],
         default_param_dist: dict[str, Any],
-        ModelType: Any,
+        ModelType: type[BaseEstimator],
         instantiate_w_default_params: bool = False,
     ) -> None:
         super().__init__()
