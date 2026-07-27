@@ -5,7 +5,11 @@ from typing import Any
 from scipy.stats import loguniform, randint, uniform  # type: ignore
 from sklearn.base import BaseEstimator
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 from xgboost import XGBClassifier
+
+from text_classifier.model.model_selection import get_search
+from text_classifier.model.pipeline import get_model_pipe
 
 
 def prefix_dict_keys_with_model(dic: dict[str, Any]) -> dict[str, Any]:
@@ -16,50 +20,68 @@ def prefix_dict_keys_with_model(dic: dict[str, Any]) -> dict[str, Any]:
 class ModelBase(ABC):
     def __init__(
         self,
-        default_params: dict[str, Any],
-        default_param_dist: dict[str, Any],
-        ModelType: type[BaseEstimator],
+        model_default_params: dict[str, Any],
+        model_cls: type[BaseEstimator],
+        search_param_dist: dict[str, Any],
+        search_params: dict[str, Any],
+        search_cls: type[RandomizedSearchCV | GridSearchCV],
         instantiate_w_default_params: bool = False,
     ) -> None:
         super().__init__()
 
-        self.model_name = ModelType.__name__
+        self.model_name = model_cls.__name__
 
-        self.default_params = default_params
-        self.default_param_dist = default_param_dist
-        self.default_params_w_model_prefix = prefix_dict_keys_with_model(default_params)
-        self.default_param_dist_w_model_prefix = prefix_dict_keys_with_model(
-            default_param_dist
+        self.default_params = model_default_params
+        self.default_param_dist = search_param_dist
+        self.default_params_w_model_prefix = prefix_dict_keys_with_model(
+            model_default_params
         )
+        self.default_param_dist_w_model_prefix = prefix_dict_keys_with_model(
+            search_param_dist
+        )
+
+        self.search_cls = search_cls
+        self.search_params = search_params
 
         self.model = (
-            ModelType(**self.default_params)
+            model_cls(**self.default_params)
             if instantiate_w_default_params
-            else ModelType()
+            else model_cls()
+        )
+
+        self.pipe = get_model_pipe(self.model)
+        self.search = get_search(
+            self.pipe,
+            self.search_cls,
+            self.default_param_dist_w_model_prefix,
+            self.search_params,
         )
 
 
-# TODO
-# add search
 class RandomForestModel(ModelBase):
     def __init__(self, instantiate_w_default_params: bool = False) -> None:
         super().__init__(
-            {
+            model_default_params={
                 "n_estimators": 10,
                 "max_depth": 5,
                 "min_samples_split": 3,
                 "min_samples_leaf": 2,
                 "max_features": "sqrt",
             },
-            {
+            model_cls=RandomForestClassifier,
+            search_param_dist={
                 "n_estimators": [20],
                 "max_depth": randint(5, 10),
                 "min_samples_split": randint(3, 8),
                 "min_samples_leaf": randint(2, 5),
                 "max_features": ["sqrt"],
             },
-            RandomForestClassifier,
-            instantiate_w_default_params,
+            search_params={
+                "scoring": "f1_macro",
+                "verbose": 1,
+            },
+            search_cls=GridSearchCV,
+            instantiate_w_default_params=instantiate_w_default_params,
         )
 
 
