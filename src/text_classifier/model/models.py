@@ -11,6 +11,7 @@ def prefix_dict_keys_with_model(dic: dict[str, Any]) -> dict[str, Any]:
     return {f"model__{k}": v for k, v in dic.items()}
 
 
+# might be best to separate into TrainBase or such
 class ModelBase(ABC):
     def __init__(
         self,
@@ -20,13 +21,16 @@ class ModelBase(ABC):
         instantiate_w_default_params: bool = False,
     ) -> None:
         super().__init__()
+
+        self.model_name = ModelType.__name__
+
         self.default_params = default_params
         self.default_param_dist = default_param_dist
         self.default_params_w_model_prefix = prefix_dict_keys_with_model(default_params)
         self.default_param_dist_w_model_prefix = prefix_dict_keys_with_model(
             default_param_dist
         )
-        self.model_name = ModelType.__name__
+
         self.model = (
             ModelType(**self.default_params)
             if instantiate_w_default_params
