@@ -12,6 +12,7 @@ def get_classification_metrics(
     y_true: np.typing.ArrayLike,
     y_pred: np.typing.ArrayLike,
     y_proba: np.typing.ArrayLike | None = None,
+    prefix: str = "",
 ) -> dict[str, float]:
     metrics = {
         "accuracy": accuracy_score(y_true, y_pred),
@@ -23,6 +24,9 @@ def get_classification_metrics(
             y_true, y_proba, multi_class="ovo", average="macro"
         )
 
+    if prefix != "":
+        metrics = {f"{prefix}_{k}": v for k, v in metrics.items()}
+
     return metrics
 
 
@@ -30,8 +34,9 @@ def print_pred_report(
     y_true: np.typing.ArrayLike,
     y_pred: np.typing.ArrayLike,
     y_proba: np.typing.ArrayLike | None = None,
+    prefix: str = "",
 ):
-    metrics = get_classification_metrics(y_true, y_pred, y_proba)
+    metrics = get_classification_metrics(y_true, y_pred, y_proba, prefix)
 
     print(f"Accuracy: {metrics['accuracy']}")
     print(f"F1: {metrics['f1']}")

@@ -53,10 +53,6 @@ def get_random_search(
 # RandomizedSearchCV
 
 
-# Next up:
-# isolate train_core
-# wrap for mlflow tracking
-
 # TODO
 # dump encoder with joblib
 # add to mlflow with
@@ -80,6 +76,7 @@ def train_core(
         train_data.y_test,
         search.predict(train_data.X_test),
         search.predict_proba(train_data.X_test),
+        prefix="test",
     )
 
     return train_data, search, metrics
