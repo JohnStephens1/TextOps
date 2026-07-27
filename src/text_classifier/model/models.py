@@ -72,9 +72,9 @@ class RandomForestModel(ModelBase):
             model_cls=RandomForestClassifier,
             search_param_dist={
                 "n_estimators": [20],
-                "max_depth": randint(5, 10),
-                "min_samples_split": randint(3, 8),
-                "min_samples_leaf": randint(2, 5),
+                "max_depth": [5, 10],
+                "min_samples_split": [2, 5, 10],
+                "min_samples_leaf": [2, 4],
                 "max_features": ["sqrt"],
             },
             search_params={
