@@ -26,6 +26,7 @@ class ModelBase(ABC):
         self.default_param_dist_w_model_prefix = prefix_dict_keys_with_model(
             default_param_dist
         )
+        self.model_name = ModelType.__name__
         self.model = (
             ModelType(**self.default_params)
             if instantiate_w_default_params
@@ -33,6 +34,8 @@ class ModelBase(ABC):
         )
 
 
+# TODO
+# add search
 class RandomForestModel(ModelBase):
     def __init__(self, instantiate_w_default_params: bool = False) -> None:
         super().__init__(
