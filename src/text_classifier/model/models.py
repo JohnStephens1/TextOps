@@ -7,6 +7,10 @@ from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
 
 
+def prefix_dict_keys_with_model(dic: dict[str, Any]) -> dict[str, Any]:
+    return {f"model__{k}": v for k, v in dic.items()}
+
+
 class ModelBase(ABC):
     def __init__(
         self,
@@ -27,10 +31,6 @@ class ModelBase(ABC):
             if instantiate_w_default_params
             else ModelType()
         )
-
-
-def prefix_dict_keys_with_model(dic: dict[str, Any]) -> dict[str, Any]:
-    return {f"model__{k}": v for k, v in dic.items()}
 
 
 class RandomForestModel(ModelBase):
@@ -144,7 +144,7 @@ def get_model_XGBClassifier(
     return model
 
 
-def get_param_dist_random_forest():
+def get_param_dist_random_forest() -> dict[str, Any]:
     return dict(  # noqa: C408
         model__n_estimators=[10],
         model__max_depth=[5, 10],
@@ -154,5 +154,5 @@ def get_param_dist_random_forest():
     )
 
 
-def get_model_random_forest():
+def get_model_random_forest() -> RandomForestClassifier:
     return RandomForestClassifier()
