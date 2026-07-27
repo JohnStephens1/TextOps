@@ -85,11 +85,11 @@ def train_core(
     return train_data, search, metrics
 
 
-def train_qm(
+def train_w_tracking(
+    train_data: TrainingData,
     my_model: ModelBase,
-) -> tuple[LabelEncoder, TrainingData, RandomizedSearchCV]:
-    encoder, train_data = get_encoder_train_data()
-
+) -> tuple[TrainingData, RandomizedSearchCV, dict[str, Any]]:
+    # experiment name?
     mlflow.set_tracking_uri("http://localhost:5000")
     mlflow.sklearn.autolog()  # type: ignore
 
@@ -101,4 +101,13 @@ def train_qm(
         # mlflow.sklearn.log_model(search.best_estimator_, "model")
         # mlflow.sklearn.log_model(search, "search")
 
-    return encoder, train_data, search
+    return train_data, search, metrics
+
+
+def train_qm(
+    my_model: ModelBase,
+) -> tuple[LabelEncoder, TrainingData, RandomizedSearchCV, dict[str, Any]]:
+    encoder, train_data = get_encoder_train_data()
+    train_data, search, metrics = train_w_tracking(train_data, my_model)
+
+    return encoder, train_data, search, metrics
