@@ -1,16 +1,15 @@
 from typing import Any
 
 import mlflow
-from sklearn.model_selection import RandomizedSearchCV
+from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 from sklearn.preprocessing import LabelEncoder
 
 from text_classifier.data.model import get_encoder_train_data
 from text_classifier.evaluation.metrics import get_classification_metrics
-from text_classifier.model.model_selection import get_random_search
+from text_classifier.model.model_selection import get_search_full
 from text_classifier.model.models import (
     ModelBase,
 )
-from text_classifier.model.pipeline import get_model_pipe
 from text_classifier.schema import TrainingData
 
 # TODO associate type of search with model
@@ -36,10 +35,14 @@ from text_classifier.schema import TrainingData
 def train_core(
     train_data: TrainingData,
     my_model: ModelBase,
-) -> tuple[TrainingData, RandomizedSearchCV, dict[str, Any]]:
-    pipe = get_model_pipe(my_model.model)
-
-    search = get_random_search(pipe, my_model.default_param_dist_w_model_prefix)
+) -> tuple[TrainingData, RandomizedSearchCV | GridSearchCV, dict[str, Any]]:
+    search = get_search_full(
+        my_model.model_cls,
+        my_model.default_param_dist_w_model_prefix,
+        my_model.search_cls,
+        my_model.search_params,
+        my_model.default_params,
+    )
     search.fit(train_data.X_train, train_data.y_train)
 
     metrics = get_classification_metrics(
@@ -55,7 +58,7 @@ def train_core(
 def train_w_tracking(
     train_data: TrainingData,
     my_model: ModelBase,
-) -> tuple[TrainingData, RandomizedSearchCV, dict[str, Any]]:
+) -> tuple[TrainingData, RandomizedSearchCV | GridSearchCV, dict[str, Any]]:
     mlflow.set_tracking_uri("http://localhost:5000")
     mlflow.set_experiment("domain-classification")
     mlflow.sklearn.autolog()  # type: ignore
@@ -68,19 +71,16 @@ def train_w_tracking(
         # mlflow.sklearn.log_model(search.best_estimator_, "model")
         # mlflow.sklearn.log_model(search, "search")
 
-        mlflow.set_tags(
-            {
-                "model": my_model.model_name,
-                # "search": "GridSearchCV"
-            }
-        )
+        mlflow.set_tags({"model": my_model.model_name, "search": my_model.search_name})
 
     return train_data, search, metrics
 
 
 def train_qm(
     my_model: ModelBase,
-) -> tuple[LabelEncoder, TrainingData, RandomizedSearchCV, dict[str, Any]]:
+) -> tuple[
+    LabelEncoder, TrainingData, RandomizedSearchCV | GridSearchCV, dict[str, Any]
+]:
     encoder, train_data = get_encoder_train_data()
     train_data, search, metrics = train_w_tracking(train_data, my_model)
 

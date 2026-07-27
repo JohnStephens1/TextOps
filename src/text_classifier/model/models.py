@@ -32,6 +32,9 @@ class ModelBase(ABC):
         self.model_name = model_cls.__name__
         self.search_name = search_cls.__name__
 
+        self.model_cls = model_cls
+        self.search_cls = search_cls
+
         self.default_params = model_default_params
         self.default_param_dist = search_param_dist
         self.default_params_w_model_prefix = prefix_dict_keys_with_model(
@@ -41,7 +44,6 @@ class ModelBase(ABC):
             search_param_dist
         )
 
-        self.search_cls = search_cls
         self.search_params = search_params
 
         self.model = (
