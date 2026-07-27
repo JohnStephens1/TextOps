@@ -51,6 +51,9 @@ def get_random_search(
 # TODO associate type of search with model
 # GridSearchCV
 # RandomizedSearchCV
+# properties
+# search name
+# model name
 
 
 # TODO
@@ -58,9 +61,11 @@ def get_random_search(
 # add to mlflow with
 #   mlflow.log_artifact(encoder_path, artifact_path="preprocessors")
 
-# add prefix to metrics, this case "test_..."
-# precision, recall
-# mb confusion matrix, plots
+# for metrics, potentially add
+# confusion matrix
+# roc curve
+# precision recall curve
+# feature importance
 
 
 def train_core(
