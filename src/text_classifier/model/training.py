@@ -1,9 +1,7 @@
 from typing import Any
 
 import mlflow
-import numpy as np
-import pandas as pd
-from sklearn.model_selection import RandomizedSearchCV, StratifiedKFold, cross_val_score
+from sklearn.model_selection import RandomizedSearchCV, StratifiedKFold
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
 
@@ -18,19 +16,6 @@ from text_classifier.schema import TrainingData
 
 def get_cv_splitter() -> StratifiedKFold:
     return StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
-
-
-def get_cv_score(
-    pipe: Pipeline, X: pd.DataFrame, y: np.typing.ArrayLike
-) -> np.typing.ArrayLike:
-    return cross_val_score(
-        pipe,
-        X,
-        y,
-        cv=get_cv_splitter(),
-        scoring="f1_macro",
-        verbose=1,
-    )
 
 
 def get_random_search(
