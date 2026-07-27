@@ -1,4 +1,4 @@
-import typing
+from typing import Any
 
 import mlflow
 import numpy as np
@@ -35,7 +35,7 @@ def get_cv_score(
 
 def get_random_search(
     pipe: Pipeline,
-    param_distribution: dict[str, typing.Any],
+    param_distribution: dict[str, Any],
 ) -> RandomizedSearchCV:
     return RandomizedSearchCV(
         pipe,
@@ -57,6 +57,33 @@ def get_random_search(
 # isolate train_core
 # wrap for mlflow tracking
 
+# TODO
+# dump encoder with joblib
+# add to mlflow with
+#   mlflow.log_artifact(encoder_path, artifact_path="preprocessors")
+
+# add prefix to metrics, this case "test_..."
+# precision, recall
+# mb confusion matrix, plots
+
+
+def train_core(
+    train_data: TrainingData,
+    my_model: ModelBase,
+) -> tuple[TrainingData, RandomizedSearchCV, dict[str, Any]]:
+    pipe = get_model_pipe(my_model.model)
+
+    search = get_random_search(pipe, my_model.default_param_dist_w_model_prefix)
+    search.fit(train_data.X_train, train_data.y_train)
+
+    metrics = get_classification_metrics(
+        train_data.y_test,
+        search.predict(train_data.X_test),
+        search.predict_proba(train_data.X_test),
+    )
+
+    return train_data, search, metrics
+
 
 def train_qm(
     my_model: ModelBase,
@@ -66,18 +93,8 @@ def train_qm(
     mlflow.set_tracking_uri("http://localhost:5000")
     mlflow.sklearn.autolog()  # type: ignore
 
-    with mlflow.start_run() as run:
-        print(run.info.artifact_uri)
-        pipe = get_model_pipe(my_model.model)
-
-        search = get_random_search(pipe, my_model.default_param_dist_w_model_prefix)
-        search.fit(train_data.X_train, train_data.y_train)
-
-        metrics = get_classification_metrics(
-            train_data.y_test,
-            search.predict(train_data.X_test),
-            search.predict_proba(train_data.X_test),
-        )
+    with mlflow.start_run():
+        train_data, search, metrics = train_core(train_data, my_model)
 
         mlflow.log_metrics(metrics)
         # mlflow.log_metric("cv_score", search.best_score_)
