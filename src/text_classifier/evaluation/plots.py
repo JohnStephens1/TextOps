@@ -34,7 +34,7 @@ def get_roc_curve_fig(
     fig, ax = plt.subplots(figsize=(5, 5))
 
     n_classes = 4
-    y_test_bin = np.array(
+    y_test_bin = np.asarray(
         label_binarize(y_true, classes=range(n_classes)), dtype=np.float64
     )
 
