@@ -17,10 +17,7 @@ def get_confusion_matrix_fig(
         ax=ax,
     )
 
-    ax.set_title(
-        "Confusion Matrix",
-        pad=16,
-    )
+    ax.set_title("Confusion Matrix", pad=16)
 
     plt.tight_layout()
 
