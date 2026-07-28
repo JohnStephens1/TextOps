@@ -1,10 +1,13 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.figure import Figure
 from sklearn.metrics import ConfusionMatrixDisplay, RocCurveDisplay
 from sklearn.preprocessing import label_binarize
 
 
-def get_confusion_matrix_fig(y_true: np.typing.ArrayLike, y_pred: np.typing.ArrayLike):
+def get_confusion_matrix_fig(
+    y_true: np.typing.ArrayLike, y_pred: np.typing.ArrayLike
+) -> Figure:
     fig, ax = plt.subplots(figsize=(5, 5))
 
     ConfusionMatrixDisplay.from_predictions(
@@ -27,7 +30,7 @@ def get_confusion_matrix_fig(y_true: np.typing.ArrayLike, y_pred: np.typing.Arra
 # TODO integrate encoder
 def get_roc_curve_fig(
     y_true: np.typing.NDArray[np.float64], y_proba: np.typing.NDArray[np.float64]
-):
+) -> Figure:
     fig, ax = plt.subplots(figsize=(5, 5))
 
     n_classes = 4
