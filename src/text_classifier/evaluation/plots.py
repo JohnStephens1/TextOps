@@ -174,3 +174,17 @@ def get_tree_based_feature_importance_fig(
     plt.tight_layout()
 
     return fig
+
+
+def get_model_eval_figs(
+    y_true: np.typing.NDArray[np.float64],
+    y_pred: np.typing.NDArray[np.float64],
+    y_proba: np.typing.NDArray[np.float64],
+    encoder: LabelEncoder,
+) -> tuple[Figure, Figure, Figure]:
+    return (
+        get_confusion_matrix_fig(y_true, y_pred),
+        get_roc_curve_fig(y_true, y_proba, encoder),
+        get_precision_recall_curve_fig(y_true, y_proba, encoder),
+        # could add feature importance fig
+    )
