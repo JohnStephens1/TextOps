@@ -3,6 +3,7 @@ from collections.abc import Mapping
 from typing import Any
 
 import numpy as np
+import pandas as pd
 from numpy.typing import NDArray
 from scipy.stats import loguniform, randint, uniform  # type: ignore
 from sklearn.base import BaseEstimator
@@ -201,7 +202,7 @@ def get_model_random_forest() -> RandomForestClassifier:
 
 
 def get_predictions(
-    model: Predictor, X: NDArray[np.float64], y: NDArray[np.int64]
+    model: Predictor, X: pd.DataFrame, y: NDArray[np.int64]
 ) -> Predictions:
     return Predictions(
         y_true=y,
@@ -221,7 +222,7 @@ def get_predictions_w_encoder_from_predictions(
 
 def get_predictions_w_encoder(
     model: Predictor,
-    X: NDArray[np.float64],
+    X: pd.DataFrame,
     y: NDArray[np.int64],
     label_encoder: LabelEncoder,
 ) -> PredictionsEncoder:

@@ -28,7 +28,7 @@ def get_metrics_figs(
     my_model: ModelBase, train_data: TrainingData, encoder: LabelEncoder
 ) -> tuple[dict[str, float], dict[str, Figure]]:
     predictions_w_encoder = get_predictions_w_encoder(
-        my_model.search, train_data.X_test.to_numpy(), train_data.y_test, encoder
+        my_model.search, train_data.X_test, train_data.y_test, encoder
     )
 
     metrics = get_classification_metrics(
