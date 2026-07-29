@@ -1,3 +1,5 @@
+from typing import Any
+
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.figure import Figure
@@ -111,3 +113,64 @@ def print_perm_importance(
     )
 
     print(result)
+
+
+def get_feature_importances_names(
+    feature_importances: np.typing.NDArray[np.float64],
+    feature_names: np.typing.NDArray[np.object_],
+    merge_text_embeddings: bool = True,
+    top_n: int = 5,
+) -> tuple[Any, Any]:
+    # feature_importances = my_model.search.best_estimator_.named_steps['model'].feature_importances_
+    # feature_names = train_data.X_train.columns
+
+    importances_dict = {x: y for x, y in zip(feature_names, feature_importances)}
+
+    if merge_text_embeddings:
+        text_keys = [k for k in importances_dict if k.startswith("text_")]
+
+        if text_keys:
+            importances_dict["text"] = max(
+                np.float64(importances_dict[k]) for k in text_keys
+            )
+
+            for k in text_keys:
+                del importances_dict[k]
+
+    names, importances = zip(
+        *sorted(importances_dict.items(), key=lambda x: x[1], reverse=True)[:top_n]
+        # *sorted(importances_dict.items(), key=lambda x: x[1])[-top_n:]
+    )
+
+    return names, importances
+
+
+def get_tree_based_feature_importance_fig(
+    feature_importances: np.typing.NDArray[np.float64],
+    feature_names: np.typing.NDArray[np.object_],
+) -> Figure:
+    """gets the feature importance figure for a tree-based model
+
+    Args:
+        feature_importances (np.typing.NDArray[np.float64]): my_model.search.best_estimator_.named_steps['model'].feature_importances_
+        feature_names (np.typing.NDArray[np.object_]): train_data.X_train.columns.values
+
+    Returns:
+        Figure: tree-based feature importance figure
+    """
+
+    feat_names, feat_importances = get_feature_importances_names(
+        feature_importances, feature_names
+    )
+
+    fig, ax = plt.subplots(figsize=(5, 4))
+
+    ax.barh(feat_names, feat_importances, 0.5)
+
+    ax.set_xscale("log")
+    ax.set_title("Tree-Based Feature Importance", pad=16)
+    ax.set_xlabel("Feature Importance (log scale)")
+
+    plt.tight_layout()
+
+    return fig
