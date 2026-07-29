@@ -15,12 +15,6 @@ from text_classifier.schema import TrainingData
 # add to mlflow with
 #   mlflow.log_artifact(encoder_path, artifact_path="preprocessors")
 
-# for metrics, potentially add
-# confusion matrix
-# roc curve
-# precision recall curve
-# feature importance
-
 
 def log_model_eval_figs():
     pass
