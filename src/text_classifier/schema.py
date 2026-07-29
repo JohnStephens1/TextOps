@@ -10,8 +10,8 @@ from sklearn.preprocessing import LabelEncoder
 class TrainingData:
     X_train: pd.DataFrame
     X_test: pd.DataFrame
-    y_train: np.typing.ArrayLike
-    y_test: np.typing.ArrayLike
+    y_train: np.typing.NDArray[np.float64]
+    y_test: np.typing.NDArray[np.float64]
 
 
 @dataclass
@@ -28,8 +28,8 @@ class TrainingContext:
 
 @dataclass
 class Predictions:
-    y_true: np.typing.NDArray[np.float64]
-    y_pred: np.typing.NDArray[np.float64]
+    y_true: np.typing.NDArray[np.int64]
+    y_pred: np.typing.NDArray[np.int64]
     y_proba: np.typing.NDArray[np.float64]
 
 
