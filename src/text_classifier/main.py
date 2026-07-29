@@ -6,8 +6,8 @@ def main():
     my_model = RandomForestModel()
     _, _, _, metrics, figs = train_qm(my_model)
 
-    print(metrics)
-    print(figs)
+    print(f"Metrics:\n{metrics}")
+    print(f"Figs:\n{figs}")
 
 
 if __name__ == "__main__":
