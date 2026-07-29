@@ -24,3 +24,16 @@ class Artifacts:
 class TrainingContext:
     dataset: TrainingData
     artifacts: Artifacts
+
+
+@dataclass
+class Predictions:
+    y_true: np.typing.NDArray[np.float64]
+    y_pred: np.typing.NDArray[np.float64]
+    y_proba: np.typing.NDArray[np.float64]
+
+
+@dataclass
+class PredictionsEncoder:
+    predictions: Predictions
+    encoder: LabelEncoder
