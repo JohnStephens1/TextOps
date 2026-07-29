@@ -91,8 +91,6 @@ def get_precision_recall_curve_fig(
 
 
 # this took 27 minutes to run
-# per class importance
-# perm importance
 def print_perm_importance(
     my_model: ModelBase,
     data: TrainingData,
