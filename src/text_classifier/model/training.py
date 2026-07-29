@@ -22,11 +22,25 @@ from text_classifier.schema import TrainingData
 # feature importance
 
 
+def log_model_eval_figs():
+    pass
+
+
+def log_metrics_figs():
+    pass
+
+
+def get_and_log_metrics_figs():
+    pass
+
+
 def train_core(
     train_data: TrainingData,
     my_model: ModelBase,
 ) -> tuple[TrainingData, ModelBase, dict[str, Any]]:
     my_model.search.fit(train_data.X_train, train_data.y_train)
+
+    # predictions = get_predictions(my_model.search, train_data.X_test.to_numpy(), np.asarray(train_data.y_test))
 
     metrics = get_classification_metrics(
         train_data.y_test,
