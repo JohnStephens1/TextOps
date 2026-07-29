@@ -200,7 +200,7 @@ def get_model_random_forest() -> RandomForestClassifier:
 
 
 def get_predictions(
-    model: Predictor, X: NDArray[np.float64], y: NDArray[np.float64]
+    model: Predictor, X: NDArray[np.float64], y: NDArray[np.int64]
 ) -> Predictions:
     return Predictions(
         y_true=y,
