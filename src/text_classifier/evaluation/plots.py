@@ -9,20 +9,20 @@ from sklearn.metrics import (
     PrecisionRecallDisplay,
     RocCurveDisplay,
 )
-from sklearn.preprocessing import LabelEncoder, label_binarize
+from sklearn.preprocessing import label_binarize
 
 from text_classifier.model.models import ModelBase
-from text_classifier.schema import TrainingData
+from text_classifier.schema import Predictions, PredictionsEncoder, TrainingData
 
 
 def get_confusion_matrix_fig(
-    y_true: np.typing.ArrayLike, y_pred: np.typing.ArrayLike
+    preds: Predictions,
 ) -> Figure:
     fig, ax = plt.subplots(figsize=(5, 5))
 
     ConfusionMatrixDisplay.from_predictions(
-        y_true,
-        y_pred,
+        preds.y_true,
+        preds.y_pred,
         cmap="Blues",
         ax=ax,
     )
@@ -35,22 +35,21 @@ def get_confusion_matrix_fig(
 
 
 def get_roc_curve_fig(
-    y_true: np.typing.NDArray[np.float64],
-    y_proba: np.typing.NDArray[np.float64],
-    encoder: LabelEncoder,
+    preds_w_encoder: PredictionsEncoder,
 ) -> Figure:
     fig, ax = plt.subplots(figsize=(5, 5))
 
-    n_classes = encoder.classes_.shape[0]
+    n_classes = preds_w_encoder.encoder.classes_.shape[0]
     y_test_bin = np.asarray(
-        label_binarize(y_true, classes=range(n_classes)), dtype=np.float64
+        label_binarize(preds_w_encoder.predictions.y_true, classes=range(n_classes)),
+        dtype=np.float64,
     )
 
     for i in range(n_classes):
         RocCurveDisplay.from_predictions(
             y_test_bin[:, i],
-            y_proba[:, i],
-            name=f"{encoder.classes_[i]}",
+            preds_w_encoder.predictions.y_proba[:, i],
+            name=f"{preds_w_encoder.encoder.classes_[i]}",
             ax=ax,
         )
 
@@ -64,22 +63,21 @@ def get_roc_curve_fig(
 
 
 def get_precision_recall_curve_fig(
-    y_true: np.typing.NDArray[np.float64],
-    y_proba: np.typing.NDArray[np.float64],
-    encoder: LabelEncoder,
+    preds_w_encoder: PredictionsEncoder,
 ) -> Figure:
     fig, ax = plt.subplots(figsize=(5, 5))
 
-    n_classes = encoder.classes_.shape[0]
+    n_classes = preds_w_encoder.encoder.classes_.shape[0]
     y_test_bin = np.asarray(
-        label_binarize(y_true, classes=range(n_classes)), dtype=np.float64
+        label_binarize(preds_w_encoder.predictions.y_true, classes=range(n_classes)),
+        dtype=np.float64,
     )
 
     for i in range(n_classes):
         PrecisionRecallDisplay.from_predictions(
             y_test_bin[:, i],
-            y_proba[:, i],
-            name=f"{encoder.classes_[i]}",
+            preds_w_encoder.predictions.y_proba[:, i],
+            name=f"{preds_w_encoder.encoder.classes_[i]}",
             ax=ax,
         )
 
@@ -176,17 +174,10 @@ def get_tree_based_feature_importance_fig(
     return fig
 
 
-def get_model_eval_figs(
-    y_true: np.typing.NDArray[np.float64],
-    y_pred: np.typing.NDArray[np.float64],
-    y_proba: np.typing.NDArray[np.float64],
-    encoder: LabelEncoder,
-) -> dict[str, Figure]:
+def get_model_eval_figs(preds_w_encoder: PredictionsEncoder) -> dict[str, Figure]:
     return {
-        "confusion_matrix": get_confusion_matrix_fig(y_true, y_pred),
-        "roc_curve": get_roc_curve_fig(y_true, y_proba, encoder),
-        "precision_recall_curve": get_precision_recall_curve_fig(
-            y_true, y_proba, encoder
-        ),
+        "confusion_matrix": get_confusion_matrix_fig(preds_w_encoder.predictions),
+        "roc_curve": get_roc_curve_fig(preds_w_encoder),
+        "precision_recall_curve": get_precision_recall_curve_fig(preds_w_encoder),
         # could add feature importance fig
     }
