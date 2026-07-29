@@ -1,12 +1,16 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.figure import Figure
+from sklearn.inspection import permutation_importance
 from sklearn.metrics import (
     ConfusionMatrixDisplay,
     PrecisionRecallDisplay,
     RocCurveDisplay,
 )
 from sklearn.preprocessing import LabelEncoder, label_binarize
+
+from text_classifier.model.models import ModelBase
+from text_classifier.schema import TrainingData
 
 
 def get_confusion_matrix_fig(
@@ -84,3 +88,26 @@ def get_precision_recall_curve_fig(
     plt.tight_layout()
 
     return fig
+
+
+# this took 27 minutes to run
+# per class importance
+# perm importance
+def print_perm_importance(
+    my_model: ModelBase,
+    data: TrainingData,
+    n_repeats: int = 10,
+    random_state: int = 42,
+):
+    print(f"scorer: {my_model.search.scorer_}")
+
+    result = permutation_importance(
+        my_model.search,
+        data.X_test,
+        data.y_test,
+        scoring=my_model.search.scorer_,
+        n_repeats=n_repeats,
+        random_state=random_state,
+    )
+
+    print(result)
