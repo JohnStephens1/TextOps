@@ -1,12 +1,13 @@
-from text_classifier.data.model import get_encoder_train_data
+from text_classifier.model.models import RandomForestModel
+from text_classifier.model.training import train_qm
 
 
 def main():
-    _, train_data = get_encoder_train_data()
-    print(f"X_train: \n{train_data.X_train.head()}\n")
-    print(f"X_test: \n{train_data.X_test.head()}\n")
-    print(f"y_train: \n{train_data.y_train}\n")
-    print(f"y_test: \n{train_data.y_test}\n")
+    my_model = RandomForestModel()
+    _, _, _, metrics, figs = train_qm(my_model)
+
+    print(metrics)
+    print(figs)
 
 
 if __name__ == "__main__":
