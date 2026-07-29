@@ -2,6 +2,8 @@ from abc import ABC
 from collections.abc import Mapping
 from typing import Any
 
+import numpy as np
+from numpy.typing import NDArray
 from scipy.stats import loguniform, randint, uniform  # type: ignore
 from sklearn.base import BaseEstimator
 from sklearn.ensemble import RandomForestClassifier
@@ -10,6 +12,8 @@ from xgboost import XGBClassifier
 
 from text_classifier.model.model_selection import get_search
 from text_classifier.model.pipeline import get_model_pipe
+from text_classifier.protocols import Predictor
+from text_classifier.schema import Predictions
 
 
 def prefix_dict_keys_with_model(dic: dict[str, Any]) -> dict[str, Any]:
@@ -193,3 +197,13 @@ def get_param_dist_random_forest() -> dict[str, Any]:
 
 def get_model_random_forest() -> RandomForestClassifier:
     return RandomForestClassifier()
+
+
+def get_predictions(
+    model: Predictor, X: NDArray[np.float64], y: NDArray[np.float64]
+) -> Predictions:
+    return Predictions(
+        y_true=y,
+        y_pred=model.predict(X),
+        y_proba=model.predict_proba(X),
+    )
