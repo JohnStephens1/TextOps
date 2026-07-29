@@ -7,6 +7,7 @@ from text_classifier.data.model import get_encoder_train_data
 from text_classifier.evaluation.metrics import get_classification_metrics
 from text_classifier.model.models import (
     ModelBase,
+    get_predictions,
 )
 from text_classifier.schema import TrainingData
 
@@ -34,12 +35,12 @@ def train_core(
 ) -> tuple[TrainingData, ModelBase, dict[str, Any]]:
     my_model.search.fit(train_data.X_train, train_data.y_train)
 
-    # predictions = get_predictions(my_model.search, train_data.X_test.to_numpy(), np.asarray(train_data.y_test))
+    predictions = get_predictions(
+        my_model.search, train_data.X_test.to_numpy(), train_data.y_test
+    )
 
     metrics = get_classification_metrics(
-        train_data.y_test,
-        my_model.search.predict(train_data.X_test),
-        my_model.search.predict_proba(train_data.X_test),
+        predictions,
         prefix="test",
     )
 
