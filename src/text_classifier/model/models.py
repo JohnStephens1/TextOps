@@ -8,12 +8,13 @@ from scipy.stats import loguniform, randint, uniform  # type: ignore
 from sklearn.base import BaseEstimator
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
+from sklearn.preprocessing import LabelEncoder
 from xgboost import XGBClassifier
 
 from text_classifier.model.model_selection import get_search
 from text_classifier.model.pipeline import get_model_pipe
 from text_classifier.protocols import Predictor
-from text_classifier.schema import Predictions
+from text_classifier.schema import Predictions, PredictionsEncoder
 
 
 def prefix_dict_keys_with_model(dic: dict[str, Any]) -> dict[str, Any]:
@@ -206,4 +207,27 @@ def get_predictions(
         y_true=y,
         y_pred=model.predict(X),
         y_proba=model.predict_proba(X),
+    )
+
+
+def get_predictions_w_encoder_from_predictions(
+    predictions: Predictions, label_encoder: LabelEncoder
+) -> PredictionsEncoder:
+    return PredictionsEncoder(
+        predictions=predictions,
+        encoder=label_encoder,
+    )
+
+
+def get_predictions_w_encoder(
+    model: Predictor,
+    X: NDArray[np.float64],
+    y: NDArray[np.int64],
+    label_encoder: LabelEncoder,
+) -> PredictionsEncoder:
+    predictions = get_predictions(model, X, y)
+
+    return PredictionsEncoder(
+        predictions=predictions,
+        encoder=label_encoder,
     )
