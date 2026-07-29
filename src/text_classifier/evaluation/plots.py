@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.figure import Figure
 from sklearn.metrics import ConfusionMatrixDisplay, RocCurveDisplay
-from sklearn.preprocessing import label_binarize
+from sklearn.preprocessing import LabelEncoder, label_binarize
 
 
 def get_confusion_matrix_fig(
@@ -24,13 +24,14 @@ def get_confusion_matrix_fig(
     return fig
 
 
-# TODO integrate encoder
 def get_roc_curve_fig(
-    y_true: np.typing.NDArray[np.float64], y_proba: np.typing.NDArray[np.float64]
+    y_true: np.typing.NDArray[np.float64],
+    y_proba: np.typing.NDArray[np.float64],
+    encoder: LabelEncoder,
 ) -> Figure:
     fig, ax = plt.subplots(figsize=(5, 5))
 
-    n_classes = 4
+    n_classes = encoder.classes_.shape[0]
     y_test_bin = np.asarray(
         label_binarize(y_true, classes=range(n_classes)), dtype=np.float64
     )
@@ -39,8 +40,7 @@ def get_roc_curve_fig(
         RocCurveDisplay.from_predictions(
             y_test_bin[:, i],
             y_proba[:, i],
-            # set proper class labels using encoder
-            name=f"Class {i}",
+            name=f"{encoder.classes_[i]}",
             ax=ax,
         )
 
