@@ -24,20 +24,31 @@ stages:
     outs:
       - data/datasets/feature_dataset.parquet
 
-  prepare_training:
-    cmd: uv run src/text_classifier/scripts/prepare_training_data.py
+  # prepare_training:
+  #   cmd: uv run src/text_classifier/scripts/prepare_training_data.py
 
-    deps:
-      - src/text_classifier/data/model.py
-      - data/datasets/feature_dataset.parquet
+  #   deps:
+  #     - src/text_classifier/data/model.py
+  #     - data/datasets/feature_dataset.parquet
 
-    outs:
-      - data/datasets/training_dataset.parquet
+  #   outs:
+  #     - data/datasets/training_dataset.parquet
 
   train:
     cmd: uv run src/text_classifier/scripts/train.py
 
     deps:
-      - src/text_classifier/model/train.py
+      - src/text_classifier/schema.py
+      - src/text_classifier/protocols.py
+      - src/text_classifier/config/config.py
+      - src/text_classifier/data/dataset.py
+      - src/text_classifier/data/model.py
+      - src/text_classifier/model/training.py
+      - src/text_classifier/model/models.py
+      - src/text_classifier/model/predictions.py
+      - src/text_classifier/model/pipeline.py
+      - src/text_classifier/evaluation/metrics.py
+      - src/text_classifier/evaluation/plots.py
       - params.yaml
-      - data/datasets/training_dataset.parquet
+      - data/datasets/feature_dataset.parquet
+      # - data/datasets/training_dataset.parquet
