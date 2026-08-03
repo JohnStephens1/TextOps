@@ -5,7 +5,11 @@ import numpy as np
 import pandas as pd
 from sentence_transformers import SentenceTransformer
 
-from text_classifier.config import EMBEDDING_DIM, EMBEDDING_MODEL_STR, EMBEDDINGS_PATH
+from text_classifier.config.config import (
+    EMBEDDING_DIM,
+    EMBEDDING_MODEL_STR,
+    EMBEDDINGS_PATH,
+)
 
 
 def save_embeddings(

@@ -1,6 +1,6 @@
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
 DATASETS_DIR = PROJECT_ROOT / "data/datasets"
 DATASET_PATH = DATASETS_DIR / "dataset.csv"
