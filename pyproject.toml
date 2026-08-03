@@ -5,6 +5,7 @@ description = "A practical MLOps demonstration project for building and managing
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "dvc>=3.67.1",
     "mlflow==3.14",
     "numpy>=2.5.1",
     "pandas>=2,<3",
