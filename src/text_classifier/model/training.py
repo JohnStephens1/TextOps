@@ -1,3 +1,4 @@
+import json
 import tempfile
 from pathlib import Path
 
@@ -7,6 +8,7 @@ import pandas as pd
 from matplotlib.figure import Figure
 from sklearn.preprocessing import LabelEncoder
 
+from text_classifier.config.config import TRAIN_METADATA_PATH
 from text_classifier.data.model import get_encoder_train_data
 from text_classifier.evaluation.metrics import get_classification_metrics
 from text_classifier.evaluation.plots import get_model_eval_figs
@@ -35,6 +37,18 @@ def log_metrics_figs(metrics: dict[str, float], figs: dict[str, Figure]):
 
     for fig_name, fig in figs.items():
         mlflow.log_figure(fig, f"figures/{fig_name}.png")
+
+
+def log_train_metadata(run: mlflow.ActiveRun) -> None:
+    metadata = {
+        "run_id": run.info.run_id,
+        "experiment_id": run.info.experiment_id,
+        "artifact_uri": run.info.artifact_uri,
+        "model_uri": f"runs:/{run.info.run_id}/model",
+    }
+
+    with open(TRAIN_METADATA_PATH, "w") as f:
+        json.dump(metadata, f, indent=2)
 
 
 def get_metrics_figs(
@@ -70,12 +84,13 @@ def train_w_tracking(
     mlflow.set_experiment("domain-classification")
     mlflow.sklearn.autolog()  # type: ignore
 
-    with mlflow.start_run():
+    with mlflow.start_run() as run:
         train_data, my_model = train_core(train_data, my_model)
 
         metrics, figs = get_metrics_figs(my_model, train_data, encoder)
         log_metrics_figs(metrics, figs)
         log_encoder(encoder)
+        log_train_metadata(run)
 
         mlflow.set_tags({"model": my_model.model_name, "search": my_model.search_name})
 
