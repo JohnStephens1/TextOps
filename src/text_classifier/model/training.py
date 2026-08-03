@@ -1,3 +1,4 @@
+import joblib  # type: ignore
 import mlflow
 from matplotlib.figure import Figure
 from sklearn.preprocessing import LabelEncoder
@@ -15,6 +16,12 @@ from text_classifier.schema import TrainingData
 # dump encoder with joblib
 # add to mlflow with
 #   mlflow.log_artifact(encoder_path, artifact_path="preprocessors")
+
+
+def log_encoder(encoder: LabelEncoder):
+    encoder_path = "encoder.pkl"
+    joblib.dump(encoder, encoder_path)
+    mlflow.log_artifact(encoder_path)
 
 
 def log_metrics_figs(metrics: dict[str, float], figs: dict[str, Figure]):
@@ -62,6 +69,7 @@ def train_w_tracking(
 
         metrics, figs = get_metrics_figs(my_model, train_data, encoder)
         log_metrics_figs(metrics, figs)
+        log_encoder(encoder)
 
         mlflow.set_tags({"model": my_model.model_name, "search": my_model.search_name})
 
