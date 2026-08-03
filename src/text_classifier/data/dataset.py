@@ -6,7 +6,10 @@ from text_classifier.config.config import RAW_DATASET_PATH
 
 
 def load_raw_dataset() -> pd.DataFrame:
-    return pd.read_csv(RAW_DATASET_PATH)
+    df = pd.read_csv(RAW_DATASET_PATH)
+    df = df.set_index("id")
+
+    return df
 
 
 def load_dataset(path: Path) -> pd.DataFrame:
