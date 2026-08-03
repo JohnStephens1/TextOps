@@ -13,10 +13,13 @@ from text_classifier.model.models import (
 from text_classifier.schema import TrainingData
 
 
-def log_encoder(encoder: LabelEncoder):
-    encoder_path = "encoder.pkl"
+def log_encoder(
+    encoder: LabelEncoder,
+    encoder_path: str = "label_encoder.joblib",
+    artifact_path: str = "preprocessing",
+):
     joblib.dump(encoder, encoder_path)
-    mlflow.log_artifact(encoder_path)
+    mlflow.log_artifact(encoder_path, artifact_path)
 
 
 def log_metrics_figs(metrics: dict[str, float], figs: dict[str, Figure]):
