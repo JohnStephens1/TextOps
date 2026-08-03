@@ -12,6 +12,7 @@ from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 from sklearn.preprocessing import LabelEncoder
 from xgboost import XGBClassifier
 
+from text_classifier.config.loader import load_and_parse_config
 from text_classifier.model.model_selection import get_search
 from text_classifier.model.pipeline import get_model_pipe
 from text_classifier.protocols import Predictor
@@ -69,6 +70,7 @@ class ModelBase(ABC):
 
 class RandomForestModel(ModelBase):
     def __init__(self, instantiate_w_default_params: bool = False) -> None:
+        # could automatically get this from loaded config
         super().__init__(
             model_default_params={
                 "n_estimators": 10,
@@ -92,6 +94,12 @@ class RandomForestModel(ModelBase):
             search_cls=GridSearchCV,
             instantiate_w_default_params=instantiate_w_default_params,
         )
+
+
+def get_model_from_config() -> ModelBase:
+    le_config = load_and_parse_config()
+
+    return ModelBase(**le_config)
 
 
 # hiimforest = RandomForestModel()
