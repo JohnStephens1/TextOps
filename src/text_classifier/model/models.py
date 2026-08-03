@@ -17,7 +17,7 @@ def prefix_dict_keys_with_model(dic: dict[str, Any]) -> dict[str, Any]:
     return {f"model__{k}": v for k, v in dic.items()}
 
 
-# might be best to separate into TrainBase or such
+# could separate into TrainBase or such
 class ModelBase(ABC):
     def __init__(
         self,
