@@ -2,21 +2,15 @@ from abc import ABC
 from collections.abc import Mapping
 from typing import Any
 
-import numpy as np
-import pandas as pd
-from numpy.typing import NDArray
 from scipy.stats import loguniform, randint, uniform  # type: ignore
 from sklearn.base import BaseEstimator
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
-from sklearn.preprocessing import LabelEncoder
 from xgboost import XGBClassifier
 
 from text_classifier.config.loader import load_and_parse_config
 from text_classifier.model.model_selection import get_search
 from text_classifier.model.pipeline import get_model_pipe
-from text_classifier.protocols import Predictor
-from text_classifier.schema import Predictions, PredictionsEncoder
 
 
 def prefix_dict_keys_with_model(dic: dict[str, Any]) -> dict[str, Any]:
@@ -129,37 +123,3 @@ def get_model_XGBClassifier(
     model = XGBClassifier(**model_params)
 
     return model
-
-
-# predictions file?
-def get_predictions(
-    model: Predictor, X: pd.DataFrame, y: NDArray[np.int64]
-) -> Predictions:
-    return Predictions(
-        y_true=y,
-        y_pred=model.predict(X),
-        y_proba=model.predict_proba(X),
-    )
-
-
-def get_predictions_w_encoder_from_predictions(
-    predictions: Predictions, label_encoder: LabelEncoder
-) -> PredictionsEncoder:
-    return PredictionsEncoder(
-        predictions=predictions,
-        encoder=label_encoder,
-    )
-
-
-def get_predictions_w_encoder(
-    model: Predictor,
-    X: pd.DataFrame,
-    y: NDArray[np.int64],
-    label_encoder: LabelEncoder,
-) -> PredictionsEncoder:
-    predictions = get_predictions(model, X, y)
-
-    return PredictionsEncoder(
-        predictions=predictions,
-        encoder=label_encoder,
-    )

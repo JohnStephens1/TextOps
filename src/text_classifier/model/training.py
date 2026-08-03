@@ -12,8 +12,8 @@ from text_classifier.evaluation.plots import get_model_eval_figs
 from text_classifier.model.models import (
     ModelBase,
     get_model_from_config,
-    get_predictions_w_encoder,
 )
+from text_classifier.model.predictions import get_predictions_w_encoder
 from text_classifier.schema import TrainingData
 
 
