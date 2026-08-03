@@ -3,6 +3,7 @@ from pathlib import Path
 
 import joblib  # type: ignore
 import mlflow
+import pandas as pd
 from matplotlib.figure import Figure
 from sklearn.preprocessing import LabelEncoder
 
@@ -81,10 +82,10 @@ def train_w_tracking(
     return train_data, my_model, metrics, figs
 
 
-def train_from_config() -> tuple[
-    LabelEncoder, TrainingData, ModelBase, dict[str, float], dict[str, Figure]
-]:
-    encoder, train_data = get_encoder_train_data()
+def train_from_config(
+    feature_df: pd.DataFrame,
+) -> tuple[LabelEncoder, TrainingData, ModelBase, dict[str, float], dict[str, Figure]]:
+    encoder, train_data = get_encoder_train_data(feature_df)
     my_model = get_model_from_config()
 
     train_data, my_model, metrics, figs = train_w_tracking(

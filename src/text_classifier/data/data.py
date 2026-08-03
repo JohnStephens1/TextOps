@@ -1,10 +1,13 @@
 from pathlib import Path
 
 import pandas as pd
+from sklearn.preprocessing import LabelEncoder
 
 from text_classifier.config.config import RAW_DATASET_PATH
 from text_classifier.data.features import add_features
+from text_classifier.data.model import get_encoder_train_data
 from text_classifier.data.preprocessing import preprocess_df
+from text_classifier.schema import TrainingData
 
 
 def get_raw_dataset(ds_path: Path | None = None) -> pd.DataFrame:
@@ -35,3 +38,10 @@ def data_pipeline() -> pd.DataFrame:
     df = add_features(df)
 
     return df
+
+
+def model_data_pipeline() -> tuple[LabelEncoder, TrainingData]:
+    df = data_pipeline()
+    encoder, train_data = get_encoder_train_data(df)
+
+    return encoder, train_data

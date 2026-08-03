@@ -3,12 +3,10 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 
-from text_classifier.data.data import data_pipeline
 from text_classifier.schema import TrainingData
 
 
-def get_pre_pipe_model_data() -> pd.DataFrame:
-    df = data_pipeline()
+def prepare_model_data(df: pd.DataFrame) -> pd.DataFrame:
     df = drop_non_feature_cols(df)
 
     return df
@@ -58,8 +56,21 @@ def get_train_test_df(
     return train_data
 
 
-def get_encoder_train_data() -> tuple[LabelEncoder, TrainingData]:
-    df = get_pre_pipe_model_data()
+# potentially change to prepare train data smth
+def get_encoder_train_data(
+    feature_df: pd.DataFrame,
+) -> tuple[LabelEncoder, TrainingData]:
+    """gets the label_encoder and train_data from feature_df
+
+    Args:
+        feature_df (pd.DataFrame): feature_df
+
+    Returns:
+        tuple[LabelEncoder, TrainingData]: label_encoder, train_data containing train_test_splits
+    """
+
+    df = prepare_model_data(feature_df)
+
     X, y = get_X_y(df)
 
     label_encoder, y_encoded = get_encoded_y(y)
