@@ -35,7 +35,7 @@ def preprocess_text(
     return df
 
 
-def preprocess_data(df: pd.DataFrame) -> pd.DataFrame:
+def preprocess_df(df: pd.DataFrame) -> pd.DataFrame:
     df = df.dropna()
     df = df.drop_duplicates()
 

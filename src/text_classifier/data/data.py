@@ -4,7 +4,7 @@ import pandas as pd
 
 from text_classifier.config.config import RAW_DATASET_PATH
 from text_classifier.data.features import add_features
-from text_classifier.data.preprocessing import preprocess_data
+from text_classifier.data.preprocessing import preprocess_df
 
 
 def get_raw_dataset(ds_path: Path | None = None) -> pd.DataFrame:
@@ -31,7 +31,7 @@ def data_pipeline() -> pd.DataFrame:
     df = get_raw_dataset()
     df = df.set_index("id")
 
-    df = preprocess_data(df)
+    df = preprocess_df(df)
     df = add_features(df)
 
     return df

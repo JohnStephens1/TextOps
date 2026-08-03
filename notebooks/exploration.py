@@ -31,7 +31,7 @@ from sklearn.pipeline import Pipeline
 from text_classifier.data.data import data_pipeline
 from text_classifier.data.features import add_features
 from text_classifier.data.model import get_encoder_train_data
-from text_classifier.data.preprocessing import preprocess_data
+from text_classifier.data.preprocessing import preprocess_df
 
 # %%
 # automatically reloads imported packages when changes are made to them
@@ -100,7 +100,7 @@ def set_index(df: pd.DataFrame) -> pd.DataFrame:
 Pipeline(
     [
         ("set_index", FunctionTransformer(set_index)),
-        ("preprocess_data", FunctionTransformer(preprocess_data)),
+        ("preprocess_data", FunctionTransformer(preprocess_df)),
         ("add_features", FunctionTransformer(add_features)),
     ]
 )
