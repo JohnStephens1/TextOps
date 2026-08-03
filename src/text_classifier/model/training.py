@@ -11,6 +11,7 @@ from text_classifier.evaluation.metrics import get_classification_metrics
 from text_classifier.evaluation.plots import get_model_eval_figs
 from text_classifier.model.models import (
     ModelBase,
+    get_model_from_config,
     get_predictions_w_encoder,
 )
 from text_classifier.schema import TrainingData
@@ -80,10 +81,12 @@ def train_w_tracking(
     return train_data, my_model, metrics, figs
 
 
-def train_qm(
-    my_model: ModelBase,
-) -> tuple[LabelEncoder, TrainingData, ModelBase, dict[str, float], dict[str, Figure]]:
+def train_from_config() -> tuple[
+    LabelEncoder, TrainingData, ModelBase, dict[str, float], dict[str, Figure]
+]:
     encoder, train_data = get_encoder_train_data()
+    my_model = get_model_from_config()
+
     train_data, my_model, metrics, figs = train_w_tracking(
         train_data, my_model, encoder
     )
