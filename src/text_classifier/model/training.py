@@ -1,3 +1,6 @@
+import tempfile
+from pathlib import Path
+
 import joblib  # type: ignore
 import mlflow
 from matplotlib.figure import Figure
@@ -15,11 +18,14 @@ from text_classifier.schema import TrainingData
 
 def log_encoder(
     encoder: LabelEncoder,
-    encoder_path: str = "label_encoder.joblib",
-    artifact_path: str = "preprocessing",
+    encoder_file_name: str = "label_encoder.joblib",
+    artifact_dir_name: str = "preprocessing",
 ):
-    joblib.dump(encoder, encoder_path)
-    mlflow.log_artifact(encoder_path, artifact_path)
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        encoder_path = Path(tmp_dir) / encoder_file_name
+
+        joblib.dump(encoder, encoder_path)
+        mlflow.log_artifact(str(encoder_path), artifact_path=artifact_dir_name)
 
 
 def log_metrics_figs(metrics: dict[str, float], figs: dict[str, Figure]):
