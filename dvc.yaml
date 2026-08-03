@@ -16,6 +16,8 @@ stages:
 
     deps:
       - src/text_classifier/data/features.py
+      - src/text_classifier/data/embeddings.py
+      - src/text_classifier/config/config.py
       - data/datasets/preprocessed_dataset.parquet
 
     outs:
