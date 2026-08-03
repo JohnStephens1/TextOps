@@ -1,0 +1,24 @@
+models:
+  random_forest:
+    name_cls: RandomForestClassifier
+    default_params:
+      "n_estimators": 10
+      "max_depth": 5
+      "min_samples_split": 3
+      "min_samples_leaf": 2
+      "max_features": "sqrt"
+    instantiate_w_default_params: False
+
+    search:
+      name_cls: GridSearchCV
+      param_dist:
+        "n_estimators": [20]
+        "max_depth": [5, 10]
+        "min_samples_split": [2, 5, 10]
+        "min_samples_leaf": [2, 4]
+        "max_features": ["sqrt"]
+      params:
+        "scoring": "f1_macro"
+        "verbose": 1
+
+active_model: random_forest
