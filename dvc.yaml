@@ -52,3 +52,6 @@ stages:
       - params.yaml
       - data/datasets/feature_dataset.parquet
       # - data/datasets/training_dataset.parquet
+    
+    outs:
+      - artifacts/train_metadata.json
