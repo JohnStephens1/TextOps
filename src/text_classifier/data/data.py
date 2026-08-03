@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from text_classifier.config.config import DATASET_PATH
+from text_classifier.config.config import RAW_DATASET_PATH
 from text_classifier.data.features import add_features
 from text_classifier.data.preprocessing import preprocess_data
 
@@ -17,7 +17,7 @@ def get_raw_dataset(ds_path: Path | None = None) -> pd.DataFrame:
         pd.DataFrame: the loaded df
     """
     if ds_path is None:
-        ds_path = DATASET_PATH
+        ds_path = RAW_DATASET_PATH
 
     return pd.read_csv(ds_path)
 
