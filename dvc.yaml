@@ -1,0 +1,46 @@
+stages:
+
+  preprocess:
+
+    cmd: uv run src/text_classifier/scripts/preprocess.py
+
+    deps:
+      - src/text_classifier/data/preprocessing.py
+      - data/datasets/raw_dataset.csv
+
+    outs:
+      - data/datasets/preprocessed_dataset.parquet
+
+
+  features:
+
+    cmd: uv run src/text_classifier/scripts/build_features.py
+
+    deps:
+      - src/text_classifier/data/features.py
+      - data/datasets/preprocessed_dataset.parquet
+
+    outs:
+      - data/datasets/feature_dataset.parquet
+
+
+  prepare_training:
+
+    cmd: uv run src/text_classifier/scripts/prepare_training_data.py
+
+    deps:
+      - src/text_classifier/data/model.py
+      - data/datasets/feature_dataset.parquet
+
+    outs:
+      - data/datasets/training_dataset.parquet
+
+
+  train:
+
+    cmd: uv run src/text_classifier/scripts/train.py
+
+    deps:
+      - src/text_classifier/model/train.py
+      - params.yaml
+      - data/datasets/training_dataset.parquet
