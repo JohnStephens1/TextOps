@@ -131,20 +131,7 @@ def get_model_XGBClassifier(
     return model
 
 
-def get_param_dist_random_forest() -> dict[str, Any]:
-    return dict(  # noqa: C408
-        model__n_estimators=[10],
-        model__max_depth=[5, 10],
-        model__min_samples_split=[3, 8],
-        model__min_samples_leaf=[2, 4],
-        model__max_features=["sqrt"],
-    )
-
-
-def get_model_random_forest() -> RandomForestClassifier:
-    return RandomForestClassifier()
-
-
+# predictions file?
 def get_predictions(
     model: Predictor, X: pd.DataFrame, y: NDArray[np.int64]
 ) -> Predictions:
