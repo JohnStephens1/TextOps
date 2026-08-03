@@ -7,13 +7,16 @@ from text_classifier.data.data import data_pipeline
 from text_classifier.schema import TrainingData
 
 
-def get_pre_pipe_model_data(
-    drop_cols: list[str] | None = None,
-) -> pd.DataFrame:
-    if drop_cols is None:
-        drop_cols = ["created_on", "title", "description", "text"]
-
+def get_pre_pipe_model_data() -> pd.DataFrame:
     df = data_pipeline()
+    df = drop_non_feature_cols(df)
+
+    return df
+
+
+def drop_non_feature_cols(df: pd.DataFrame) -> pd.DataFrame:
+    drop_cols = ["created_on", "title", "description", "text"]
+
     df = df.drop(drop_cols, axis=1)
 
     return df
