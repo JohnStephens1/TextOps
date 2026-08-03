@@ -12,11 +12,6 @@ from text_classifier.model.models import (
 )
 from text_classifier.schema import TrainingData
 
-# TODO
-# dump encoder with joblib
-# add to mlflow with
-#   mlflow.log_artifact(encoder_path, artifact_path="preprocessors")
-
 
 def log_encoder(encoder: LabelEncoder):
     encoder_path = "encoder.pkl"
