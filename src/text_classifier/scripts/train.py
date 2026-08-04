@@ -16,7 +16,6 @@ def main() -> None:
 
     df = load_dataset(MODEL_DATASET_PATH)
 
-    # encoder, train_data, my_model, metrics, figs
     _, _, _, _, _ = train_from_config(df)
 
     logger.info("Training completed")
