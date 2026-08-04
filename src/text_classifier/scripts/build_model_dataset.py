@@ -15,7 +15,7 @@ logger = logging.getLogger("text_classifier.scripts.build_model_dataset")
 
 
 def main() -> None:
-    """loads the feature dataset, prepares it for model input, then saves it to parquet"""
+    """loads the feature dataset, prepares it for model input (dropping non-feature columns), then saves it to parquet"""
 
     logger.info("Building model dataset...")
 

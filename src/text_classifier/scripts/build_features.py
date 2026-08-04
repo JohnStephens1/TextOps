@@ -15,7 +15,7 @@ logger = logging.getLogger("text_classifier.scripts.build_features")
 
 
 def main() -> None:
-    """loads the preprocessed dataset, adds features, then saves it to parquet"""
+    """loads the preprocessed dataset, adds features (text, time series, embeddings), then saves it to parquet"""
 
     logger.info("Building features...")
 
