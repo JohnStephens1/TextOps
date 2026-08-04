@@ -97,8 +97,8 @@ stages:
       size: 1000
     - path: src/text_classifier/model/training.py
       hash: md5
-      md5: e0a6be681b109f8028679fda9f30615c
-      size: 3432
+      md5: c6aef72e920c2435ff0725a9a34f949f
+      size: 3604
     - path: src/text_classifier/protocols.py
       hash: md5
       md5: 17b367f5b6adf4e77d5fba6c3f048ad0
@@ -110,7 +110,7 @@ stages:
     outs:
     - path: artifacts/train_metadata.json
       hash: md5
-      md5: d548ff241e6e80e355898c239c50e64b
+      md5: 2efe722230fccbdb55f085e43fc3221c
       size: 215
   build_model_dataset:
     cmd: uv run src/text_classifier/scripts/build_model_dataset.py

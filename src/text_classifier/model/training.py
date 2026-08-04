@@ -1,4 +1,5 @@
 import json
+import logging
 import tempfile
 from pathlib import Path
 
@@ -18,6 +19,8 @@ from text_classifier.model.models import (
 )
 from text_classifier.model.predictions import get_predictions_w_encoder
 from text_classifier.schema import TrainingData
+
+logger = logging.getLogger(__name__)
 
 
 def log_encoder(
@@ -81,13 +84,18 @@ def train_w_tracking(
     train_data: TrainingData, my_model: ModelBase, encoder: LabelEncoder
 ) -> tuple[TrainingData, ModelBase, dict[str, float], dict[str, Figure]]:
     mlflow.set_tracking_uri("http://localhost:5000")
+
+    logger.info("Trying to establish connection to MLFlow server...")
     mlflow.set_experiment("domain-classification")
+    logger.info("Connection established")
+
     mlflow.sklearn.autolog()  # type: ignore
 
     with mlflow.start_run() as run:
         train_data, my_model = train_core(train_data, my_model)
 
         metrics, figs = get_metrics_figs(my_model, train_data, encoder)
+
         log_metrics_figs(metrics, figs)
         log_encoder(encoder)
         log_train_metadata(run)
