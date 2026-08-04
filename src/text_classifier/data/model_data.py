@@ -9,7 +9,7 @@ def drop_non_feature_cols(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def prepare_model_data(df: pd.DataFrame) -> pd.DataFrame:
-    df = drop_non_feature_cols(df)
+def prepare_model_data(feature_df: pd.DataFrame) -> pd.DataFrame:
+    df = drop_non_feature_cols(feature_df)
 
     return df
