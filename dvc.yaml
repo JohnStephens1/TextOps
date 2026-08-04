@@ -3,11 +3,11 @@ stages:
     cmd: uv run src/text_classifier/scripts/preprocess.py
 
     deps:
-      - src/text_classifier/data/preprocessing.py
-      - src/text_classifier/data/dataset.py
+      - data/datasets/raw_dataset.csv
       - src/text_classifier/config/config.py
       - src/text_classifier/config/logging_config.py
-      - data/datasets/raw_dataset.csv
+      - src/text_classifier/data/dataset.py
+      - src/text_classifier/data/preprocessing.py
 
     outs:
       - data/datasets/preprocessed_dataset.parquet
@@ -16,12 +16,12 @@ stages:
     cmd: uv run src/text_classifier/scripts/build_features.py
 
     deps:
-      - src/text_classifier/data/features.py
-      - src/text_classifier/data/embeddings.py
-      - src/text_classifier/data/dataset.py
+      - data/datasets/preprocessed_dataset.parquet
       - src/text_classifier/config/config.py
       - src/text_classifier/config/logging_config.py
-      - data/datasets/preprocessed_dataset.parquet
+      - src/text_classifier/data/dataset.py
+      - src/text_classifier/data/embeddings.py
+      - src/text_classifier/data/features.py
 
     outs:
       - data/datasets/feature_dataset.parquet
@@ -30,11 +30,11 @@ stages:
     cmd: uv run src/text_classifier/scripts/build_model_dataset.py
 
     deps:
-      - src/text_classifier/data/dataset.py
+      - data/datasets/feature_dataset.parquet
       - src/text_classifier/config/config.py
       - src/text_classifier/config/logging_config.py
+      - src/text_classifier/data/dataset.py
       - src/text_classifier/data/model_data.py
-      - data/datasets/feature_dataset.parquet
 
     outs:
       - data/datasets/model_dataset.parquet
@@ -43,20 +43,20 @@ stages:
     cmd: uv run src/text_classifier/scripts/train.py
 
     deps:
-      - src/text_classifier/schema.py
-      - src/text_classifier/protocols.py
+      - data/datasets/model_dataset.parquet
+      - params.yaml
       - src/text_classifier/config/config.py
       - src/text_classifier/config/logging_config.py
       - src/text_classifier/data/dataset.py
       - src/text_classifier/data/train_data.py
-      - src/text_classifier/model/training.py
-      - src/text_classifier/model/models.py
-      - src/text_classifier/model/predictions.py
-      - src/text_classifier/model/pipeline.py
       - src/text_classifier/evaluation/metrics.py
       - src/text_classifier/evaluation/plots.py
-      - params.yaml
-      - data/datasets/model_dataset.parquet
+      - src/text_classifier/model/models.py
+      - src/text_classifier/model/pipeline.py
+      - src/text_classifier/model/predictions.py
+      - src/text_classifier/model/training.py
+      - src/text_classifier/protocols.py
+      - src/text_classifier/schema.py
 
     outs:
       - artifacts/train_metadata.json
