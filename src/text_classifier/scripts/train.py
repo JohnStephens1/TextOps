@@ -12,22 +12,21 @@ logger = logging.getLogger("text_classifier.scripts.train")
 
 
 def main() -> None:
-    """trains, evaluates and tracks model experiment end-to-end.
+    """trains and tracks model via mlflow, saving model, label_encoder and run_id.
 
     In detail:
     - loads the model dataset
     - prepares it for training (label_encoding, X, y, train, test)
     - trains model from params.yaml config
-    - creates metrics, plots for trained model
-    - tracks model, metrics, plots using MLFlow
-    - generates train_metadata.json with experiment info
+    - tracks model using MLFlow
+    - saves model, label_encoder, run_id
     """
 
     logger.info("Setting up training...")
 
     df = load_dataset(MODEL_DATASET_PATH)
 
-    _, _, _, _, _ = train_from_config(df)
+    _, _, _ = train_from_config(df)
 
     logger.info("Training completed")
 

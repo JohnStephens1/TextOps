@@ -7,9 +7,15 @@ import joblib  # type: ignore
 import mlflow
 import pandas as pd
 from matplotlib.figure import Figure
+from sklearn.base import BaseEstimator
 from sklearn.preprocessing import LabelEncoder
 
-from text_classifier.config.config import TRAIN_METADATA_PATH
+from text_classifier.config.config import (
+    ENCODER_ARTIFACT_PATH,
+    MODEL_ARTIFACT_PATH,
+    RUN_ID_ARTIFACT_PATH,
+    TRAIN_METADATA_PATH,
+)
 from text_classifier.data.train_data import get_encoder_train_data
 from text_classifier.evaluation.metrics import get_classification_metrics
 from text_classifier.evaluation.plots import get_model_eval_figs
@@ -23,11 +29,18 @@ from text_classifier.schema import TrainingData
 logger = logging.getLogger(__name__)
 
 
+def save_model_encoder_run_id(model: BaseEstimator, encoder: LabelEncoder, run_id: str):
+    joblib.dump(model, MODEL_ARTIFACT_PATH)
+    joblib.dump(encoder, ENCODER_ARTIFACT_PATH)
+
+    RUN_ID_ARTIFACT_PATH.write_text(run_id, encoding="utf-8")
+
+
 def log_encoder(
     encoder: LabelEncoder,
     encoder_file_name: str = "label_encoder.joblib",
     artifact_dir_name: str = "preprocessing",
-):
+) -> None:
     with tempfile.TemporaryDirectory() as tmp_dir:
         encoder_path = Path(tmp_dir) / encoder_file_name
 
@@ -35,7 +48,7 @@ def log_encoder(
         mlflow.log_artifact(str(encoder_path), artifact_path=artifact_dir_name)
 
 
-def log_metrics_figs(metrics: dict[str, float], figs: dict[str, Figure]):
+def log_metrics_figs(metrics: dict[str, float], figs: dict[str, Figure]) -> None:
     mlflow.log_metrics(metrics)
 
     for fig_name, fig in figs.items():
@@ -82,7 +95,7 @@ def train_core(
 
 def train_w_tracking(
     train_data: TrainingData, my_model: ModelBase, encoder: LabelEncoder
-) -> tuple[TrainingData, ModelBase, dict[str, float], dict[str, Figure]]:
+) -> tuple[TrainingData, ModelBase]:
     mlflow.set_tracking_uri("http://localhost:5000")
 
     logger.info("Trying to establish connection to MLFlow server...")
@@ -94,25 +107,23 @@ def train_w_tracking(
     with mlflow.start_run() as run:
         train_data, my_model = train_core(train_data, my_model)
 
-        metrics, figs = get_metrics_figs(my_model, train_data, encoder)
-
-        log_metrics_figs(metrics, figs)
-        log_encoder(encoder)
-        log_train_metadata(run)
+        save_model_encoder_run_id(
+            my_model.search.best_estimator_,
+            encoder,
+            run.info.run_id,
+        )
 
         mlflow.set_tags({"model": my_model.model_name, "search": my_model.search_name})
 
-    return train_data, my_model, metrics, figs
+    return train_data, my_model
 
 
 def train_from_config(
     model_df: pd.DataFrame,
-) -> tuple[LabelEncoder, TrainingData, ModelBase, dict[str, float], dict[str, Figure]]:
+) -> tuple[LabelEncoder, TrainingData, ModelBase]:
     encoder, train_data = get_encoder_train_data(model_df)
     my_model = get_model_from_config()
 
-    train_data, my_model, metrics, figs = train_w_tracking(
-        train_data, my_model, encoder
-    )
+    train_data, my_model = train_w_tracking(train_data, my_model, encoder)
 
-    return encoder, train_data, my_model, metrics, figs
+    return encoder, train_data, my_model
