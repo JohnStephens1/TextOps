@@ -1,7 +1,9 @@
 import logging
 
 from text_classifier.config.logging_config import setup_logging
-from text_classifier.model.save_load import load_model_encoder_run_id
+
+# from text_classifier.model.save_load import load_model_encoder_run_id
+# from text_classifier.evaluation.eval import evaluate
 
 setup_logging()
 
@@ -10,7 +12,7 @@ logger = logging.getLogger("text_classifier.scripts.evaluate")
 
 
 def main() -> None:
-    """trains, evaluates and tracks model experiment end-to-end.
+    """evaluates and tracks model experiment
 
     In detail:
     - loads the model, label_encoder, run_id
@@ -21,7 +23,11 @@ def main() -> None:
 
     logger.info("Evaluating...")
 
-    model, encoder, run_id = load_model_encoder_run_id()
+    # model, encoder, run_id = load_model_encoder_run_id()
+
+    # i need data, at least test data...
+    # TODO new data split step it is
+    # evaluate()
 
     # get metrics, figs
     # log metrics, figs, via mlflow run, also via dvc plots | metrics
