@@ -4,11 +4,11 @@ from text_classifier.config.config import (
     FEATURE_DATASET_PATH,
     PREPROCESSED_DATASET_PATH,
 )
-from text_classifier.config.logger import setup_logger
+from text_classifier.config.logging_config import setup_logging
 from text_classifier.data.dataset import load_dataset, save_dataset
 from text_classifier.data.features import add_features
 
-setup_logger()
+setup_logging()
 
 
 logger = logging.getLogger(__name__)
