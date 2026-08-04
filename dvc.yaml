@@ -1,3 +1,5 @@
+# TODO update model_data, train_data paths
+
 stages:
   preprocess:
     cmd: uv run src/text_classifier/scripts/preprocess.py

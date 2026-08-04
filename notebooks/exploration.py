@@ -30,8 +30,8 @@ from sklearn.pipeline import Pipeline
 
 from text_classifier.data.data import data_pipeline
 from text_classifier.data.features import add_features
-from text_classifier.data.model import get_encoder_train_data
 from text_classifier.data.preprocessing import preprocess_df
+from text_classifier.data.train_data import get_encoder_train_data
 
 # %%
 # automatically reloads imported packages when changes are made to them

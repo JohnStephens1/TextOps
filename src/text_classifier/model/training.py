@@ -9,7 +9,7 @@ from matplotlib.figure import Figure
 from sklearn.preprocessing import LabelEncoder
 
 from text_classifier.config.config import TRAIN_METADATA_PATH
-from text_classifier.data.model import get_encoder_train_data
+from text_classifier.data.train_data import get_encoder_train_data
 from text_classifier.evaluation.metrics import get_classification_metrics
 from text_classifier.evaluation.plots import get_model_eval_figs
 from text_classifier.model.models import (
