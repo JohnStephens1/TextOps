@@ -8,7 +8,7 @@ from text_classifier.model.training import train_from_config
 setup_logging()
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("text_classifier.scripts.train")
 
 
 def main() -> None:

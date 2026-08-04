@@ -11,7 +11,7 @@ from text_classifier.data.model_data import prepare_model_data
 setup_logging()
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("text_classifier.scripts.build_model_dataset")
 
 
 def main() -> None:

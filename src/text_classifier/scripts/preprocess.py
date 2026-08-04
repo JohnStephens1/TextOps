@@ -8,7 +8,7 @@ from text_classifier.data.preprocessing import preprocess_df
 setup_logging()
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("text_classifier.scripts.preprocess")
 
 
 def main() -> None:

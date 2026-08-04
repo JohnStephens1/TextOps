@@ -11,7 +11,7 @@ from text_classifier.data.features import add_features
 setup_logging()
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("text_classifier.scripts.build_features")
 
 
 def main() -> None:
