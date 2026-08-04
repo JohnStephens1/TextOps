@@ -6,6 +6,7 @@ stages:
       - src/text_classifier/data/preprocessing.py
       - src/text_classifier/data/dataset.py
       - src/text_classifier/config/config.py
+      - src/text_classifier/config/logging_config.py
       - data/datasets/raw_dataset.csv
 
     outs:
@@ -19,6 +20,7 @@ stages:
       - src/text_classifier/data/embeddings.py
       - src/text_classifier/data/dataset.py
       - src/text_classifier/config/config.py
+      - src/text_classifier/config/logging_config.py
       - data/datasets/preprocessed_dataset.parquet
 
     outs:
@@ -30,6 +32,7 @@ stages:
     deps:
       - src/text_classifier/data/dataset.py
       - src/text_classifier/config/config.py
+      - src/text_classifier/config/logging_config.py
       - src/text_classifier/data/model_data.py
       - data/datasets/feature_dataset.parquet
 
@@ -43,6 +46,7 @@ stages:
       - src/text_classifier/schema.py
       - src/text_classifier/protocols.py
       - src/text_classifier/config/config.py
+      - src/text_classifier/config/logging_config.py
       - src/text_classifier/data/dataset.py
       - src/text_classifier/data/train_data.py
       - src/text_classifier/model/training.py
