@@ -28,30 +28,6 @@ def save_model_encoder_run_id(model: BaseEstimator, encoder: LabelEncoder, run_i
     RUN_ID_ARTIFACT_PATH.write_text(run_id, encoding="utf-8")
 
 
-# def log_encoder(
-#     encoder: LabelEncoder,
-#     encoder_file_name: str = "label_encoder.joblib",
-#     artifact_dir_name: str = "preprocessing",
-# ) -> None:
-#     with tempfile.TemporaryDirectory() as tmp_dir:
-#         encoder_path = Path(tmp_dir) / encoder_file_name
-
-#         joblib.dump(encoder, encoder_path)
-#         mlflow.log_artifact(str(encoder_path), artifact_path=artifact_dir_name)
-
-
-# def log_train_metadata(run: mlflow.ActiveRun) -> None:
-#     metadata = {
-#         "run_id": run.info.run_id,
-#         "experiment_id": run.info.experiment_id,
-#         "artifact_uri": run.info.artifact_uri,
-#         "model_uri": f"runs:/{run.info.run_id}/model",
-#     }
-
-#     with open(TRAIN_METADATA_PATH, "w") as f:
-#         json.dump(metadata, f, indent=2)
-
-
 def train_core(
     train_data: TrainingData,
     my_model: ModelBase,
