@@ -5,6 +5,7 @@ from sklearn.preprocessing import LabelEncoder
 
 from text_classifier.config.config import RAW_DATASET_PATH
 from text_classifier.data.features import add_features
+from text_classifier.data.model_data import prepare_model_data
 from text_classifier.data.preprocessing import preprocess_df
 from text_classifier.data.train_data import get_encoder_train_data
 from text_classifier.schema import TrainingData
@@ -42,6 +43,8 @@ def data_pipeline() -> pd.DataFrame:
 
 def model_data_pipeline() -> tuple[LabelEncoder, TrainingData]:
     df = data_pipeline()
+    df = prepare_model_data(df)
+
     encoder, train_data = get_encoder_train_data(df)
 
     return encoder, train_data

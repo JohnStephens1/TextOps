@@ -3,7 +3,6 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 
-from text_classifier.data.model_data import prepare_model_data
 from text_classifier.schema import TrainingData
 
 
@@ -43,23 +42,19 @@ def get_train_test_df(
     return train_data
 
 
-# potentially change to prepare train data smth
 def get_encoder_train_data(
-    feature_df: pd.DataFrame,
+    model_df: pd.DataFrame,
 ) -> tuple[LabelEncoder, TrainingData]:
-    """gets the label_encoder and train_data from feature_df
+    """gets the label_encoder and train_data from model_df
 
     Args:
-        feature_df (pd.DataFrame): feature_df
+        model_df (pd.DataFrame): model_df
 
     Returns:
         tuple[LabelEncoder, TrainingData]: label_encoder, train_data containing train_test_splits
     """
 
-    # TODO change to load_model_data
-    df = prepare_model_data(feature_df)
-
-    X, y = get_X_y(df)
+    X, y = get_X_y(model_df)
 
     label_encoder, y_encoded = get_encoded_y(y)
     train_data = get_train_test_df(X, y_encoded)

@@ -1,5 +1,3 @@
-# TODO update model_data, train_data paths
-
 stages:
   preprocess:
     cmd: uv run src/text_classifier/scripts/preprocess.py
@@ -46,7 +44,7 @@ stages:
       - src/text_classifier/protocols.py
       - src/text_classifier/config/config.py
       - src/text_classifier/data/dataset.py
-      - src/text_classifier/data/model.py
+      - src/text_classifier/data/train_data.py
       - src/text_classifier/model/training.py
       - src/text_classifier/model/models.py
       - src/text_classifier/model/predictions.py
@@ -54,8 +52,7 @@ stages:
       - src/text_classifier/evaluation/metrics.py
       - src/text_classifier/evaluation/plots.py
       - params.yaml
-      - data/datasets/feature_dataset.parquet
-      # - data/datasets/training_dataset.parquet
+      - data/datasets/model_dataset.parquet
 
     outs:
       - artifacts/train_metadata.json
