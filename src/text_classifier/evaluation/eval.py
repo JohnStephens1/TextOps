@@ -1,3 +1,4 @@
+import logging
 import tempfile
 from pathlib import Path
 
@@ -11,6 +12,8 @@ from text_classifier.evaluation.plots import get_model_eval_figs
 from text_classifier.model.predictions import get_predictions_w_encoder
 from text_classifier.protocols import Predictor
 from text_classifier.schema import TrainingData
+
+logger = logging.getLogger(__name__)
 
 
 def log_encoder(
@@ -54,9 +57,10 @@ def evaluate(
 ) -> tuple[TrainingData, Predictor, dict[str, float], dict[str, Figure]]:
     mlflow.set_tracking_uri("http://localhost:5000")
 
-    print("trying 2 connect")  # TODO replace with logger
-
+    logger.info("Trying to establish connection to MLFlow server...")
     with mlflow.start_run(run_id):
+        logger.info("Connection established")
+
         metrics, figs = get_metrics_figs(model, train_data, encoder)
 
         log_metrics_figs(metrics, figs)
