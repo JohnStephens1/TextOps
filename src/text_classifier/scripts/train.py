@@ -1,9 +1,14 @@
 import logging
 
-from text_classifier.config.config import MODEL_DATASET_PATH
+from text_classifier.config.config import (
+    TRAIN_RUN_ID,
+    X_TRAIN_PATH,
+    Y_TRAIN_PATH,
+)
 from text_classifier.config.logging_config import setup_logging
-from text_classifier.data.dataset import load_dataset
-from text_classifier.model.training import train_from_config
+from text_classifier.model.training import save_search_results, train_from_config
+from text_classifier.save_load import load_parquet, save
+from text_classifier.schema import XYData
 
 setup_logging()
 
@@ -12,21 +17,34 @@ logger = logging.getLogger("text_classifier.scripts.train")
 
 
 def main() -> None:
-    """trains and tracks model via mlflow, saving model, label_encoder and run_id.
+    """trains and tracks model via mlflow, saving model and run_id.
 
     In detail:
-    - loads the model dataset
-    - prepares it for training (label_encoding, X, y, train, test)
+    - loads the train splits
     - trains model from params.yaml config
     - tracks model using MLFlow
-    - saves model, label_encoder, run_id
+    - saves search results
+        - best_estimator_
+        - best_params_
+        - best_score_
+        - cv_results_
+    - saves run_id
     """
 
     logger.info("Setting up training...")
 
-    df = load_dataset(MODEL_DATASET_PATH)
+    ds = XYData(
+        load_parquet(X_TRAIN_PATH),
+        load_parquet(Y_TRAIN_PATH),
+    )
 
-    _, _, _ = train_from_config(df)
+    my_model, run_id = train_from_config(ds)
+
+    save_search_results(my_model)
+    logger.info("Saved model")
+
+    save(run_id, TRAIN_RUN_ID)
+    logger.info("Saved run id")
 
     logger.info("Training completed")
 
