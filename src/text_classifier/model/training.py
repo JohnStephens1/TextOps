@@ -30,7 +30,7 @@ def save_search_results(my_model: ModelBase) -> None:
         .convert_dtypes()
     )
 
-    save(cv_results_df, TRAIN_CV_RESULTS_PATH)
+    save(cv_results_df, TRAIN_CV_RESULTS_PATH, index=False)
 
 
 def train_core(
