@@ -4,6 +4,8 @@ import pandas as pd
 
 from text_classifier.config.config import RAW_DATASET_PATH
 
+# TODO implement save_load.py over this
+
 
 def load_raw_dataset() -> pd.DataFrame:
     df = pd.read_csv(RAW_DATASET_PATH)
