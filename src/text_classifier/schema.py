@@ -6,15 +6,6 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
 
 
-# TODO pbb remove, replace with X_y class | TrainTestSplits
-@dataclass
-class TrainingData:
-    X_train: pd.DataFrame
-    X_test: pd.DataFrame
-    y_train: np.typing.NDArray[np.int64]
-    y_test: np.typing.NDArray[np.int64]
-
-
 @dataclass
 class XYData:
     X: pd.DataFrame
@@ -33,12 +24,6 @@ class TrainTestSplits:
 class Artifacts:
     pipe: Pipeline
     label_encoder: LabelEncoder
-
-
-@dataclass
-class TrainingContext:
-    dataset: TrainingData
-    artifacts: Artifacts
 
 
 @dataclass
