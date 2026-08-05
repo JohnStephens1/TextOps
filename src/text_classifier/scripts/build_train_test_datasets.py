@@ -11,7 +11,7 @@ from text_classifier.save_load import load_parquet, save
 setup_logging()
 
 
-logger = logging.getLogger("text_classifier.scripts.build_model_dataset")
+logger = logging.getLogger("text_classifier.scripts.build_train_test_datasets")
 
 
 def main() -> None:
