@@ -39,7 +39,7 @@ _SAVERS = {
 
 
 def save(obj: Any, path: Path, **kwargs: Any) -> None:
-    """path must contain file extension.
+    """path must contain file extension. kwargs will be passed to the respective saver.
 
     Supported extensions:
     - .joblib
