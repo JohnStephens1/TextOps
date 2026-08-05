@@ -16,6 +16,12 @@ class TrainingData:
 
 
 @dataclass
+class XYData:
+    X: pd.DataFrame
+    y: pd.DataFrame
+
+
+@dataclass
 class TrainTestSplits:
     X_train: pd.DataFrame
     X_test: pd.DataFrame
