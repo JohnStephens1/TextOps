@@ -62,20 +62,22 @@ stages:
     cmd: uv run src/text_classifier/scripts/train.py
 
     deps:
-      - data/datasets/model_dataset.parquet
+      - data/datasets/splits/X_train.parquet
+      - data/datasets/splits/y_train.parquet
       - params.yaml
       - src/text_classifier/config/config.py
+      - src/text_classifier/config/loader.py
       - src/text_classifier/config/logging_config.py
-      - src/text_classifier/data/dataset.py
-      - src/text_classifier/data/train_data.py
-      - src/text_classifier/evaluation/metrics.py
-      - src/text_classifier/evaluation/plots.py
+      - src/text_classifier/model/model_selection.py
       - src/text_classifier/model/models.py
       - src/text_classifier/model/pipeline.py
-      - src/text_classifier/model/predictions.py
       - src/text_classifier/model/training.py
-      - src/text_classifier/protocols.py
+      - src/text_classifier/save_load.py
       - src/text_classifier/schema.py
 
     outs:
-      - artifacts/train_metadata.json
+      - artifacts/train/best_estimator.joblib
+      - artifacts/train/best_params.json
+      - artifacts/train/best_score.txt
+      - artifacts/train/cv_results.parquet
+      - artifacts/train/run_id.txt
