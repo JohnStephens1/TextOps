@@ -66,7 +66,7 @@ def get_metrics_figs(
 
 
 def evaluate(
-    ds: XYData, model: Predictor, encoder: LabelEncoder, run_id: str
+    model: Predictor, ds: XYData, encoder: LabelEncoder, run_id: str
 ) -> tuple[Predictor, dict[str, float], dict[str, Figure]]:
     mlflow.set_tracking_uri("http://localhost:5000")
 
