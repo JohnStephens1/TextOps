@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-import joblib  # type: ignore
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -30,7 +29,7 @@ def save_data_splits(splits: TrainTestSplits) -> None:
     save(splits.y_test, Y_TEST_PATH)
 
 
-def split_save_model_df_encoder(model_df: pd.DataFrame):
+def get_train_test_splits_encoder(model_df: pd.DataFrame) -> tuple[TrainTestSplits, LabelEncoder]:
     target_col = "tag"
     test_size = 0.2
     seed = 1234
@@ -51,14 +50,4 @@ def split_save_model_df_encoder(model_df: pd.DataFrame):
         )
     )
 
-    # TODO UPDATE SAVER, PATHS
-    splits.X_train.to_parquet("splits/X_train.parquet")
-    splits.X_test.to_parquet("splits/X_test.parquet")
-    splits.y_train.to_parquet("splits/y_train.parquet")
-    splits.y_test.to_parquet("splits/y_test.parquet")
-
-    # for field in fields(splits):
-    #     data = getattr(splits, field.name)
-    #     data.to_parquet(f"{field.name}.parquet")
-
-    joblib.dump(label_encoder, "artifacts/label_encoder.joblib")
+    return splits, label_encoder
