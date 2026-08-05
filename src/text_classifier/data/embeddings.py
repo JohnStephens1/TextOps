@@ -17,7 +17,7 @@ def save_embeddings(
     embeddings: np.typing.ArrayLike,
     file_path: Path = EMBEDDINGS_PATH,
     model: str = EMBEDDING_MODEL_STR,
-):
+) -> None:
     """saves embeddings to file_path, including ids and model name
 
     Args:
