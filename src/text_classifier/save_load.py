@@ -25,6 +25,14 @@ _SAVERS = {
 
 
 def save(obj: Any, path: Path) -> None:
+    """path must contain file extension.
+
+    Supported extensions:
+    - .parquet
+    - .joblib
+    - .txt
+    """
+
     try:
         saver = _SAVERS[path.suffix.lower()]
     except KeyError:
