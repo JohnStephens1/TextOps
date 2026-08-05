@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 from typing import Any
 
@@ -17,9 +18,15 @@ def _save_text(string: str, path: Path) -> None:
     path.write_text(string)
 
 
+def _save_json(obj: Any, path: Path) -> None:
+    with path.open("w", encoding="utf-8") as f:
+        json.dump(obj, f, indent=2, sort_keys=True)
+
+
 _SAVERS = {
-    ".parquet": _save_parquet,
     ".joblib": _save_joblib,
+    ".json": _save_json,
+    ".parquet": _save_parquet,
     ".txt": _save_text,
 }
 
@@ -28,8 +35,9 @@ def save(obj: Any, path: Path) -> None:
     """path must contain file extension.
 
     Supported extensions:
-    - .parquet
     - .joblib
+    - .json
+    - .parquet
     - .txt
     """
 
@@ -53,3 +61,8 @@ def load_joblib(path: Path) -> Any:
 
 def load_text(path: Path) -> str:
     return path.read_text()
+
+
+def load_json(path: Path) -> Any:
+    with path.open("r", encoding="utf-8") as f:
+        return json.load(f)
