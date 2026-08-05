@@ -40,6 +40,7 @@ def get_train_test_splits_encoder(
     target_col = "tag"
     test_size = 0.2
     seed = 1234
+    # TODO could extract split config | save split metadata
 
     X = model_df.drop(target_col, axis=1)
     y = model_df[target_col]
