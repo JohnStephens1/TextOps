@@ -6,6 +6,14 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 
+from text_classifier.config.config import (
+    X_TEST_PATH,
+    X_TRAIN_PATH,
+    Y_TEST_PATH,
+    Y_TRAIN_PATH,
+)
+from text_classifier.save_load import save
+
 
 @dataclass
 class TrainTestSplits:
@@ -13,6 +21,13 @@ class TrainTestSplits:
     X_test: pd.DataFrame
     y_train: pd.DataFrame
     y_test: pd.DataFrame
+
+
+def save_data_splits(splits: TrainTestSplits) -> None:
+    save(splits.X_train, X_TRAIN_PATH)
+    save(splits.X_test, X_TEST_PATH)
+    save(splits.y_train, Y_TRAIN_PATH)
+    save(splits.y_test, Y_TEST_PATH)
 
 
 def split_save_model_df_encoder(model_df: pd.DataFrame):
