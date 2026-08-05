@@ -9,6 +9,7 @@ from text_classifier.config.config import (
 )
 
 
+# TODO consider merge | alteration regarding save_load util
 def save_model_encoder_run_id(model: BaseEstimator, encoder: LabelEncoder, run_id: str):
     joblib.dump(model, MODEL_ARTIFACT_PATH)
     joblib.dump(encoder, ENCODER_ARTIFACT_PATH)
