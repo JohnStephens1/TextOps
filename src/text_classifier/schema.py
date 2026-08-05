@@ -18,7 +18,7 @@ class TrainingData:
 @dataclass
 class XYData:
     X: pd.DataFrame
-    y: pd.DataFrame
+    y: np.typing.NDArray[np.int64]
 
 
 @dataclass
