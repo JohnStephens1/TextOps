@@ -6,21 +6,21 @@ import joblib  # type: ignore
 import pandas as pd
 
 
-def _save_parquet(df: pd.DataFrame, path: Path) -> None:
-    df.to_parquet(path)
-
-
 def _save_joblib(obj: Any, path: Path) -> None:
     joblib.dump(obj, path)
-
-
-def _save_text(string: str, path: Path) -> None:
-    path.write_text(string)
 
 
 def _save_json(obj: Any, path: Path) -> None:
     with path.open("w", encoding="utf-8") as f:
         json.dump(obj, f, indent=2, sort_keys=True)
+
+
+def _save_parquet(df: pd.DataFrame, path: Path) -> None:
+    df.to_parquet(path)
+
+
+def _save_text(string: str, path: Path) -> None:
+    path.write_text(string)
 
 
 _SAVERS = {
@@ -51,18 +51,18 @@ def save(obj: Any, path: Path) -> None:
     saver(obj, path)
 
 
-def load_parquet(path: Path) -> pd.DataFrame:
-    return pd.read_parquet(path)
-
-
 def load_joblib(path: Path) -> Any:
     return joblib.load(path)
-
-
-def load_text(path: Path) -> str:
-    return path.read_text()
 
 
 def load_json(path: Path) -> Any:
     with path.open("r", encoding="utf-8") as f:
         return json.load(f)
+
+
+def load_parquet(path: Path) -> pd.DataFrame:
+    return pd.read_parquet(path)
+
+
+def load_text(path: Path) -> str:
+    return path.read_text()
