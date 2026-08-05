@@ -1,5 +1,3 @@
-from dataclasses import dataclass
-
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -13,14 +11,7 @@ from text_classifier.config.config import (
     Y_TRAIN_PATH,
 )
 from text_classifier.save_load import save
-
-
-@dataclass
-class TrainTestSplits:
-    X_train: pd.DataFrame
-    X_test: pd.DataFrame
-    y_train: pd.DataFrame
-    y_test: pd.DataFrame
+from text_classifier.schema import TrainTestSplits
 
 
 def save_data_splits(splits: TrainTestSplits) -> None:
