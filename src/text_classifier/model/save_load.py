@@ -1,5 +1,3 @@
-import logging
-
 import joblib  # type: ignore
 from sklearn.base import BaseEstimator
 from sklearn.preprocessing import LabelEncoder
@@ -9,8 +7,6 @@ from text_classifier.config.config import (
     MODEL_ARTIFACT_PATH,
     RUN_ID_ARTIFACT_PATH,
 )
-
-logger = logging.getLogger(__name__)
 
 
 def save_model_encoder_run_id(model: BaseEstimator, encoder: LabelEncoder, run_id: str):
