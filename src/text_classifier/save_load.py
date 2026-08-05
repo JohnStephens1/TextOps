@@ -73,3 +73,7 @@ def load_parquet(path: Path) -> pd.DataFrame:
 
 def load_text(path: Path) -> str:
     return path.read_text()
+
+
+def load_csv(path: Path) -> pd.DataFrame:
+    return pd.read_csv(path)
