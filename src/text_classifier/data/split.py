@@ -34,16 +34,19 @@ def save_label_encoder(label_encoder: LabelEncoder) -> None:
     save(label_encoder, ENCODER_ARTIFACT_PATH)
 
 
-def get_train_test_splits_encoder(
-    model_df: pd.DataFrame,
-) -> tuple[TrainTestSplits, LabelEncoder]:
-    target_col = "tag"
-    test_size = 0.2
-    seed = 1234
-    # TODO could extract split config | save split metadata
+def get_X_y(
+    df: pd.DataFrame, target_col: str = "tag"
+) -> tuple[pd.DataFrame, pd.Series]:
+    X = df.drop(target_col, axis=1)
+    y = df[target_col]
 
-    X = model_df.drop(target_col, axis=1)
-    y = model_df[target_col]
+    return X, y
+
+
+def encode_y(
+    y: pd.Series, target_col: str = "tag"
+) -> tuple[LabelEncoder, pd.DataFrame]:
+    """returns the used label encoder and the encoded y"""
 
     label_encoder = LabelEncoder()
 
@@ -52,10 +55,30 @@ def get_train_test_splits_encoder(
         y_encoded, index=y.index, columns=[target_col], dtype=np.int64
     )
 
-    splits = TrainTestSplits(
+    return label_encoder, y_encoded
+
+
+def get_train_test_splits(
+    X: pd.DataFrame,
+    y_encoded: pd.DataFrame,
+    test_size: float = 0.2,
+    seed: int = 1234,
+) -> TrainTestSplits:
+    # TODO could extract split config | save split metadata
+
+    return TrainTestSplits(
         *train_test_split(
-            X, y_encoded, stratify=y, test_size=test_size, random_state=seed
+            X, y_encoded, stratify=y_encoded, test_size=test_size, random_state=seed
         )
     )
+
+
+def get_train_test_splits_encoder(
+    model_df: pd.DataFrame,
+) -> tuple[TrainTestSplits, LabelEncoder]:
+    X, y = get_X_y(model_df)
+
+    label_encoder, y_encoded = encode_y(y)
+    splits = get_train_test_splits(X, y_encoded)
 
     return splits, label_encoder
