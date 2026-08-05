@@ -81,3 +81,6 @@ stages:
       - artifacts/train/best_score.txt
       - artifacts/train/cv_results.parquet
       - artifacts/train/run_id.txt
+
+  # TODO add eval stage
+  # TODO add register stage
