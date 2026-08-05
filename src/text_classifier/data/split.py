@@ -6,6 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 
 from text_classifier.config.config import (
+    ENCODER_ARTIFACT_PATH,
     X_TEST_PATH,
     X_TRAIN_PATH,
     Y_TEST_PATH,
@@ -29,7 +30,13 @@ def save_data_splits(splits: TrainTestSplits) -> None:
     save(splits.y_test, Y_TEST_PATH)
 
 
-def get_train_test_splits_encoder(model_df: pd.DataFrame) -> tuple[TrainTestSplits, LabelEncoder]:
+def save_label_encoder(label_encoder: LabelEncoder) -> None:
+    save(label_encoder, ENCODER_ARTIFACT_PATH)
+
+
+def get_train_test_splits_encoder(
+    model_df: pd.DataFrame,
+) -> tuple[TrainTestSplits, LabelEncoder]:
     target_col = "tag"
     test_size = 0.2
     seed = 1234
