@@ -38,6 +38,25 @@ stages:
 
     outs:
       - data/datasets/model_dataset.parquet
+    
+  build_train_test_datasets:
+    cmd: uv run src/text_classifier/scripts/build_train_test_datasets.py
+
+    deps:
+      - data/datasets/model_dataset.parquet
+      - src/text_classifier/config/config.py
+      - src/text_classifier/config/logging_config.py
+      - src/text_classifier/data/dataset.py
+      - src/text_classifier/data/split.py
+      - src/text_classifier/save_load.py
+      - src/text_classifier/schema.py
+
+    outs:
+      - artifacts/label_encoder.joblib
+      - data/datasets/splits/X_test.parquet
+      - data/datasets/splits/X_train.parquet
+      - data/datasets/splits/y_test.parquet
+      - data/datasets/splits/y_train.parquet
 
   train:
     cmd: uv run src/text_classifier/scripts/train.py

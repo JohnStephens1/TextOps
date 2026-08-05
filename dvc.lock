@@ -9,8 +9,8 @@ stages:
       size: 142825
     - path: src/text_classifier/config/config.py
       hash: md5
-      md5: 70b56dca787bef84f2b52da2c3cbb684
-      size: 577
+      md5: 078e7db229cf3bdef17d9e8811648615
+      size: 1013
     - path: src/text_classifier/config/logging_config.py
       hash: md5
       md5: a631bbfc142badf7f5e6b48637b8b7b8
@@ -37,8 +37,8 @@ stages:
       size: 82797
     - path: src/text_classifier/config/config.py
       hash: md5
-      md5: 70b56dca787bef84f2b52da2c3cbb684
-      size: 577
+      md5: 078e7db229cf3bdef17d9e8811648615
+      size: 1013
     - path: src/text_classifier/config/logging_config.py
       hash: md5
       md5: a631bbfc142badf7f5e6b48637b8b7b8
@@ -133,8 +133,8 @@ stages:
       size: 2563599
     - path: src/text_classifier/config/config.py
       hash: md5
-      md5: 70b56dca787bef84f2b52da2c3cbb684
-      size: 577
+      md5: 078e7db229cf3bdef17d9e8811648615
+      size: 1013
     - path: src/text_classifier/config/logging_config.py
       hash: md5
       md5: a631bbfc142badf7f5e6b48637b8b7b8
@@ -152,3 +152,55 @@ stages:
       hash: md5
       md5: 62c9411cea8d0b1677a5f85e0929a6bb
       size: 2425011
+  build_train_test_datasets:
+    cmd: uv run src/text_classifier/scripts/build_train_test_datasets.py
+    deps:
+    - path: data/datasets/model_dataset.parquet
+      hash: md5
+      md5: 62c9411cea8d0b1677a5f85e0929a6bb
+      size: 2425011
+    - path: src/text_classifier/config/config.py
+      hash: md5
+      md5: 078e7db229cf3bdef17d9e8811648615
+      size: 1013
+    - path: src/text_classifier/config/logging_config.py
+      hash: md5
+      md5: a631bbfc142badf7f5e6b48637b8b7b8
+      size: 208
+    - path: src/text_classifier/data/dataset.py
+      hash: md5
+      md5: 2d851ebde4c5639ad991c684d7baf2b7
+      size: 393
+    - path: src/text_classifier/data/split.py
+      hash: md5
+      md5: 36cc308d3fbab8cdc2da46723037fd34
+      size: 1915
+    - path: src/text_classifier/save_load.py
+      hash: md5
+      md5: fe59de87511fef1ab9db706f4330a757
+      size: 1029
+    - path: src/text_classifier/schema.py
+      hash: md5
+      md5: 838c54cf3714c85fb91d646bfda3a062
+      size: 939
+    outs:
+    - path: artifacts/label_encoder.joblib
+      hash: md5
+      md5: 3870c5e596cd145a73d38259ef4488d3
+      size: 537
+    - path: data/datasets/splits/X_test.parquet
+      hash: md5
+      md5: bc2abc39b05cc2f904537de329bcf604
+      size: 672584
+    - path: data/datasets/splits/X_train.parquet
+      hash: md5
+      md5: e06f43848378f2ea701777b7dc5d7a23
+      size: 1990446
+    - path: data/datasets/splits/y_test.parquet
+      hash: md5
+      md5: a271ce73e67ce7d21771e70ca67dfb71
+      size: 2846
+    - path: data/datasets/splits/y_train.parquet
+      hash: md5
+      md5: 920077ca58d1f9cc1d1c98676e7b44d1
+      size: 5394
