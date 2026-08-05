@@ -67,6 +67,7 @@ stages:
       - src/text_classifier/config/config.py
       - src/text_classifier/config/loader.py
       - src/text_classifier/config/logging_config.py
+      - src/text_classifier/data/loader.py
       - src/text_classifier/model/model_selection.py
       - src/text_classifier/model/models.py
       - src/text_classifier/model/pipeline.py

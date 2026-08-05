@@ -6,9 +6,9 @@ from text_classifier.config.config import (
     Y_TRAIN_PATH,
 )
 from text_classifier.config.logging_config import setup_logging
+from text_classifier.data.loader import get_x_y_data
 from text_classifier.model.training import save_search_results, train_from_config
-from text_classifier.save_load import load_parquet, save
-from text_classifier.schema import XYData
+from text_classifier.save_load import save
 
 setup_logging()
 
@@ -33,10 +33,7 @@ def main() -> None:
 
     logger.info("Setting up training...")
 
-    ds = XYData(
-        load_parquet(X_TRAIN_PATH),
-        load_parquet(Y_TRAIN_PATH).iloc[:, 0].to_numpy(),
-    )
+    ds = get_x_y_data(X_TRAIN_PATH, Y_TRAIN_PATH)
 
     my_model, run_id = train_from_config(ds)
 
