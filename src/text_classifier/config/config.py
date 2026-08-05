@@ -20,9 +20,16 @@ Y_TEST_PATH = SPLITS_DIR / "y_test.parquet"
 
 ARTIFACTS_DIR = PROJECT_ROOT / "artifacts"
 
-MODEL_ARTIFACT_PATH = ARTIFACTS_DIR / "model.joblib"
 ENCODER_ARTIFACT_PATH = ARTIFACTS_DIR / "label_encoder.joblib"
-RUN_ID_ARTIFACT_PATH = ARTIFACTS_DIR / "run_id.txt"
+
+
+TRAIN_ARTIFACTS_DIR = ARTIFACTS_DIR / "train"
+
+TRAIN_BEST_ESTIMATOR_PATH = TRAIN_ARTIFACTS_DIR / "best_estimator.joblib"
+TRAIN_BEST_PARAMS_PATH = TRAIN_ARTIFACTS_DIR / "best_params.json"
+TRAIN_BEST_SCORE_PATH = TRAIN_ARTIFACTS_DIR / "best_score.txt"
+TRAIN_CV_RESULTS_PATH = TRAIN_ARTIFACTS_DIR / "cv_results.parquet"
+TRAIN_RUN_ID = TRAIN_ARTIFACTS_DIR / "run_id.txt"
 
 
 EMBEDDINGS_PATH = PROJECT_ROOT / "data/embeddings/text_embeddings.npz"
