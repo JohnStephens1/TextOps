@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 def save_search_results(my_model: ModelBase) -> None:
     save(my_model.search.best_estimator_, TRAIN_BEST_ESTIMATOR_PATH)
     save(my_model.search.best_params_, TRAIN_BEST_PARAMS_PATH)
-    save(my_model.search.best_score_, TRAIN_BEST_SCORE_PATH)
+    save(str(my_model.search.best_score_), TRAIN_BEST_SCORE_PATH)
 
     cv_results_df = (
         pd.DataFrame(my_model.search.cv_results_)
