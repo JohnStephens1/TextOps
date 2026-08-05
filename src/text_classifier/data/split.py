@@ -4,7 +4,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 
 from text_classifier.config.config import (
-    ENCODER_ARTIFACT_PATH,
     X_TEST_PATH,
     X_TRAIN_PATH,
     Y_TEST_PATH,
@@ -19,10 +18,6 @@ def save_data_splits(splits: TrainTestSplits) -> None:
     save(splits.X_test, X_TEST_PATH)
     save(splits.y_train, Y_TRAIN_PATH)
     save(splits.y_test, Y_TEST_PATH)
-
-
-def save_label_encoder(label_encoder: LabelEncoder) -> None:
-    save(label_encoder, ENCODER_ARTIFACT_PATH)
 
 
 def get_X_y(

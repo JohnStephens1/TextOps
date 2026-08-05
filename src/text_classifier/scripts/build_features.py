@@ -5,8 +5,8 @@ from text_classifier.config.config import (
     PREPROCESSED_DATASET_PATH,
 )
 from text_classifier.config.logging_config import setup_logging
-from text_classifier.data.dataset import load_dataset, save_dataset
 from text_classifier.data.features import add_features
+from text_classifier.save_load import load_parquet, save
 
 setup_logging()
 
@@ -19,9 +19,9 @@ def main() -> None:
 
     logger.info("Building features...")
 
-    df = load_dataset(PREPROCESSED_DATASET_PATH)
+    df = load_parquet(PREPROCESSED_DATASET_PATH)
     df = add_features(df)
-    save_dataset(df, FEATURE_DATASET_PATH)
+    save(df, FEATURE_DATASET_PATH)
 
     logger.info("Saved feature dataset")
 
