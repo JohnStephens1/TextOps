@@ -6,8 +6,8 @@ stages:
       - data/datasets/raw_dataset.csv
       - src/text_classifier/config/config.py
       - src/text_classifier/config/logging_config.py
-      - src/text_classifier/data/dataset.py
       - src/text_classifier/data/preprocessing.py
+      - src/text_classifier/save_load.py
 
     outs:
       - data/datasets/preprocessed_dataset.parquet
@@ -19,9 +19,9 @@ stages:
       - data/datasets/preprocessed_dataset.parquet
       - src/text_classifier/config/config.py
       - src/text_classifier/config/logging_config.py
-      - src/text_classifier/data/dataset.py
       - src/text_classifier/data/embeddings.py
       - src/text_classifier/data/features.py
+      - src/text_classifier/save_load.py
 
     outs:
       - data/datasets/feature_dataset.parquet
@@ -33,8 +33,8 @@ stages:
       - data/datasets/feature_dataset.parquet
       - src/text_classifier/config/config.py
       - src/text_classifier/config/logging_config.py
-      - src/text_classifier/data/dataset.py
       - src/text_classifier/data/model_data.py
+      - src/text_classifier/save_load.py
 
     outs:
       - data/datasets/model_dataset.parquet
@@ -46,7 +46,6 @@ stages:
       - data/datasets/model_dataset.parquet
       - src/text_classifier/config/config.py
       - src/text_classifier/config/logging_config.py
-      - src/text_classifier/data/dataset.py
       - src/text_classifier/data/split.py
       - src/text_classifier/save_load.py
       - src/text_classifier/schema.py
