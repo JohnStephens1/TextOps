@@ -17,7 +17,7 @@ logger = logging.getLogger("text_classifier.scripts.train")
 
 
 def main() -> None:
-    """trains and tracks model via mlflow, saving model and run_id.
+    """trains the model based on the configuration in params.yaml, tracked via mlflow, and saves the search results and run_id.
 
     In detail:
     - loads the train splits
