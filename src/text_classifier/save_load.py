@@ -6,21 +6,28 @@ import joblib  # type: ignore
 import pandas as pd
 
 
-def _save_joblib(obj: Any, path: Path) -> None:
-    joblib.dump(obj, path)
+def _save_joblib(obj: Any, path: Path, **kwargs: Any) -> None:
+    joblib.dump(obj, path, **kwargs)
 
 
-def _save_json(obj: Any, path: Path) -> None:
+def _save_json(obj: Any, path: Path, **kwargs: Any) -> None:
+    defaults = {
+        "indent": 2,
+        "sort_keys": True,
+    }
+
+    defaults.update(kwargs)
+
     with path.open("w", encoding="utf-8") as f:
-        json.dump(obj, f, indent=2, sort_keys=True)
+        json.dump(obj, f, **defaults)
 
 
-def _save_parquet(df: pd.DataFrame, path: Path) -> None:
-    df.to_parquet(path)
+def _save_parquet(df: pd.DataFrame, path: Path, **kwargs: Any) -> None:
+    df.to_parquet(path, **kwargs)
 
 
-def _save_text(string: str, path: Path) -> None:
-    path.write_text(string)
+def _save_text(string: str, path: Path, **kwargs: Any) -> None:
+    path.write_text(string, **kwargs)
 
 
 _SAVERS = {
@@ -31,7 +38,7 @@ _SAVERS = {
 }
 
 
-def save(obj: Any, path: Path) -> None:
+def save(obj: Any, path: Path, **kwargs: Any) -> None:
     """path must contain file extension.
 
     Supported extensions:
@@ -48,7 +55,7 @@ def save(obj: Any, path: Path) -> None:
 
     path.parent.mkdir(exist_ok=True, parents=True)
 
-    saver(obj, path)
+    saver(obj, path, **kwargs)
 
 
 def load_joblib(path: Path) -> Any:
