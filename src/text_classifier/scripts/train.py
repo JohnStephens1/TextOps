@@ -35,7 +35,7 @@ def main() -> None:
 
     ds = XYData(
         load_parquet(X_TRAIN_PATH),
-        load_parquet(Y_TRAIN_PATH),
+        load_parquet(Y_TRAIN_PATH).iloc[:, 0].to_numpy(),
     )
 
     my_model, run_id = train_from_config(ds)

@@ -109,28 +109,28 @@ stages:
       size: 1587
     - path: src/text_classifier/schema.py
       hash: md5
-      md5: c81aefcc6d48eb92ceae5e0c5833fd16
-      size: 1006
+      md5: 17f8bd44f4f630b9968ec9bd780c97e0
+      size: 1021
     outs:
     - path: artifacts/train/best_estimator.joblib
       hash: md5
-      md5: d8e3fe04d6f44e6c4ebc0b18ccb9db89
-      size: 248866
+      md5: 5c4d51de07c82f2d6648d249d1ce7c0f
+      size: 249442
     - path: artifacts/train/best_params.json
       hash: md5
       md5: 68004918b3c8ed3e30ba9fb874e82c9d
       size: 155
     - path: artifacts/train/best_score.txt
       hash: md5
-      md5: 2284f76134d71a02b172a1d7a390294c
+      md5: 65530d503fc6af9c54645738d4193970
       size: 18
     - path: artifacts/train/cv_results.parquet
       hash: md5
-      md5: 498fbb052f9d4c8e2a7dac7fa3fb9ce6
-      size: 13289
+      md5: 9427ac6875913516e5ea63db288b3d20
+      size: 13290
     - path: artifacts/train/run_id.txt
       hash: md5
-      md5: c3691fa0fc6f81b95de7de1f64d936d9
+      md5: 9258332fa4d17705ea06ad931a8e672d
       size: 32
   build_model_dataset:
     cmd: uv run src/text_classifier/scripts/build_model_dataset.py
@@ -189,8 +189,8 @@ stages:
       size: 1587
     - path: src/text_classifier/schema.py
       hash: md5
-      md5: c81aefcc6d48eb92ceae5e0c5833fd16
-      size: 1006
+      md5: 17f8bd44f4f630b9968ec9bd780c97e0
+      size: 1021
     outs:
     - path: artifacts/label_encoder.joblib
       hash: md5
