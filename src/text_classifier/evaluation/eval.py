@@ -1,8 +1,5 @@
 import logging
-import tempfile
-from pathlib import Path
 
-import joblib  # type: ignore
 import mlflow
 from matplotlib.figure import Figure
 from sklearn.preprocessing import LabelEncoder
@@ -30,17 +27,8 @@ def load_model_encoder_run_id() -> tuple[Predictor, LabelEncoder, str]:
     return model, label_encoder, run_id
 
 
-# TODO review
-def log_encoder(
-    encoder: LabelEncoder,
-    encoder_file_name: str = "label_encoder.joblib",
-    artifact_dir_name: str = "preprocessing",
-) -> None:
-    with tempfile.TemporaryDirectory() as tmp_dir:
-        encoder_path = Path(tmp_dir) / encoder_file_name
-
-        joblib.dump(encoder, encoder_path)
-        mlflow.log_artifact(str(encoder_path), artifact_path=artifact_dir_name)
+def log_encoder(artifact_dir_name: str = "preprocessing") -> None:
+    mlflow.log_artifact(str(ENCODER_ARTIFACT_PATH), artifact_path=artifact_dir_name)
 
 
 def log_metrics_figs(metrics: dict[str, float], figs: dict[str, Figure]) -> None:
@@ -67,7 +55,7 @@ def get_metrics_figs(
 
 def evaluate(
     model: Predictor, ds: XYData, encoder: LabelEncoder, run_id: str
-) -> tuple[Predictor, dict[str, float], dict[str, Figure]]:
+) -> tuple[dict[str, float], dict[str, Figure]]:
     mlflow.set_tracking_uri("http://localhost:5000")
 
     logger.info("Trying to establish connection to MLFlow server...")
@@ -77,6 +65,6 @@ def evaluate(
         metrics, figs = get_metrics_figs(model, ds, encoder)
 
         log_metrics_figs(metrics, figs)
-        log_encoder(encoder)
+        log_encoder()
 
-    return model, metrics, figs
+    return metrics, figs
