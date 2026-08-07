@@ -231,7 +231,7 @@ def _multiclass_plot_body(
     col_name_2: str,
 ) -> pd.DataFrame:
     """curve_fn supports roc_curve, precision_recall_curve"""
-    
+
     rows = []
 
     y_true_bin = _binarize_y_true(preds_w_encoder)
@@ -262,30 +262,55 @@ def get_roc_curve_plot_df(preds_w_encoder: PredictionsEncoder) -> pd.DataFrame:
     return _multiclass_plot_body(roc_curve, preds_w_encoder, "fpr", "tpr")
 
 
-def group_plot(
+def get_precision_recall_curve_plot_fig(df: pd.DataFrame) -> Figure:
+    return _group_plot(
+        df,
+        "recall",
+        "precision",
+        "Multiclass Precision-Recall Curve",
+        "Recall",
+        "Precision",
+    )
+
+
+def get_roc_curve_plot_fig(df: pd.DataFrame) -> Figure:
+    return _group_plot(
+        df,
+        "fpr",
+        "tpr",
+        "Multiclass ROC Curve",
+        "False Positive Rate",
+        "True Positive Rate",
+        True,
+    )
+
+
+def _group_plot(
     df: pd.DataFrame,
     col_1_name: str,
     col_2_name: str,
     title: str,
     x_label: str,
     y_label: str,
-    class_col: str = "class",
     with_random_line: bool = False,
-):
-    plt.figure(figsize=(7, 7))
+    class_col: str = "class",
+) -> Figure:
+    fig, ax = plt.subplots(figsize=(5, 5), constrained_layout=True)
 
     for cls, group in df.groupby(class_col):
-        plt.plot(group[col_1_name], group[col_2_name], label=f"{cls}")
+        ax.plot(group[col_1_name], group[col_2_name], label=f"{cls}")
 
     if with_random_line:
-        plt.plot([0, 1], [0, 1], "k--", label="random")
+        ax.plot([0, 1], [0, 1], "k--", label="random")
 
-    plt.title(title, pad=16)
-    plt.xlabel(x_label)
-    plt.ylabel(y_label)
-    plt.legend()
-    plt.grid()
-    plt.show()
+    ax.set_title(title, pad=16)
+    ax.set_xlabel(x_label)
+    ax.set_ylabel(y_label)
+
+    ax.legend(loc="lower right")
+    ax.grid()
+
+    return fig
 
 
 def get_model_eval_plots(
