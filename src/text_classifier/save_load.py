@@ -6,6 +6,10 @@ import joblib  # type: ignore
 import pandas as pd
 
 
+def _save_csv(df: pd.DataFrame, path: Path, **kwargs: Any) -> None:
+    df.to_csv(path, **kwargs)
+
+
 def _save_joblib(obj: Any, path: Path, **kwargs: Any) -> None:
     joblib.dump(obj, path, **kwargs)
 
@@ -31,6 +35,7 @@ def _save_text(string: str, path: Path, **kwargs: Any) -> None:
 
 
 _SAVERS = {
+    ".csv": _save_csv,
     ".joblib": _save_joblib,
     ".json": _save_json,
     ".parquet": _save_parquet,
@@ -42,6 +47,7 @@ def save(obj: Any, path: Path, **kwargs: Any) -> None:
     """path must contain file extension. kwargs will be passed to the respective saver.
 
     Supported extensions:
+    - .csv
     - .joblib
     - .json
     - .parquet
