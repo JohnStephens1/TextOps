@@ -245,9 +245,17 @@ def _multiclass_plot_body(
         for s, t in zip(x, y):
             rows.append({"class": cls, col_name_1: s, col_name_2: t})
 
-    df = pd.DataFrame(rows)
+    micro_x, micro_y, _ = curve_fn(
+        y_true_bin.ravel(), preds_w_encoder.predictions.y_proba.ravel()
+    )
 
-    return df
+    micro_df = pd.DataFrame(
+        {"class": "micro_average", col_name_1: micro_x, col_name_2: micro_y}
+    )
+
+    multi_class_df = pd.DataFrame(rows)
+
+    return pd.concat([micro_df, multi_class_df], ignore_index=True)
 
 
 def get_precision_recall_curve_plot_df(
