@@ -1,3 +1,4 @@
+from collections.abc import Callable
 from typing import Any
 
 import matplotlib.pyplot as plt
@@ -216,59 +217,72 @@ def get_confusion_matrix_plot(preds_w_encoder: PredictionsEncoder) -> pd.DataFra
     )
 
 
-# pyright: basic
-def get_precision_recall_curve_plot(preds_w_encoder: PredictionsEncoder):
-    prc_rows = []
+def _multiclass_plot_body(
+    curve_fn: Callable[
+        [np.typing.NDArray[np.float64], np.typing.NDArray[np.float64]],
+        tuple[
+            np.typing.NDArray[np.float64],
+            np.typing.NDArray[np.float64],
+            np.typing.NDArray[np.float64],
+        ],
+    ],
+    preds_w_encoder: PredictionsEncoder,
+    col_name_1: str,
+    col_name_2: str,
+) -> pd.DataFrame:
+    """curve_fn supports roc_curve, precision_recall_curve"""
+    
+    rows = []
+
+    y_true_bin = _binarize_y_true(preds_w_encoder)
 
     for i, cls in enumerate(preds_w_encoder.encoder.classes_):
-        precision, recall, _ = precision_recall_curve(
-            preds_w_encoder.predictions.y_true[:, i],
-            preds_w_encoder.predictions.y_proba[:, i],
-        )
-
-        for p, r in zip(precision, recall):
-            prc_rows.append({"class": cls, "precision": p, "recall": r})
-
-    prc_df = pd.DataFrame(prc_rows)
-
-    return prc_df
-
-
-def get_roc_curve_plot(preds_w_encoder: PredictionsEncoder):
-    roc_rows = []
-
-    n_classes = preds_w_encoder.encoder.classes_.shape[0]
-
-    y_true_bin = np.asarray(
-        label_binarize(preds_w_encoder.predictions.y_true, classes=range(n_classes)),
-        dtype=np.float64,
-    )
-
-    for i, cls in enumerate(preds_w_encoder.encoder.classes_):
-        fpr, tpr, _ = roc_curve(
+        x, y, _ = curve_fn(
             y_true_bin[:, i],
             preds_w_encoder.predictions.y_proba[:, i],
         )
 
-        for f, t in zip(fpr, tpr):
-            roc_rows.append({"class": cls, "fpr": f, "tpr": t})
+        for s, t in zip(x, y):
+            rows.append({"class": cls, col_name_1: s, col_name_2: t})
 
-    roc_df = pd.DataFrame(roc_rows)
+    df = pd.DataFrame(rows)
 
-    return roc_df
+    return df
 
 
-def group_plot(df: pd.DataFrame):
+def get_precision_recall_curve_plot_df(
+    preds_w_encoder: PredictionsEncoder,
+) -> pd.DataFrame:
+    return _multiclass_plot_body(
+        precision_recall_curve, preds_w_encoder, "precision", "recall"
+    )
+
+
+def get_roc_curve_plot_df(preds_w_encoder: PredictionsEncoder) -> pd.DataFrame:
+    return _multiclass_plot_body(roc_curve, preds_w_encoder, "fpr", "tpr")
+
+
+def group_plot(
+    df: pd.DataFrame,
+    col_1_name: str,
+    col_2_name: str,
+    title: str,
+    x_label: str,
+    y_label: str,
+    class_col: str = "class",
+    with_random_line: bool = False,
+):
     plt.figure(figsize=(7, 7))
 
-    for cls, group in df.groupby("class"):
-        plt.plot(group["fpr"], group["tpr"], label=f"{cls}")
+    for cls, group in df.groupby(class_col):
+        plt.plot(group[col_1_name], group[col_2_name], label=f"{cls}")
 
-    plt.plot([0, 1], [0, 1], "k--", label="random")
+    if with_random_line:
+        plt.plot([0, 1], [0, 1], "k--", label="random")
 
-    plt.xlabel("False Positive Rate")
-    plt.ylabel("True Positive Rate")
-    plt.title("Multiclass ROC Curve")
+    plt.title(title, pad=16)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
     plt.legend()
     plt.grid()
     plt.show()
@@ -277,4 +291,4 @@ def group_plot(df: pd.DataFrame):
 def get_model_eval_plots(
     preds_w_encoder: PredictionsEncoder,
 ) -> dict[str, Figure]:
-    return get_roc_curve_plot(preds_w_encoder)
+    return get_roc_curve_plot_df(preds_w_encoder)
