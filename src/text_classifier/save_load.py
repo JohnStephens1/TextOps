@@ -70,6 +70,10 @@ def save(obj: Any, path: Path, **kwargs: Any) -> None:
     saver(obj, path, **kwargs)
 
 
+def load_csv(path: Path) -> pd.DataFrame:
+    return pd.read_csv(path)
+
+
 def load_joblib(path: Path) -> Any:
     return joblib.load(path)
 
@@ -85,7 +89,3 @@ def load_parquet(path: Path) -> pd.DataFrame:
 
 def load_text(path: Path) -> str:
     return path.read_text()
-
-
-def load_csv(path: Path) -> pd.DataFrame:
-    return pd.read_csv(path)
