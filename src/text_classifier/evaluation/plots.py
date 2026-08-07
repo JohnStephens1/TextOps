@@ -38,60 +38,68 @@ def get_confusion_matrix_fig(
     return fig
 
 
-def get_roc_curve_fig(
+def _multiclass_fig_body(
+    display_cls: type[PrecisionRecallDisplay | RocCurveDisplay],
     preds_w_encoder: PredictionsEncoder,
+    title: str,
+    x_label: str,
+    y_label: str,
+    with_random_line: bool = False,
 ) -> Figure:
-    fig, ax = plt.subplots(figsize=(5, 5))
+    fig, ax = plt.subplots(figsize=(5, 5), constrained_layout=True)
 
     n_classes = preds_w_encoder.encoder.classes_.shape[0]
+
     y_test_bin = np.asarray(
         label_binarize(preds_w_encoder.predictions.y_true, classes=range(n_classes)),
         dtype=np.float64,
     )
 
-    for i in range(n_classes):
-        RocCurveDisplay.from_predictions(
+    for i, cls in enumerate(preds_w_encoder.encoder.classes_):
+        display_cls.from_predictions(
             y_test_bin[:, i],
             preds_w_encoder.predictions.y_proba[:, i],
-            name=f"{preds_w_encoder.encoder.classes_[i]}",
+            name=cls,
             ax=ax,
         )
 
-    ax.set_title("ROC Curve", pad=16)
-    ax.set_xlabel("False Positive Rate")
-    ax.set_ylabel("True Positive Rate")
+    if with_random_line:
+        ax.plot([0, 1], [0, 1], "k--", label="random")
 
-    plt.tight_layout()
+    ax.set_title(title, pad=16)
+    ax.set_xlabel(x_label)
+    ax.set_ylabel(y_label)
+
+    ax.legend(loc="lower right")
+    ax.grid()
 
     return fig
+
+
+def get_roc_curve_fig(
+    preds_w_encoder: PredictionsEncoder,
+) -> Figure:
+    return _multiclass_fig_body(
+        display_cls=RocCurveDisplay,
+        preds_w_encoder=preds_w_encoder,
+        title="Multiclass ROC Curve",
+        x_label="False Positive Rate",
+        y_label="True Positive Rate",
+        with_random_line=True,
+    )
 
 
 def get_precision_recall_curve_fig(
     preds_w_encoder: PredictionsEncoder,
 ) -> Figure:
-    fig, ax = plt.subplots(figsize=(5, 5))
-
-    n_classes = preds_w_encoder.encoder.classes_.shape[0]
-    y_test_bin = np.asarray(
-        label_binarize(preds_w_encoder.predictions.y_true, classes=range(n_classes)),
-        dtype=np.float64,
+    return _multiclass_fig_body(
+        display_cls=PrecisionRecallDisplay,
+        preds_w_encoder=preds_w_encoder,
+        title="Multiclass Precision-Recall Curve",
+        x_label="Recall",
+        y_label="Precision",
+        with_random_line=False,
     )
-
-    for i in range(n_classes):
-        PrecisionRecallDisplay.from_predictions(
-            y_test_bin[:, i],
-            preds_w_encoder.predictions.y_proba[:, i],
-            name=f"{preds_w_encoder.encoder.classes_[i]}",
-            ax=ax,
-        )
-
-    ax.set_title("Precision-Recall Curve", pad=16)
-    ax.set_xlabel("Recall")
-    ax.set_ylabel("Precision")
-
-    plt.tight_layout()
-
-    return fig
 
 
 # this took 27 minutes to run
