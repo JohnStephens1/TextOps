@@ -12,7 +12,7 @@ from sklearn.metrics import (
 from sklearn.preprocessing import label_binarize
 
 from text_classifier.model.models import ModelBase
-from text_classifier.schema import Predictions, PredictionsEncoder, TrainingData
+from text_classifier.schema import Predictions, PredictionsEncoder, XYData
 
 
 def get_confusion_matrix_fig(
@@ -93,16 +93,16 @@ def get_precision_recall_curve_fig(
 # this took 27 minutes to run
 def print_perm_importance(
     my_model: ModelBase,
-    data: TrainingData,
+    test_ds: XYData,
     n_repeats: int = 10,
     random_state: int = 42,
-):
+) -> None:
     print(f"scorer: {my_model.search.scorer_}")
 
     result = permutation_importance(
         my_model.search,
-        data.X_test,
-        data.y_test,
+        test_ds.X,
+        test_ds.y,
         scoring=my_model.search.scorer_,
         n_repeats=n_repeats,
         random_state=random_state,
