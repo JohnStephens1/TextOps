@@ -202,6 +202,7 @@ def get_model_eval_figs(preds_w_encoder: PredictionsEncoder) -> dict[str, Figure
     }
 
 
+# TODO could add display
 def get_confusion_matrix_plot_df(preds_w_encoder: PredictionsEncoder) -> pd.DataFrame:
     cm = confusion_matrix(
         preds_w_encoder.predictions.y_true, preds_w_encoder.predictions.y_pred
