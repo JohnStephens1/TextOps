@@ -202,13 +202,16 @@ def get_model_eval_figs(preds_w_encoder: PredictionsEncoder) -> dict[str, Figure
     }
 
 
-def get_confusion_matrix_plot(preds_w_encoder: PredictionsEncoder) -> pd.DataFrame:
+def get_confusion_matrix_plot_df(preds_w_encoder: PredictionsEncoder) -> pd.DataFrame:
     cm = confusion_matrix(
         preds_w_encoder.predictions.y_true, preds_w_encoder.predictions.y_pred
     )
 
-    index = [f"true_{i}" for i in range(len(preds_w_encoder.encoder.classes_))]
-    cols = [f"pred_{i}" for i in range(len(preds_w_encoder.encoder.classes_))]
+    index = [f"true_{c}" for c in preds_w_encoder.encoder.classes_]
+    cols = [f"pred_{c}" for c in preds_w_encoder.encoder.classes_]
+
+    # index = [f"true_{i}" for i in range(len(preds_w_encoder.encoder.classes_))]
+    # cols = [f"pred_{i}" for i in range(len(preds_w_encoder.encoder.classes_))]
 
     return pd.DataFrame(
         cm,
@@ -323,5 +326,9 @@ def _group_plot(
 
 def get_model_eval_plots(
     preds_w_encoder: PredictionsEncoder,
-) -> dict[str, Figure]:
-    return get_roc_curve_plot_df(preds_w_encoder)
+) -> dict[str, pd.DataFrame]:
+    return {
+        "confusion_matrix": get_confusion_matrix_plot_df(preds_w_encoder),
+        "roc_curve": get_roc_curve_plot_df(preds_w_encoder),
+        "precision_recall_curve": get_precision_recall_curve_plot_df(preds_w_encoder),
+    }
