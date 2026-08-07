@@ -38,6 +38,19 @@ def get_confusion_matrix_fig(
     return fig
 
 
+def _binarize_y_true(
+    preds_w_encoder: PredictionsEncoder,
+) -> np.typing.NDArray[np.float64]:
+    n_classes = preds_w_encoder.encoder.classes_.shape[0]
+
+    y_true_bin = np.asarray(
+        label_binarize(preds_w_encoder.predictions.y_true, classes=range(n_classes)),
+        dtype=np.float64,
+    )
+
+    return y_true_bin
+
+
 def _multiclass_fig_body(
     display_cls: type[PrecisionRecallDisplay | RocCurveDisplay],
     preds_w_encoder: PredictionsEncoder,
@@ -48,12 +61,7 @@ def _multiclass_fig_body(
 ) -> Figure:
     fig, ax = plt.subplots(figsize=(5, 5), constrained_layout=True)
 
-    n_classes = preds_w_encoder.encoder.classes_.shape[0]
-
-    y_true_bin = np.asarray(
-        label_binarize(preds_w_encoder.predictions.y_true, classes=range(n_classes)),
-        dtype=np.float64,
-    )
+    y_true_bin = _binarize_y_true(preds_w_encoder)
 
     for i, cls in enumerate(preds_w_encoder.encoder.classes_):
         display_cls.from_predictions(
