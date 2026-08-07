@@ -4,6 +4,7 @@ from typing import Any
 
 import joblib  # type: ignore
 import pandas as pd
+import yaml
 from matplotlib.figure import Figure
 
 
@@ -89,3 +90,8 @@ def load_parquet(path: Path) -> pd.DataFrame:
 
 def load_text(path: Path) -> str:
     return path.read_text()
+
+
+def load_yaml(path: Path) -> dict[str, Any]:
+    with path.open("r", encoding="utf-8") as f:
+        return yaml.safe_load(f)
