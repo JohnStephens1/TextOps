@@ -28,8 +28,7 @@ def save_metrics_plots_figs(
     plots: dict[str, pd.DataFrame],
     figs: dict[str, Figure],
 ) -> None:
-    for metric_name, metric in metrics.items():
-        save(metric, METRICS_DIR / f"{metric_name}.json")
+    save(metrics, METRICS_DIR / "metrics.json")
 
     for plot_name, df in plots.items():
         save(df, PLOTS_DIR / f"{plot_name}.csv")

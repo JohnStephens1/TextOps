@@ -241,8 +241,8 @@ stages:
       size: 284
     - path: src/text_classifier/evaluation/
       hash: md5
-      md5: 7b9138bf2cfc4c30a43b8752ad36bc8a.dir
-      size: 33006
+      md5: 06c4a1c75d1db4f3bba45603ebade01d.dir
+      size: 32848
       nfiles: 8
     - path: src/text_classifier/model/predictions.py
       hash: md5
@@ -268,9 +268,9 @@ stages:
       nfiles: 3
     - path: artifacts/eval/metrics
       hash: md5
-      md5: 976fc036361e571bd312faeb300d5e6c.dir
-      size: 88
-      nfiles: 5
+      md5: 29ceafdbbfd747b93b95658b83c8b782.dir
+      size: 187
+      nfiles: 1
     - path: artifacts/eval/plots
       hash: md5
       md5: dc03e7e55ff43b2eee956769802ff46c.dir
