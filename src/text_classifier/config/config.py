@@ -32,6 +32,13 @@ TRAIN_CV_RESULTS_PATH = TRAIN_ARTIFACTS_DIR / "cv_results.parquet"
 TRAIN_RUN_ID = TRAIN_ARTIFACTS_DIR / "run_id.txt"
 
 
+EVAL_DIR = ARTIFACTS_DIR / "eval"
+
+METRICS_DIR = EVAL_DIR / "metrics"
+PLOTS_DIR = EVAL_DIR / "plots"
+FIGS_DIR = EVAL_DIR / "figs"
+
+
 EMBEDDINGS_PATH = PROJECT_ROOT / "data/embeddings/text_embeddings.npz"
 TRAIN_METADATA_PATH = PROJECT_ROOT / "artifacts/train_metadata.json"
 

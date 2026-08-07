@@ -38,7 +38,7 @@ stages:
 
     outs:
       - data/datasets/model_dataset.parquet
-    
+
   build_train_test_datasets:
     cmd: uv run src/text_classifier/scripts/build_train_test_datasets.py
 
@@ -82,5 +82,30 @@ stages:
       - artifacts/train/cv_results.parquet
       - artifacts/train/run_id.txt
 
-  # TODO add eval stage
+  evaluate:
+    cmd: uv run src/text_classifier/scripts/evaluate.py
+
+    deps:
+      - data/datasets/splits/X_test.parquet
+      - data/datasets/splits/y_test.parquet
+      - artifacts/train/best_estimator.joblib
+      - src/text_classifier/config/config.py
+      - src/text_classifier/config/logging_config.py
+      - src/text_classifier/data/loader.py
+      - src/text_classifier/model/predictions.py
+      - src/text_classifier/save_load.py
+      - src/text_classifier/schema.py
+      - src/text_classifier/protocols.py
+      - src/text_classifier/evaluation/
+
+    metrics:
+      - artifacts/eval/metrics
+
+    plots:
+      - artifacts/eval/plots
+
+    outs:
+      - artifacts/eval/figs
+
+  # TODO add eval | report stage
   # TODO add register stage
