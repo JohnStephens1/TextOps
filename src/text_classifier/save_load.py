@@ -4,6 +4,7 @@ from typing import Any
 
 import joblib  # type: ignore
 import pandas as pd
+from matplotlib.figure import Figure
 
 
 def _save_csv(df: pd.DataFrame, path: Path, **kwargs: Any) -> None:
@@ -30,6 +31,10 @@ def _save_parquet(df: pd.DataFrame, path: Path, **kwargs: Any) -> None:
     df.to_parquet(path, **kwargs)
 
 
+def _save_fig(fig: Figure, path: Path, **kwargs: Any) -> None:
+    fig.savefig(path, **kwargs)
+
+
 def _save_text(string: str, path: Path, **kwargs: Any) -> None:
     path.write_text(string, **kwargs)
 
@@ -39,6 +44,7 @@ _SAVERS = {
     ".joblib": _save_joblib,
     ".json": _save_json,
     ".parquet": _save_parquet,
+    ".png": _save_fig,
     ".txt": _save_text,
 }
 
