@@ -50,14 +50,14 @@ def _multiclass_fig_body(
 
     n_classes = preds_w_encoder.encoder.classes_.shape[0]
 
-    y_test_bin = np.asarray(
+    y_true_bin = np.asarray(
         label_binarize(preds_w_encoder.predictions.y_true, classes=range(n_classes)),
         dtype=np.float64,
     )
 
     for i, cls in enumerate(preds_w_encoder.encoder.classes_):
         display_cls.from_predictions(
-            y_test_bin[:, i],
+            y_true_bin[:, i],
             preds_w_encoder.predictions.y_proba[:, i],
             name=cls,
             ax=ax,
@@ -231,14 +231,14 @@ def get_roc_curve_plot(preds_w_encoder: PredictionsEncoder):
 
     n_classes = preds_w_encoder.encoder.classes_.shape[0]
 
-    y_test_bin = np.asarray(
+    y_true_bin = np.asarray(
         label_binarize(preds_w_encoder.predictions.y_true, classes=range(n_classes)),
         dtype=np.float64,
     )
 
     for i, cls in enumerate(preds_w_encoder.encoder.classes_):
         fpr, tpr, _ = roc_curve(
-            y_test_bin[:, i],
+            y_true_bin[:, i],
             preds_w_encoder.predictions.y_proba[:, i],
         )
 
