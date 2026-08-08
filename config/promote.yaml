@@ -1,6 +1,5 @@
-promotion:
-  macro_f1:
-    min_improvement: 0.01
+macro_f1:
+  min_improvement: 0.01
 
-  class_recall:
-    minimum: 0.75
+class_recall:
+  minimum: 0.75
