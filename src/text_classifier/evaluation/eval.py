@@ -8,8 +8,8 @@ from sklearn.preprocessing import LabelEncoder
 from text_classifier.config.config import (
     ENCODER_ARTIFACT_PATH,
     FIGS_DIR,
-    METRICS_DIR,
     PLOTS_DIR,
+    TEST_METRICS_PATH,
     TRAIN_BEST_ESTIMATOR_PATH,
     TRAIN_RUN_ID,
 )
@@ -28,7 +28,7 @@ def save_metrics_plots_figs(
     plots: dict[str, pd.DataFrame],
     figs: dict[str, Figure],
 ) -> None:
-    save(metrics, METRICS_DIR / "metrics.json")
+    save(metrics, TEST_METRICS_PATH)
 
     for plot_name, df in plots.items():
         save(df, PLOTS_DIR / f"{plot_name}.csv")

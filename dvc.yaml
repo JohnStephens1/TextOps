@@ -99,7 +99,7 @@ stages:
       - src/text_classifier/evaluation/
 
     metrics:
-      - artifacts/eval/metrics
+      - artifacts/eval/metrics/test_metrics.json
 
     plots:
       - artifacts/eval/plots
