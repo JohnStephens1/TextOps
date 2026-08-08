@@ -1,3 +1,4 @@
+import numpy as np
 from sklearn.metrics import (
     accuracy_score,
     classification_report,
@@ -15,6 +16,15 @@ def get_classification_metrics(
     preds: Predictions,
     prefix: str = "",
 ) -> dict[str, float]:
+
+    recall_per_class = np.asarray(
+        recall_score(
+            preds.y_true,
+            preds.y_pred,
+            average=None,
+        )
+    )
+
     metrics = {
         "accuracy": accuracy_score(preds.y_true, preds.y_pred),
         "f1": f1_score(preds.y_true, preds.y_pred, average="macro"),
@@ -23,6 +33,10 @@ def get_classification_metrics(
         "roc_auc": roc_auc_score(
             preds.y_true, preds.y_proba, multi_class="ovo", average="macro"
         ),
+        **{
+            f"recall_class_{i}": float(recall)
+            for i, recall in enumerate(recall_per_class)
+        },
     }
 
     if prefix != "":
@@ -34,7 +48,7 @@ def get_classification_metrics(
 def print_pred_report(
     preds: Predictions,
     prefix: str = "",
-):
+) -> None:
     metrics = get_classification_metrics(preds, prefix)
 
     print(f"Accuracy: {metrics['accuracy']}")
