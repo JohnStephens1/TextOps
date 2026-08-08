@@ -6,7 +6,7 @@ from text_classifier.config.config import (
     TRAIN_BEST_ESTIMATOR_PATH,
 )
 from text_classifier.config.logging_config import setup_logging
-from text_classifier.promotion.promote import check_promotion_eligibility, promote
+from text_classifier.promotion.promotion import check_promotion_eligibility, promote
 from text_classifier.save_load import load_joblib, load_json, load_yaml
 
 setup_logging()
