@@ -107,5 +107,20 @@ stages:
     outs:
       - artifacts/eval/figs
 
+  promote:
+    cmd: uv run src/text_classifier/scripts/promote.py
+
+    deps:
+      - artifacts/eval/metrics/
+      - artifacts/train/best_estimator.joblib
+      - src/text_classifier/config/config.py
+      - src/text_classifier/config/logging_config.py
+      - src/text_classifier/promotion/
+      - src/text_classifier/save_load.py
+      - src/text_classifier/scripts/promote.py
+
+    # TODO add outs
+
+
   # TODO add eval | report stage
   # TODO add register stage
