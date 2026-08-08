@@ -3,6 +3,9 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
 
+CONFIG_PATH = PROJECT_ROOT / "config"
+
+
 DATASETS_DIR = PROJECT_ROOT / "data/datasets"
 
 RAW_DATASET_PATH = DATASETS_DIR / "raw_dataset.csv"
@@ -34,9 +37,14 @@ TRAIN_RUN_ID = TRAIN_ARTIFACTS_DIR / "run_id.txt"
 
 EVAL_DIR = ARTIFACTS_DIR / "eval"
 
-METRICS_DIR = EVAL_DIR / "metrics"
 PLOTS_DIR = EVAL_DIR / "plots"
 FIGS_DIR = EVAL_DIR / "figs"
+METRICS_DIR = EVAL_DIR / "metrics"
+
+TEST_METRICS_PATH = METRICS_DIR / "test_metrics.json"
+
+
+MODEL_DIR = PROJECT_ROOT / "models"
 
 
 EMBEDDINGS_PATH = PROJECT_ROOT / "data/embeddings/text_embeddings.npz"
