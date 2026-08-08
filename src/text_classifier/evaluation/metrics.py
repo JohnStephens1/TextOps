@@ -17,6 +17,7 @@ def get_classification_metrics(
     prefix: str = "",
 ) -> dict[str, float]:
 
+    # TODO add actual class label via encoder
     recall_per_class = np.asarray(
         recall_score(
             preds.y_true,
