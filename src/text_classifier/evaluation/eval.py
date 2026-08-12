@@ -11,7 +11,7 @@ from text_classifier.config.config import (
     PLOTS_DIR,
     TEST_METRICS_PATH,
     TRAIN_BEST_ESTIMATOR_PATH,
-    TRAIN_RUN_ID,
+    TRAIN_RUN_ID_PATH,
 )
 from text_classifier.evaluation.metrics import get_classification_metrics
 from text_classifier.evaluation.plots import get_model_eval_figs, get_model_eval_plots
@@ -40,7 +40,7 @@ def save_metrics_plots_figs(
 def load_model_encoder_run_id() -> tuple[Predictor, LabelEncoder, str]:
     model = load_joblib(TRAIN_BEST_ESTIMATOR_PATH)
     label_encoder = load_joblib(ENCODER_ARTIFACT_PATH)
-    run_id = load_text(TRAIN_RUN_ID)
+    run_id = load_text(TRAIN_RUN_ID_PATH)
 
     return model, label_encoder, run_id
 

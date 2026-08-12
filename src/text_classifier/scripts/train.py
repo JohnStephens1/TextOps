@@ -2,7 +2,7 @@ import logging
 
 from text_classifier.config.config import (
     TRAIN_MODEL_VERSION_PATH,
-    TRAIN_RUN_ID,
+    TRAIN_RUN_ID_PATH,
     X_TRAIN_PATH,
     Y_TRAIN_PATH,
 )
@@ -44,7 +44,7 @@ def main() -> None:
     save(model_version, TRAIN_MODEL_VERSION_PATH)
     logger.info("Saved model version")
 
-    save(run_id, TRAIN_RUN_ID)
+    save(run_id, TRAIN_RUN_ID_PATH)
     logger.info("Saved run id")
 
     logger.info("Training completed")
