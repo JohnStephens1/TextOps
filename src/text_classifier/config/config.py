@@ -46,6 +46,11 @@ TEST_METRICS_PATH = METRICS_DIR / "test_metrics.json"
 
 MODEL_DIR = PROJECT_ROOT / "models"
 
+PRODUCTION_MODEL_DIR = MODEL_DIR / "production"
+CANDIDATE_MODEL_DIR = MODEL_DIR / "candidate"
+
+PRODUCTION_MODEL_PATH = PRODUCTION_MODEL_DIR / "model.joblib"
+
 
 EMBEDDINGS_PATH = PROJECT_ROOT / "data/embeddings/text_embeddings.npz"
 TRAIN_METADATA_PATH = PROJECT_ROOT / "artifacts/train_metadata.json"
