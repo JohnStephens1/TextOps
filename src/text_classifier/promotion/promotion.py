@@ -17,11 +17,11 @@ def check_class_recall_eligibility(
     for name, value in test_metrics.items():
         if (
             name.startswith("test_recall_class_")
-            and value < cfg["class_recall"]["minimum"]
+            and value < cfg["recall_per_class"]["min"]
         ):
             logger.info(
                 f"Promotion not eligible. Class recall insufficient for class: {name}"
-                f"Result: {value:.4f} < {cfg['class_recall']['minimum']}"
+                f"Result: {value:.4f} < {cfg['recall_per_class']['min']}"
             )
             return False
 
@@ -42,13 +42,13 @@ def check_promotion_eligibility(
 
         if (
             test_metrics["test_f1"] - production_metrics["test_f1"]
-            < cfg["macro_f1"]["min_improvement"]
+            < cfg["f1_macro"]["min_improvement"]
         ):
             logger.info(
                 "Promotion not eligible. F1 improvement insufficient.\n"
                 f"Contendor: {test_metrics['test_f1']}\n"
                 f"Production: {production_metrics['test_f1']}\n"
-                f"Difference: {test_metrics['test_f1'] - production_metrics['test_f1']} < {cfg['macro_f1']['min_improvement']}"
+                f"Difference: {test_metrics['test_f1'] - production_metrics['test_f1']} < {cfg['f1_macro']['min_improvement']}"
             )
             return False
 

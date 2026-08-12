@@ -1,5 +1,5 @@
-macro_f1:
+f1_macro:
   min_improvement: 0.01
 
-class_recall:
-  minimum: 0.75
+recall_per_class:
+  min: 0.75
