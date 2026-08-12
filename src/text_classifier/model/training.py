@@ -42,7 +42,9 @@ def train_core(
     return my_model
 
 
-def train_w_tracking(train_ds: XYData, my_model: ModelBase) -> tuple[ModelBase, str]:
+def train_w_tracking(
+    train_ds: XYData, my_model: ModelBase
+) -> tuple[ModelBase, str, str]:
     mlflow.set_tracking_uri("http://localhost:5000")
 
     logger.info("Trying to establish connection to MLFlow server...")
@@ -56,14 +58,18 @@ def train_w_tracking(train_ds: XYData, my_model: ModelBase) -> tuple[ModelBase, 
 
         run_id: str = run.info.run_id
 
-        mlflow.register_model(f"runs:/{run_id}/best_estimator", name="text_classifier")
+        model_info = mlflow.register_model(
+            f"runs:/{run_id}/best_estimator", name="text_classifier"
+        )
+        model_version = model_info.version
+
         mlflow.set_tags({"model": my_model.model_name, "search": my_model.search_name})
 
-    return my_model, run_id
+    return my_model, run_id, model_version
 
 
-def train_from_config(train_ds: XYData) -> tuple[ModelBase, str]:
+def train_from_config(train_ds: XYData) -> tuple[ModelBase, str, str]:
     my_model = get_model_from_config()
-    my_model, run_id = train_w_tracking(train_ds, my_model)
+    my_model, run_id, model_version = train_w_tracking(train_ds, my_model)
 
-    return my_model, run_id
+    return my_model, run_id, model_version

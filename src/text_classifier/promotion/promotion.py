@@ -72,7 +72,7 @@ def check_promotion_eligibility(
     )
 
 
-def promote(model: Predictor) -> None:
+def promote(version: str) -> None:
     # TODO implement promotion
     # history of past contendors?
     pass
