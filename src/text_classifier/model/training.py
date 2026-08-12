@@ -56,6 +56,7 @@ def train_w_tracking(train_ds: XYData, my_model: ModelBase) -> tuple[ModelBase, 
 
         run_id: str = run.info.run_id
 
+        mlflow.register_model(f"runs:/{run_id}/best_estimator", name="text_classifier")
         mlflow.set_tags({"model": my_model.model_name, "search": my_model.search_name})
 
     return my_model, run_id

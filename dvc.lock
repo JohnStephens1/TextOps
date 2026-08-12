@@ -9,8 +9,8 @@ stages:
       size: 142825
     - path: src/text_classifier/config/config.py
       hash: md5
-      md5: b21834be5dae0f449533b0a2cce539cc
-      size: 1542
+      md5: 79a9d1e282e43164731c25c059391c07
+      size: 1770
     - path: src/text_classifier/config/logging_config.py
       hash: md5
       md5: a631bbfc142badf7f5e6b48637b8b7b8
@@ -37,8 +37,8 @@ stages:
       size: 82797
     - path: src/text_classifier/config/config.py
       hash: md5
-      md5: b21834be5dae0f449533b0a2cce539cc
-      size: 1542
+      md5: 79a9d1e282e43164731c25c059391c07
+      size: 1770
     - path: src/text_classifier/config/logging_config.py
       hash: md5
       md5: a631bbfc142badf7f5e6b48637b8b7b8
@@ -77,8 +77,8 @@ stages:
       size: 574
     - path: src/text_classifier/config/config.py
       hash: md5
-      md5: b21834be5dae0f449533b0a2cce539cc
-      size: 1542
+      md5: 79a9d1e282e43164731c25c059391c07
+      size: 1770
     - path: src/text_classifier/config/loader.py
       hash: md5
       md5: 7c50168732490a5359ee63ad7abe4cdd
@@ -105,8 +105,8 @@ stages:
       size: 666
     - path: src/text_classifier/model/training.py
       hash: md5
-      md5: a27f8a58d672963d37cda259b3b04551
-      size: 1821
+      md5: 8f94569844b4f7b01d8363a17eef18db
+      size: 1909
     - path: src/text_classifier/save_load.py
       hash: md5
       md5: b4c49ad75964a14b13fc9aeebd67e4d2
@@ -118,23 +118,23 @@ stages:
     outs:
     - path: artifacts/train/best_estimator.joblib
       hash: md5
-      md5: 3644c3416c3a5e713d6e41892ea219ad
-      size: 200866
+      md5: 5d2b8d4b447b1135107f0d424d21cab3
+      size: 263266
     - path: artifacts/train/best_params.json
       hash: md5
-      md5: 8d81b2b04d6f7ce101106d656d70eabe
-      size: 156
+      md5: b814a3d0c27ad451699ba03c8fdbe555
+      size: 155
     - path: artifacts/train/best_score.txt
       hash: md5
-      md5: 426ddf08d51eb0a3135dfa81c3463642
+      md5: 6e141a18db7e525ff05dbe0922083dcd
       size: 18
     - path: artifacts/train/cv_results.parquet
       hash: md5
-      md5: b754789af08e71ad4c839fb2d7db9172
-      size: 13289
+      md5: 8ad3b3d3bb8a5c65faf39d35446d0f99
+      size: 13290
     - path: artifacts/train/run_id.txt
       hash: md5
-      md5: 5b389434fc65d9697607547a8d9a1319
+      md5: bd8ec7fbbd4830c96750375bb19c8e88
       size: 32
   build_model_dataset:
     cmd: uv run src/text_classifier/scripts/build_model_dataset.py
@@ -145,8 +145,8 @@ stages:
       size: 2563599
     - path: src/text_classifier/config/config.py
       hash: md5
-      md5: b21834be5dae0f449533b0a2cce539cc
-      size: 1542
+      md5: 79a9d1e282e43164731c25c059391c07
+      size: 1770
     - path: src/text_classifier/config/logging_config.py
       hash: md5
       md5: a631bbfc142badf7f5e6b48637b8b7b8
@@ -173,8 +173,8 @@ stages:
       size: 2425011
     - path: src/text_classifier/config/config.py
       hash: md5
-      md5: b21834be5dae0f449533b0a2cce539cc
-      size: 1542
+      md5: 79a9d1e282e43164731c25c059391c07
+      size: 1770
     - path: src/text_classifier/config/logging_config.py
       hash: md5
       md5: a631bbfc142badf7f5e6b48637b8b7b8
