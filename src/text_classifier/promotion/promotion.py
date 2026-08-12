@@ -3,8 +3,6 @@ from typing import Any
 
 import mlflow
 
-from text_classifier.protocols import Predictor
-
 logger = logging.getLogger(__name__)
 
 
@@ -38,7 +36,7 @@ def check_class_recall_eligibility(
             and value < cfg["recall_per_class"]["min"]
         ):
             logger.info(
-                f"Promotion not eligible. Class recall insufficient for class: {name}"
+                f"Promotion not eligible. Class recall insufficient for class: {name}\n"
                 f"Result: {value:.4f} < {cfg['recall_per_class']['min']}"
             )
             return False
@@ -72,7 +70,7 @@ def check_promotion_eligibility(
     )
 
 
-def promote(version: str) -> None:
-    # TODO implement promotion
-    # history of past contendors?
-    pass
+def promote(model_version: str) -> None:
+    client = mlflow.MlflowClient("http://localhost:5000")
+
+    client.set_registered_model_alias("text_classifier", "champion", model_version)
