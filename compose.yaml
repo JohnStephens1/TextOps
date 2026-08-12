@@ -9,6 +9,16 @@ services:
       - .:/app
     command: uv run python src/text_classifier/main.py
 
+  ml-pipeline:
+    profiles: ["ml-pipeline"]
+    build:
+      context: .
+      target: base
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: uv run dvc repro
+
   notebook:
     profiles: ["notebook"]
     build:
