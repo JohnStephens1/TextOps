@@ -25,5 +25,7 @@ def check_promotion_eligibility(
     return test_metrics["test_f1"] > cfg["macro_f1"]["min_improvement"]
 
 
-def promote(model: Predictor):
+def promote(model: Predictor) -> None:
+    # TODO implement promotion
+    # history of past contendors?
     pass
