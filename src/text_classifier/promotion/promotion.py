@@ -1,6 +1,8 @@
 import logging
 from typing import Any
 
+import mlflow
+
 from text_classifier.config.config import (
     PRODUCTION_MODEL_METRICS_PATH,
     PRODUCTION_MODEL_PATH,
@@ -9,6 +11,27 @@ from text_classifier.protocols import Predictor
 from text_classifier.save_load import load_json
 
 logger = logging.getLogger(__name__)
+
+
+def get_champ_metrics() -> dict[str, float]:
+    client = mlflow.MlflowClient("http://localhost:5000")
+
+    try:
+        champion_version = client.get_model_version_by_alias(
+            "text_classifier", "champion"
+        )
+    except mlflow.exceptions.MlflowException:  # type: ignore
+        logger.warning("Champion model not found. Defaulting to empty dict.")
+        return {}
+
+    if champion_version.run_id is None:
+        logger.warning("Champion run id not found. Defaulting to empty dict.")
+        return {}
+
+    run = client.get_run(champion_version.run_id)
+    metrics = run.data.metrics
+
+    return metrics
 
 
 def check_class_recall_eligibility(
