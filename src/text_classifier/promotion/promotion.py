@@ -35,6 +35,8 @@ def check_promotion_eligibility(
         return False
 
     # TODO extract, check, compare
+    # handle "no production model"
+    # handle "key not found"
     if PRODUCTION_MODEL_PATH.exists() and PRODUCTION_MODEL_METRICS_PATH.exists():
         production_metrics = load_json(PRODUCTION_MODEL_METRICS_PATH)
 
