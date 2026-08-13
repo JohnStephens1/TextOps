@@ -53,9 +53,9 @@ def check_f1_eligibility(cfg: dict[str, Any], test_metrics: dict[str, Any]) -> b
     ):
         logger.info(
             "Promotion not eligible. F1 improvement insufficient.\n"
-            f"Contendor: {test_metrics['test_f1']}\n"
-            f"Champion: {champ_metrics.get('test_f1')}\n"
-            f"Difference: {test_metrics['test_f1'] - champ_metrics.get('test_f1', 0)} < {cfg['f1_macro']['min_improvement']}"
+            f"Contendor: {test_metrics['test_f1']:.4f}\n"
+            f"Champion: {champ_metrics.get('test_f1'):.4f}\n"
+            f"Difference: {(test_metrics['test_f1'] - champ_metrics.get('test_f1', 0)):.4f} < {cfg['f1_macro']['min_improvement']}"
         )
         return False
 
