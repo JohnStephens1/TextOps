@@ -224,6 +224,6 @@ def add_text_embeddings(
     )
 
     # merge into input df
-    df_result = df.combine_first(df_embeddings)
+    df_result = pd.concat([df, df_embeddings], axis=1)
 
     return df_result
