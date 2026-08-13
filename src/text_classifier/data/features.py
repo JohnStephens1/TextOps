@@ -49,9 +49,9 @@ def add_time_features(df: pd.DataFrame, time_col: str = "created_on") -> pd.Data
     # either log start as artifact or remove entirely (not serviceable)
     # or learn, save, transform using sklearn pipeline
     # days since start
-    df["days_since_start"] = ((df[time_col] - df[time_col].min()).dt.days).astype(
-        "float64"
-    )
+    # df["days_since_start"] = ((df[time_col] - df[time_col].min()).dt.days).astype(
+    #     "float64"
+    # )
 
     return df
 
