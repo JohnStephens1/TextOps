@@ -6,6 +6,7 @@ from matplotlib.figure import Figure
 from sklearn.preprocessing import LabelEncoder
 
 from text_classifier.config.config import (
+    EMBEDDING_MODEL_STR_ARTIFACT_PATH,
     ENCODER_ARTIFACT_PATH,
     FIGS_DIR,
     PLOTS_DIR,
@@ -49,6 +50,12 @@ def log_encoder(artifact_dir_name: str = "preprocessing") -> None:
     mlflow.log_artifact(str(ENCODER_ARTIFACT_PATH), artifact_path=artifact_dir_name)
 
 
+def log_embedding_model_str(artifact_dir_name: str = "embeddings") -> None:
+    mlflow.log_artifact(
+        str(EMBEDDING_MODEL_STR_ARTIFACT_PATH), artifact_path=artifact_dir_name
+    )
+
+
 def log_metrics_figs(metrics: dict[str, float], figs: dict[str, Figure]) -> None:
     mlflow.log_metrics(metrics)
 
@@ -85,5 +92,6 @@ def evaluate(
 
         log_metrics_figs(metrics, figs)
         log_encoder()
+        log_embedding_model_str()
 
     return metrics, plots, figs

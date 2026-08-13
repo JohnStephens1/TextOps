@@ -1,6 +1,8 @@
 import logging
 
 from text_classifier.config.config import (
+    EMBEDDING_MODEL_STR,
+    EMBEDDING_MODEL_STR_ARTIFACT_PATH,
     FEATURE_DATASET_PATH,
     PREPROCESSED_DATASET_PATH,
 )
@@ -21,8 +23,11 @@ def main() -> None:
 
     df = load_parquet(PREPROCESSED_DATASET_PATH)
     df = add_features(df)
-    save(df, FEATURE_DATASET_PATH)
 
+    save(EMBEDDING_MODEL_STR, EMBEDDING_MODEL_STR_ARTIFACT_PATH)
+    logger.info("Saved embedding model string")
+
+    save(df, FEATURE_DATASET_PATH)
     logger.info("Saved feature dataset")
 
 

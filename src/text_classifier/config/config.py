@@ -24,7 +24,7 @@ Y_TEST_PATH = SPLITS_DIR / "y_test.parquet"
 ARTIFACTS_DIR = PROJECT_ROOT / "artifacts"
 
 ENCODER_ARTIFACT_PATH = ARTIFACTS_DIR / "label_encoder.joblib"
-
+EMBEDDING_MODEL_STR_ARTIFACT_PATH = ARTIFACTS_DIR / "embedding_model_str.txt"
 
 TRAIN_ARTIFACTS_DIR = ARTIFACTS_DIR / "train"
 
