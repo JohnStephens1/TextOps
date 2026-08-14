@@ -183,7 +183,7 @@ def get_embeddings_df(
 
 def add_text_embeddings(
     df: pd.DataFrame,
-    text_col: str = "title",
+    text_col: str = "text",
     file_path: Path = EMBEDDINGS_PATH,
     embedding_dim: int = EMBEDDING_DIM,
 ) -> pd.DataFrame:
@@ -191,7 +191,7 @@ def add_text_embeddings(
 
     Args:
         df (pd.DataFrame): input df
-        text_col (str, optional): name of the column containing the text to be transformed. Defaults to "title".
+        text_col (str, optional): name of the column containing the text to be transformed. Defaults to "text".
         file_path (Path, optional): path to the stored embeddings. Defaults to EMBEDDINGS_PATH.
         embedding_dim (int, optional): output dimension of the used embedding. Defaults to EMBEDDING_DIM.
 
