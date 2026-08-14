@@ -1,45 +1,47 @@
 import pandas as pd
 
 
+def prepare_df(df: pd.DataFrame) -> pd.DataFrame:
+    df = df.dropna()
+    df = df.drop_duplicates()
+
+    return df
+
+
+def set_date_time(df: pd.DataFrame) -> pd.DataFrame:
+    df["created_on"] = pd.to_datetime(df["created_on"])
+
+    return df
+
+
 def preprocess_string(string: str) -> str:
-    """Preprocesses input string
-
-    Args:
-        string (str): the string to be processed
-
-    Returns:
-        str: the modified string
-    """
     string = string.lower().strip()
 
     return string
 
 
-def preprocess_text(
-    df: pd.DataFrame, target_cols: list[str] | None = None
-) -> pd.DataFrame:
-    """Preprocesses text in target_cols
-
-    Args:
-        df (pd.DataFrame): The target dataframe
-        target_cols (list[str], optional): The columns the preprocessing will be applied to. Defaults to ["title", "description", "tag"].
-
-    Returns:
-        pd.DataFrame: The modified dataframe
-    """
-    if target_cols is None:
-        target_cols = ["title", "description", "tag"]
-
+def preprocess_text(df: pd.DataFrame, target_cols: list[str]) -> pd.DataFrame:
     df[target_cols] = df[target_cols].apply(lambda col: col.apply(preprocess_string))
 
     return df
 
 
-def preprocess_df(df: pd.DataFrame) -> pd.DataFrame:
-    df = df.dropna()
-    df = df.drop_duplicates()
+def preprocess_features(df: pd.DataFrame) -> pd.DataFrame:
+    df = set_date_time(df)
+    df = preprocess_text(df, target_cols=["title", "description"])
 
-    df["created_on"] = pd.to_datetime(df["created_on"])
-    df = preprocess_text(df)
+    return df
+
+
+def preprocess_target(df: pd.DataFrame) -> pd.DataFrame:
+    df = preprocess_text(df, target_cols=["tag"])
+
+    return df
+
+
+def preprocess_df(df: pd.DataFrame) -> pd.DataFrame:
+    df = prepare_df(df)
+    df = preprocess_features(df)
+    df = preprocess_target(df)
 
     return df
