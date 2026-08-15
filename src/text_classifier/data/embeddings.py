@@ -32,7 +32,7 @@ def save_embeddings(
 def load_ids_embeddings(
     file_path: Path = EMBEDDINGS_PATH,
     embedding_dim: int = EMBEDDING_DIM,
-) -> tuple[np.ndarray, np.ndarray]:
+) -> tuple[np.ndarray, np.typing.NDArray[np.float32]]:
     """loads the ids and embeddings stored in file_path
 
     Args:
@@ -42,7 +42,7 @@ def load_ids_embeddings(
         tuple[np.ndarray, np.ndarray]: ids, embeddings
     """
     if not os.path.exists(file_path):
-        return np.empty(0), np.empty((0, embedding_dim))
+        return np.empty(0), np.empty((0, embedding_dim), dtype=np.float32)
 
     loaded_file = np.load(file_path)
 
@@ -76,7 +76,7 @@ def get_new_embeddings(
     ids_to_generate: pd.Index,
     text_col: str,
     model_str: str = EMBEDDING_MODEL_STR,
-) -> np.ndarray:
+) -> np.typing.NDArray[np.float32]:
     """generates new embeddings for df based on ids_to_generate using the model defined in model_str
 
     Args:
@@ -105,7 +105,7 @@ def get_and_save_generated_embeddings(
     text_col: str,
     file_path: Path = EMBEDDINGS_PATH,
     embedding_dim: int = EMBEDDING_DIM,
-) -> np.ndarray:
+) -> np.typing.NDArray[np.float32]:
     """gets generated embeddings, loading and saving as needed, preventing unnecessary generation while automatically saving newly generated embeddings
 
     Args:
@@ -121,7 +121,7 @@ def get_and_save_generated_embeddings(
         np.ndarray: the generated embeddings
     """
     if ids_to_generate.empty:
-        return np.empty((0, embedding_dim))
+        return np.empty((0, embedding_dim), dtype=np.float32)
 
     # generate embeddings for ids_to_generate
     embeddings_generated = get_new_embeddings(df, ids_to_generate, text_col)
@@ -140,7 +140,7 @@ def get_intersecting_embeddings(
     embeddings: np.ndarray,
     ids_intersecting: pd.Index,
     embedding_dim: int = EMBEDDING_DIM,
-) -> np.ndarray:
+) -> np.typing.NDArray[np.float32]:
     """gets all embeddings with ids in ids_intersecting
 
     Args:
@@ -153,7 +153,8 @@ def get_intersecting_embeddings(
         np.ndarray: intersecting embeddings
     """
     return np.array(
-        [emb for id, emb in zip(ids, embeddings) if id in ids_intersecting]
+        [emb for id, emb in zip(ids, embeddings) if id in ids_intersecting],
+        dtype=np.float32,
     ).reshape(-1, embedding_dim)
 
 
@@ -181,7 +182,7 @@ def get_embeddings_df(
     )
 
 
-def add_text_embeddings(
+def add_text_embeddings_w_cache(
     df: pd.DataFrame,
     text_col: str = "text",
     file_path: Path = EMBEDDINGS_PATH,
@@ -221,9 +222,39 @@ def add_text_embeddings(
         embeddings_result,
         index=ids_result,
         columns=[f"{text_col}_{i}" for i in range(embedding_dim)],
+        dtype=np.float32,
     )
 
     # merge into input df
     df_result = pd.concat([df, df_embeddings], axis=1)
 
     return df_result
+
+
+def add_new_text_embeddings(df: pd.DataFrame, text_col: str = "text") -> pd.DataFrame:
+    model = SentenceTransformer(EMBEDDING_MODEL_STR)
+
+    embeddings = model.encode(df[text_col].to_list(), convert_to_numpy=True)
+
+    df_embeddings = pd.DataFrame(
+        embeddings,
+        index=df.index,
+        columns=[f"{text_col}_{i}" for i in range(embeddings.shape[1])],
+        dtype=np.float32,
+    )
+
+    df = pd.concat([df, df_embeddings], axis=1)
+
+    return df
+
+
+def add_text_embeddings(
+    df: pd.DataFrame, text_col: str = "text", regenerate: bool = False
+) -> pd.DataFrame:
+    df = (
+        add_new_text_embeddings(df, text_col)
+        if regenerate
+        else add_text_embeddings_w_cache(df, text_col)
+    )
+
+    return df
