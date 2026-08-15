@@ -56,8 +56,17 @@ def add_time_features(df: pd.DataFrame, time_col: str = "created_on") -> pd.Data
     return df
 
 
+def add_text_col(df: pd.DataFrame, text_col: str = "text") -> pd.DataFrame:
+    df[text_col] = df.title + " " + df.description
+
+    return df
+
+
 def add_features(
-    df: pd.DataFrame, time_col: str = "created_on", text_col: str = "text"
+    df: pd.DataFrame,
+    time_col: str = "created_on",
+    text_col: str = "text",
+    regenerate_embs: bool = False,
 ) -> pd.DataFrame:
     """adds features to the dataset, specifically a text column, time series features and text embeddings
 
@@ -69,8 +78,8 @@ def add_features(
     Returns:
         pd.DataFrame: modified df with added features
     """
-    df[text_col] = df.title + " " + df.description
     df = add_time_features(df, time_col)
-    df = add_text_embeddings(df, text_col)
+    df = add_text_col(df, text_col)
+    df = add_text_embeddings(df, text_col, regenerate_embs)
 
     return df
