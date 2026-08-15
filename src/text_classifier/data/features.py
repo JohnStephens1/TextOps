@@ -18,8 +18,12 @@ def set_sin_cos_features(
     Returns:
         pd.DataFrame: the modified df with added time series features
     """
-    df[result_col_name + "_sin"] = np.sin(2 * np.pi * input_col / time_span)
-    df[result_col_name + "_cos"] = np.cos(2 * np.pi * input_col / time_span)
+    df[result_col_name + "_sin"] = np.sin(
+        2 * np.pi * input_col / time_span, dtype=np.float32
+    )
+    df[result_col_name + "_cos"] = np.cos(
+        2 * np.pi * input_col / time_span, dtype=np.float32
+    )
 
     return df
 
