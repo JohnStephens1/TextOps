@@ -16,3 +16,9 @@ host:
      --port 5000 \
      --default-artifact-root ./mlruns \
      --backend-store-uri sqlite:///./mlruns/mlflow.db
+
+run_api:
+    uv run --package api api
+
+run_app:
+    uv run --package app app
