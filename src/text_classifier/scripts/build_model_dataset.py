@@ -1,7 +1,7 @@
 import logging
 
 from text_classifier.config.config import (
-    FEATURE_DATASET_PATH,
+    EMBEDDING_DATASET_PATH,
     MODEL_DATASET_PATH,
 )
 from text_classifier.config.logging_config import setup_logging
@@ -19,7 +19,7 @@ def main() -> None:
 
     logger.info("Building model dataset...")
 
-    df = load_parquet(FEATURE_DATASET_PATH)
+    df = load_parquet(EMBEDDING_DATASET_PATH)
     df = prepare_model_data(df)
     save(df, MODEL_DATASET_PATH)
 
