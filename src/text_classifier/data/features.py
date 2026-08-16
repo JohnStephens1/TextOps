@@ -1,8 +1,6 @@
 import numpy as np
 import pandas as pd
 
-from text_classifier.data.embeddings import add_text_embeddings
-
 
 def set_sin_cos_features(
     df: pd.DataFrame, result_col_name: str, input_col: pd.Series, time_span: int
@@ -50,13 +48,6 @@ def add_time_features(df: pd.DataFrame, time_col: str = "created_on") -> pd.Data
     # weekend?
     df["is_weekend"] = df[time_col].dt.day_of_week >= 5
 
-    # either log start as artifact or remove entirely (not serviceable)
-    # or learn, save, transform using sklearn pipeline
-    # days since start
-    # df["days_since_start"] = ((df[time_col] - df[time_col].min()).dt.days).astype(
-    #     "float64"
-    # )
-
     return df
 
 
@@ -70,7 +61,6 @@ def add_features(
     df: pd.DataFrame,
     time_col: str = "created_on",
     text_col: str = "text",
-    regenerate_embs: bool = False,
 ) -> pd.DataFrame:
     """adds features to the dataset, specifically a text column, time series features and text embeddings
 
@@ -84,6 +74,5 @@ def add_features(
     """
     df = add_time_features(df, time_col)
     df = add_text_col(df, text_col)
-    df = add_text_embeddings(df, text_col, regenerate_embs)
 
     return df
