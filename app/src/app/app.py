@@ -14,10 +14,6 @@ def get_app() -> gr.Interface:
     )
 
 
-def main() -> None:
+if __name__ == "__main__":
     app = get_app()
     app.launch()
-
-
-if __name__ == "__main__":
-    main()
