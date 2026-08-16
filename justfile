@@ -1,4 +1,7 @@
 sync:
+    uv sync --all-packages
+
+sync-notebook:
     uv run jupytext --sync notebooks/exploration.ipynb
 
 fix:
