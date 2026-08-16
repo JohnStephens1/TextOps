@@ -8,6 +8,7 @@ from typing import Any
 import mlflow
 import numpy as np
 import pandas as pd
+from sentence_transformers import SentenceTransformer
 from sklearn.preprocessing import LabelEncoder
 
 from text_classifier.config.config import (
@@ -15,6 +16,7 @@ from text_classifier.config.config import (
     ENCODER_ARTIFACT_PATH,
 )
 from text_classifier.config.logging_config import setup_logging
+from text_classifier.data.embeddings import add_text_embeddings
 from text_classifier.data.features import add_features
 from text_classifier.data.model_data import drop_non_feature_cols
 from text_classifier.data.preprocessing import preprocess_features
@@ -52,11 +54,12 @@ def get_current_date_time() -> datetime:
 
 
 def raw_to_model_input_pipe(
-    title: str, description: str, date_time: str
+    embedding_model: SentenceTransformer, title: str, description: str, date_time: str
 ) -> pd.DataFrame:
     df = get_df_from_input(title, description, date_time)
     df = preprocess_features(df)
-    df = add_features(df, regenerate_embs=True)
+    df = add_features(df)
+    df = add_text_embeddings(df, embedding_model, regenerate=True)
     df = drop_non_feature_cols(df)
 
     return df
@@ -139,14 +142,17 @@ def get_champion_run_id(
     return champion_version.run_id
 
 
-def get_champ_model_encoder_emb_model_str() -> tuple[Predictor, LabelEncoder, str]:
+def get_champ_model_encoder_emb_model() -> tuple[
+    Predictor, LabelEncoder, SentenceTransformer
+]:
     client = mlflow.MlflowClient("http://localhost:5000")
 
     run_id = get_champion_run_id(client)
     label_encoder, embedding_model_str = get_label_encoder_emb_model_str(client, run_id)
+    embedding_model = SentenceTransformer(embedding_model_str)
     model = get_champion_model()
 
-    return model, label_encoder, embedding_model_str
+    return model, label_encoder, embedding_model
 
 
 # date_time: str | datetime ?
@@ -155,8 +161,8 @@ def inference(
 ) -> tuple[np.ndarray, np.ndarray]:
     # TODO add pydantic check
 
-    model, label_encoder, _ = get_champ_model_encoder_emb_model_str()
-    df = raw_to_model_input_pipe(title, description, date_time)
+    model, label_encoder, embedding_model = get_champ_model_encoder_emb_model()
+    df = raw_to_model_input_pipe(embedding_model, title, description, date_time)
 
     preds_proba = model.predict_proba(df)
     preds = model.predict(df)
