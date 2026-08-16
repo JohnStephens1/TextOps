@@ -14,6 +14,12 @@ def get_app() -> gr.Interface:
     )
 
 
+# duplicate for run compatibility
+def main() -> None:
+    get_app().launch()
+
+
+# app here for hot reloading functionality
 if __name__ == "__main__":
     app = get_app()
     app.launch()
