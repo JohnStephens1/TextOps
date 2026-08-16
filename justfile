@@ -27,4 +27,4 @@ run_app:
     uv run --package app app
 
 run_app_w_hot_reload:
-    uv run --package app gradio app/src/app/app.py --demo-name=app
+    uv run --package app gradio app/src/app/app.py
