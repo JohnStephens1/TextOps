@@ -15,6 +15,7 @@ resolution-markers = [
 
 [manifest]
 members = [
+    "app",
     "my-api",
     "text-ops",
 ]
@@ -224,6 +225,11 @@ sdist = { url = "https://files.pythonhosted.org/packages/61/cc/a381afa6efea9f496
 wheels = [
     { url = "https://files.pythonhosted.org/packages/da/35/f2287558c17e29fafc8ef3daf819bb9834061cfa43bff8014f7df7f63bdc/anyio-4.14.2-py3-none-any.whl", hash = "sha256:9f505dda5ac9f0c8309b5e8bd445a8c2bf7246f3ce950121e45ea15bc41d1494", size = 125813, upload-time = "2026-07-12T20:29:05.763Z" },
 ]
+
+[[package]]
+name = "app"
+version = "0.1.0"
+source = { editable = "app" }
 
 [[package]]
 name = "appdirs"

@@ -39,6 +39,7 @@ packages = ["src/text_classifier"]
 
 [tool.uv.sources]
 api = { workspace = true }
+app = { workspace = true }
 
 [tool.uv.workspace]
 members = [
