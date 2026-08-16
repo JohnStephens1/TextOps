@@ -19,18 +19,30 @@ stages:
       - data/datasets/preprocessed_dataset.parquet
       - src/text_classifier/config/config.py
       - src/text_classifier/config/logging_config.py
-      - src/text_classifier/data/embeddings.py
       - src/text_classifier/data/features.py
       - src/text_classifier/save_load.py
 
     outs:
       - data/datasets/feature_dataset.parquet
 
+  embeddings:
+    cmd: uv run src/text_classifier/scripts/build_embeddings.py
+
+    deps:
+      - data/datasets/feature_dataset.parquet
+      - src/text_classifier/config/config.py
+      - src/text_classifier/config/logging_config.py
+      - src/text_classifier/data/embeddings.py
+      - src/text_classifier/save_load.py
+
+    outs:
+      - data/datasets/embedding_dataset.parquet
+
   build_model_dataset:
     cmd: uv run src/text_classifier/scripts/build_model_dataset.py
 
     deps:
-      - data/datasets/feature_dataset.parquet
+      - data/datasets/embedding_dataset.parquet
       - src/text_classifier/config/config.py
       - src/text_classifier/config/logging_config.py
       - src/text_classifier/data/model_data.py
