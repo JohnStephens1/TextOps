@@ -230,6 +230,16 @@ wheels = [
 name = "api"
 version = "0.1.0"
 source = { editable = "api" }
+dependencies = [
+    { name = "fastapi" },
+    { name = "pydantic" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "fastapi", specifier = ">=0.140.0" },
+    { name = "pydantic", specifier = ">=2.13.4" },
+]
 
 [[package]]
 name = "app"
