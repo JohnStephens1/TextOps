@@ -73,14 +73,15 @@ def get_intersecting_complementing_ids(
 
 def get_new_embeddings(
     df: pd.DataFrame,
+    embedding_model: SentenceTransformer,
     ids_to_generate: pd.Index,
-    text_col: str,
-    model_str: str = EMBEDDING_MODEL_STR,
+    text_col: str = "text",
 ) -> np.typing.NDArray[np.float32]:
     """generates new embeddings for df based on ids_to_generate using the model defined in model_str
 
     Args:
         df (pd.DataFrame): input df
+        embedding_model (SentenceTransformer): embedding model
         ids_to_generate (pd.Index): corresponding ids to generate
         text_col (str): name of the text column
         model_str (str, optional): name of the embedding model. Defaults to EMBEDDING_MODEL_STR.
@@ -88,21 +89,19 @@ def get_new_embeddings(
     Returns:
         np.ndarray: generated embeddings
     """
-    model = SentenceTransformer(model_str)
-
     text_to_generate = df.loc[ids_to_generate][text_col].to_list()
 
-    new_embeddings = model.encode(text_to_generate, convert_to_numpy=True)
+    new_embeddings = embedding_model.encode(text_to_generate, convert_to_numpy=True)
 
     return new_embeddings
 
 
 def get_and_save_generated_embeddings(
     df: pd.DataFrame,
+    embedding_model: SentenceTransformer,
     ids_loaded: np.ndarray,
     ids_to_generate: pd.Index,
     embeddings_loaded: np.ndarray,
-    text_col: str,
     file_path: Path = EMBEDDINGS_PATH,
     embedding_dim: int = EMBEDDING_DIM,
 ) -> np.typing.NDArray[np.float32]:
@@ -110,10 +109,10 @@ def get_and_save_generated_embeddings(
 
     Args:
         df (pd.DataFrame): input df
+        embedding_model (SentenceTransformer): embedding model
         ids_loaded (np.ndarray): loaded ids
         ids_to_generate (pd.Index): ids of rows for embedding generation
         embeddings_loaded (np.ndarray): loaded embeddings
-        text_col (str): name of the column containing the text to be transformed
         file_path (Path, optional): path to the stored embeddings. Defaults to EMBEDDINGS_PATH.
         embedding_dim (int, optional): output dimension of the used embedding. Defaults to EMBEDDING_DIM.
 
@@ -124,7 +123,7 @@ def get_and_save_generated_embeddings(
         return np.empty((0, embedding_dim), dtype=np.float32)
 
     # generate embeddings for ids_to_generate
-    embeddings_generated = get_new_embeddings(df, ids_to_generate, text_col)
+    embeddings_generated = get_new_embeddings(df, embedding_model, ids_to_generate)
 
     # to_save = loaded + generated
     ids_to_save = np.concat([ids_loaded, ids_to_generate])
@@ -184,6 +183,7 @@ def get_embeddings_df(
 
 def add_text_embeddings_w_cache(
     df: pd.DataFrame,
+    embedding_model: SentenceTransformer,
     text_col: str = "text",
     file_path: Path = EMBEDDINGS_PATH,
     embedding_dim: int = EMBEDDING_DIM,
@@ -192,6 +192,7 @@ def add_text_embeddings_w_cache(
 
     Args:
         df (pd.DataFrame): input df
+        embedding_model (SentenceTransformer): embedding model
         text_col (str, optional): name of the column containing the text to be transformed. Defaults to "text".
         file_path (Path, optional): path to the stored embeddings. Defaults to EMBEDDINGS_PATH.
         embedding_dim (int, optional): output dimension of the used embedding. Defaults to EMBEDDING_DIM.
@@ -206,7 +207,7 @@ def add_text_embeddings_w_cache(
     )
 
     embeddings_generated = get_and_save_generated_embeddings(
-        df, ids_loaded, ids_to_generate, embeddings_loaded, text_col
+        df, embedding_model, ids_loaded, ids_to_generate, embeddings_loaded
     )
 
     embeddings_intersecting = get_intersecting_embeddings(
@@ -231,10 +232,10 @@ def add_text_embeddings_w_cache(
     return df_result
 
 
-def add_new_text_embeddings(df: pd.DataFrame, text_col: str = "text") -> pd.DataFrame:
-    model = SentenceTransformer(EMBEDDING_MODEL_STR)
-
-    embeddings = model.encode(df[text_col].to_list(), convert_to_numpy=True)
+def add_new_text_embeddings(
+    df: pd.DataFrame, embedding_model: SentenceTransformer, text_col: str = "text"
+) -> pd.DataFrame:
+    embeddings = embedding_model.encode(df[text_col].to_list(), convert_to_numpy=True)
 
     df_embeddings = pd.DataFrame(
         embeddings,
@@ -249,12 +250,12 @@ def add_new_text_embeddings(df: pd.DataFrame, text_col: str = "text") -> pd.Data
 
 
 def add_text_embeddings(
-    df: pd.DataFrame, text_col: str = "text", regenerate: bool = False
+    df: pd.DataFrame, embedding_model: SentenceTransformer, regenerate: bool = False
 ) -> pd.DataFrame:
     df = (
-        add_new_text_embeddings(df, text_col)
+        add_new_text_embeddings(df, embedding_model)
         if regenerate
-        else add_text_embeddings_w_cache(df, text_col)
+        else add_text_embeddings_w_cache(df, embedding_model)
     )
 
     return df
