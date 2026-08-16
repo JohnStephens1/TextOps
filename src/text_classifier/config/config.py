@@ -11,6 +11,7 @@ DATASETS_DIR = PROJECT_ROOT / "data/datasets"
 RAW_DATASET_PATH = DATASETS_DIR / "raw_dataset.csv"
 PREPROCESSED_DATASET_PATH = DATASETS_DIR / "preprocessed_dataset.parquet"
 FEATURE_DATASET_PATH = DATASETS_DIR / "feature_dataset.parquet"
+EMBEDDING_DATASET_PATH = DATASETS_DIR / "embedding_dataset.parquet"
 MODEL_DATASET_PATH = DATASETS_DIR / "model_dataset.parquet"
 
 SPLITS_DIR = DATASETS_DIR / "splits"
