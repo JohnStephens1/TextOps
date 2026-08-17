@@ -1,12 +1,14 @@
 from pydantic import BaseModel
 
 
-# TODO consider datetime impl
 class PredictionRequest(BaseModel):
     title: str
     description: str
 
 
 class PredictionResponse(BaseModel):
-    label: str
-    probability: float
+    preds: list[float]
+    preds_proba: list[list[float]]
+    certainties: list[float]
+    labels: list[str]
+    all_labels: list[str]
