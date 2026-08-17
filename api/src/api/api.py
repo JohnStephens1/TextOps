@@ -31,7 +31,7 @@ def get_pred_response(model_input: pd.DataFrame) -> PredictionResponse:
         pred_proba=preds_proba.tolist()[0],
         certainty=certainties.tolist()[0],
         label=labels.tolist()[0],
-        all_labels=all_labels.tolist()[0],
+        all_labels=all_labels.tolist(),
     )
 
 
