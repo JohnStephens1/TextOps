@@ -27,11 +27,11 @@ def get_pred_response(model_input: pd.DataFrame) -> PredictionResponse:
     all_labels = label_encoder.classes_
 
     return PredictionResponse(
-        preds=preds.tolist(),
-        preds_proba=preds_proba.tolist(),
-        certainties=certainties.tolist(),
-        labels=labels.tolist(),
-        all_labels=all_labels.tolist(),
+        pred=preds.tolist()[0],
+        pred_proba=preds_proba.tolist()[0],
+        certainty=certainties.tolist()[0],
+        label=labels.tolist()[0],
+        all_labels=all_labels.tolist()[0],
     )
 
 

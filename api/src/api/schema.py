@@ -7,8 +7,8 @@ class PredictionRequest(BaseModel):
 
 
 class PredictionResponse(BaseModel):
-    preds: list[float]
-    preds_proba: list[list[float]]
-    certainties: list[float]
-    labels: list[str]
+    pred: float
+    pred_proba: list[float]
+    certainty: float
+    label: str
     all_labels: list[str]
