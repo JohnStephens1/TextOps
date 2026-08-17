@@ -1,28 +1,44 @@
+import datetime
+
+import pandas as pd
 from fastapi import FastAPI
+
+from text_classifier.data.data_pipe import raw_to_model_input_pipe
+from text_classifier.mlflow_loader import get_champ_model_encoder_emb_model
 
 from .schema import PredictionRequest, PredictionResponse
 
 api = FastAPI()
 
-# consider separation / loading, joblib loading + data pipe
+model, label_encoder, embedding_model = get_champ_model_encoder_emb_model()
 
-# load model, embs model
-# figure out how to cache embs
+
+def get_date_time() -> datetime.datetime:
+    return datetime.datetime.now(datetime.UTC)
+
+
+def get_pred_response(model_input: pd.DataFrame) -> PredictionResponse:
+    preds = model.predict(model_input)
+    preds_proba = model.predict_proba(model_input)
+
+    certainties = preds_proba.max(axis=1)
+
+    labels = label_encoder.inverse_transform(preds)
+    all_labels = label_encoder.classes_
+
+    return PredictionResponse(
+        preds=preds.tolist(),
+        preds_proba=preds_proba.tolist(),
+        certainties=certainties.tolist(),
+        labels=labels.tolist(),
+        all_labels=all_labels.tolist(),
+    )
 
 
 @api.post("/predict", response_model=PredictionResponse)
 def predict(request: PredictionRequest) -> PredictionResponse:
-    print(f"request: {request}")
-
-    return PredictionResponse(
-        label=request.title + request.description,
-        probability=0.5,
+    model_input = raw_to_model_input_pipe(
+        embedding_model, request.title, request.description, get_date_time()
     )
 
-
-def main() -> None:
-    print("Hello from api!")
-
-
-if __name__ == "__main__":
-    main()
+    return get_pred_response(model_input)
