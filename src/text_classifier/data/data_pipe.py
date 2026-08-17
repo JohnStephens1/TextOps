@@ -9,7 +9,11 @@ from text_classifier.data.model_data import drop_non_feature_cols
 from text_classifier.data.preprocessing import preprocess_features
 
 
-def get_df_from_input(title: str, description: str, date_time: str) -> pd.DataFrame:
+def get_df_from_input(
+    title: str,
+    description: str,
+    date_time: datetime,
+) -> pd.DataFrame:
     return pd.DataFrame(
         {
             "created_on": [date_time],
@@ -19,12 +23,11 @@ def get_df_from_input(title: str, description: str, date_time: str) -> pd.DataFr
     )
 
 
-def get_current_date_time() -> datetime:
-    return datetime.now().astimezone()
-
-
 def raw_to_model_input_pipe(
-    embedding_model: SentenceTransformer, title: str, description: str, date_time: str
+    embedding_model: SentenceTransformer,
+    title: str,
+    description: str,
+    date_time: datetime,
 ) -> pd.DataFrame:
     df = get_df_from_input(title, description, date_time)
     df = preprocess_features(df)
