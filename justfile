@@ -13,8 +13,8 @@ commit:
     git add .
     git status
 
-host:
-    mlflow server \
+run_mlflow:
+    uv run mlflow server \
      --host 0.0.0.0 \
      --port 5000 \
      --default-artifact-root ./mlruns \
