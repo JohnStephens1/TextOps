@@ -8,7 +8,7 @@ from text_classifier.mlflow_loader import get_champ_model_encoder_emb_model
 
 from .schema import PredictionRequest, PredictionResponse
 
-api = FastAPI()
+app = FastAPI()
 
 model, label_encoder, embedding_model = get_champ_model_encoder_emb_model()
 
@@ -35,7 +35,7 @@ def get_pred_response(model_input: pd.DataFrame) -> PredictionResponse:
     )
 
 
-@api.post("/predict", response_model=PredictionResponse)
+@app.post("/predict", response_model=PredictionResponse)
 def predict(request: PredictionRequest) -> PredictionResponse:
     model_input = raw_to_model_input_pipe(
         embedding_model, request.title, request.description, get_date_time()
