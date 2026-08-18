@@ -2,28 +2,16 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from text_classifier.mlflow_loader import get_champ_model_encoder_emb_model
+from text_classifier.mlflow_loader import get_champ_model_prediction_resources
 
 from .dependencies import PredictionResourcesDeps
 from .model_io import get_model_input, get_pred_response
-from .schema import PredictionRequest, PredictionResources, PredictionResponse
-
-# TODO clean, delegate, extract
-
-
-def load_prediction_resources() -> PredictionResources:
-    model, label_encoder, embedding_model = get_champ_model_encoder_emb_model()
-
-    return PredictionResources(
-        model=model,
-        label_encoder=label_encoder,
-        embedding_model=embedding_model,
-    )
+from .schema import PredictionRequest, PredictionResponse
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    app.state.prediction_resources = load_prediction_resources()
+    app.state.prediction_resources = get_champ_model_prediction_resources()
 
     yield
 

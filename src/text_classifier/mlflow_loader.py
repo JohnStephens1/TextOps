@@ -15,6 +15,7 @@ from text_classifier.config.config import (
 from text_classifier.config.logging_config import setup_logging
 from text_classifier.protocols import Predictor
 from text_classifier.save_load import load_joblib, load_text
+from text_classifier.schema import PredictionResources
 
 setup_logging()
 
@@ -99,14 +100,13 @@ def get_champion_run_id(
     return champion_version.run_id
 
 
-def get_champ_model_encoder_emb_model() -> tuple[
-    Predictor, LabelEncoder, SentenceTransformer
-]:
+def get_champ_model_prediction_resources() -> PredictionResources:
     client = mlflow.MlflowClient("http://localhost:5000")
 
     run_id = get_champion_run_id(client)
+
     label_encoder, embedding_model_str = get_label_encoder_emb_model_str(client, run_id)
     embedding_model = SentenceTransformer(embedding_model_str)
     model = get_champion_model()
 
-    return model, label_encoder, embedding_model
+    return PredictionResources(model, label_encoder, embedding_model)
