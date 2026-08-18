@@ -7,6 +7,7 @@ from fastapi import Depends, FastAPI, Request
 
 from text_classifier.data.data_pipe import raw_to_model_input_pipe
 from text_classifier.mlflow_loader import get_champ_model_encoder_emb_model
+from text_classifier.schema import RawModelInput
 
 from .schema import PredictionRequest, PredictionResources, PredictionResponse
 
@@ -67,16 +68,20 @@ PredictionResourcesDeps = Annotated[
 ]
 
 
+def get_raw_model_input_from_request(request: PredictionRequest) -> RawModelInput:
+    return RawModelInput(
+        title=request.title,
+        description=request.description,
+        date_time=get_date_time(),
+    )
+
+
 @app.post("/predict", response_model=PredictionResponse)
 def predict(
     request: PredictionRequest,
     resources: PredictionResourcesDeps,
 ) -> PredictionResponse:
-    model_input = raw_to_model_input_pipe(
-        resources.embedding_model,
-        request.title,
-        request.description,
-        get_date_time(),
-    )
+    raw_model_input = get_raw_model_input_from_request(request)
+    model_input = raw_to_model_input_pipe(resources.embedding_model, raw_model_input)
 
     return get_pred_response(resources, model_input)
