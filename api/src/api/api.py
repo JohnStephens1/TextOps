@@ -1,30 +1,53 @@
 import datetime
+from contextlib import asynccontextmanager
+from typing import Annotated
 
 import pandas as pd
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI, Request
 
 from text_classifier.data.data_pipe import raw_to_model_input_pipe
 from text_classifier.mlflow_loader import get_champ_model_encoder_emb_model
 
-from .schema import PredictionRequest, PredictionResponse
+from .schema import PredictionRequest, PredictionResources, PredictionResponse
 
-app = FastAPI()
+# TODO clean, delegate, extract
 
-model, label_encoder, embedding_model = get_champ_model_encoder_emb_model()
+
+def load_prediction_resources() -> PredictionResources:
+    model, label_encoder, embedding_model = get_champ_model_encoder_emb_model()
+
+    return PredictionResources(
+        model=model,
+        label_encoder=label_encoder,
+        embedding_model=embedding_model,
+    )
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    app.state.prediction_resources = load_prediction_resources()
+
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
 
 
 def get_date_time() -> datetime.datetime:
     return datetime.datetime.now(datetime.UTC)
 
 
-def get_pred_response(model_input: pd.DataFrame) -> PredictionResponse:
-    preds = model.predict(model_input)
-    preds_proba = model.predict_proba(model_input)
+def get_pred_response(
+    resources: PredictionResources,
+    model_input: pd.DataFrame,
+) -> PredictionResponse:
+    preds = resources.model.predict(model_input)
+    preds_proba = resources.model.predict_proba(model_input)
 
     certainties = preds_proba.max(axis=1)
 
-    labels = label_encoder.inverse_transform(preds)
-    all_labels = label_encoder.classes_
+    labels = resources.label_encoder.inverse_transform(preds)
+    all_labels = resources.label_encoder.classes_
 
     return PredictionResponse(
         pred=preds.tolist()[0],
@@ -35,10 +58,25 @@ def get_pred_response(model_input: pd.DataFrame) -> PredictionResponse:
     )
 
 
+def get_prediction_resources(request: Request) -> PredictionResources:
+    return request.app.state.prediction_resources
+
+
+PredictionResourcesDeps = Annotated[
+    PredictionResources, Depends(get_prediction_resources)
+]
+
+
 @app.post("/predict", response_model=PredictionResponse)
-def predict(request: PredictionRequest) -> PredictionResponse:
+def predict(
+    request: PredictionRequest,
+    resources: PredictionResourcesDeps,
+) -> PredictionResponse:
     model_input = raw_to_model_input_pipe(
-        embedding_model, request.title, request.description, get_date_time()
+        resources.embedding_model,
+        request.title,
+        request.description,
+        get_date_time(),
     )
 
-    return get_pred_response(model_input)
+    return get_pred_response(resources, model_input)
