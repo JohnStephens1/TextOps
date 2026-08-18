@@ -2,7 +2,7 @@ from typing import Annotated
 
 from fastapi import Depends, Request
 
-from .schema import PredictionResources
+from text_classifier.schema import PredictionResources
 
 
 def get_prediction_resources(request: Request) -> PredictionResources:

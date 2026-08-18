@@ -1,10 +1,10 @@
 import pandas as pd
 
 from text_classifier.data.data_pipe import raw_to_model_input_pipe
-from text_classifier.schema import RawModelInput
+from text_classifier.schema import PredictionResources, RawModelInput
 
 from .datetime_utils import get_current_date_time
-from .schema import PredictionRequest, PredictionResources, PredictionResponse
+from .schema import PredictionRequest, PredictionResponse
 
 
 def get_raw_model_input_from_request(request: PredictionRequest) -> RawModelInput:
