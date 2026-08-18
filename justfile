@@ -21,7 +21,7 @@ run_mlflow:
      --backend-store-uri sqlite:///./mlruns/mlflow.db
 
 run_api:
-    uv run --package api api
+    uv run --package api uvicorn api.api:app
 
 run_app:
     uv run --package app app/src/app/app.py
