@@ -34,7 +34,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 
-def get_date_time() -> datetime.datetime:
+def get_current_date_time() -> datetime.datetime:
     return datetime.datetime.now(datetime.UTC)
 
 
@@ -72,7 +72,7 @@ def get_raw_model_input_from_request(request: PredictionRequest) -> RawModelInpu
     return RawModelInput(
         title=request.title,
         description=request.description,
-        date_time=get_date_time(),
+        date_time=get_current_date_time(),
     )
 
 
