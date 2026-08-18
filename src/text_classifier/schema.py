@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime
 
 import numpy as np
 import pandas as pd
@@ -37,3 +38,10 @@ class Predictions:
 class PredictionsEncoder:
     predictions: Predictions
     encoder: LabelEncoder
+
+
+@dataclass(frozen=True)
+class RawModelInput:
+    title: str
+    description: str
+    date_time: datetime
