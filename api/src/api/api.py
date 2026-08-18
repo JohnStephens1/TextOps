@@ -76,12 +76,22 @@ def get_raw_model_input_from_request(request: PredictionRequest) -> RawModelInpu
     )
 
 
+def get_model_input(
+    request: PredictionRequest,
+    resources: PredictionResources,
+) -> pd.DataFrame:
+    raw_model_input = get_raw_model_input_from_request(request)
+    model_input = raw_to_model_input_pipe(resources.embedding_model, raw_model_input)
+
+    return model_input
+
+
 @app.post("/predict", response_model=PredictionResponse)
 def predict(
     request: PredictionRequest,
     resources: PredictionResourcesDeps,
 ) -> PredictionResponse:
-    raw_model_input = get_raw_model_input_from_request(request)
-    model_input = raw_to_model_input_pipe(resources.embedding_model, raw_model_input)
+    model_input = get_model_input(request, resources)
+    pred_response = get_pred_response(resources, model_input)
 
-    return get_pred_response(resources, model_input)
+    return pred_response
