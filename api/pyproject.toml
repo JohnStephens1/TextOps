@@ -8,9 +8,13 @@ requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.140.0",
     "pydantic>=2.13.4",
+    "text-ops",
     "uvicorn[standard]>=0.51.0",
 ]
 
 [build-system]
 requires = ["uv_build>=0.9.30,<0.10.0"]
 build-backend = "uv_build"
+
+[tool.uv.sources]
+text-ops = { workspace = true }
