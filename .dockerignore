@@ -1,0 +1,12 @@
+.git
+.devcontainer
+.dvc
+.pytest_cache
+.ruff_cache
+.venv
+.vscode
+
+artifacts
+data
+mlartifacts
+mlruns
