@@ -38,10 +38,6 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["src/text_classifier"]
 
-[tool.uv.sources]
-api = { workspace = true }
-app = { workspace = true }
-
 [tool.uv.workspace]
 members = [
     "api",
