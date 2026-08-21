@@ -1,8 +1,6 @@
 import logging
-from collections.abc import Callable
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Any
 
 import mlflow
 from sentence_transformers import SentenceTransformer
@@ -23,41 +21,12 @@ setup_logging()
 logger = logging.getLogger("text_classifier.mlflow_loader")
 
 
-def get_mlflow_artifact(
-    client: mlflow.MlflowClient,
-    run_id: str,
-    mlflow_path: str,
-    tmp_dir: str,
-    fallback_path: Path | str,
-    loader: Callable[[Path], Any] | type[SentenceTransformer],
-) -> Any:
-    # mlflow.set_tracking_uri(MLFLOW_URL)
-
-    try:
-        path = Path(
-            client.download_artifacts(
-                run_id=run_id,
-                path=mlflow_path,
-                dst_path=tmp_dir,
-            )
-        )
-    except mlflow.exceptions.MlflowException as e:  # type: ignore
-        logger.warning(f"MLFlow exception occurred: {e}")
-        logger.warning(
-            f"Champion artifact not found in MLFlow: {mlflow_path}\nTrying to default to local alternative..."
-        )
-        path = fallback_path
-        return EMBEDDING_MODEL_STR
-
-    return loader(path)
-
-
 def load_label_encoder(
     client: mlflow.MlflowClient,
     run_id: str,
     mlflow_path: str,
     tmp_dir: str,
-) -> Any:
+) -> LabelEncoder:
     try:
         path = Path(
             client.download_artifacts(
@@ -69,7 +38,7 @@ def load_label_encoder(
     except mlflow.exceptions.MlflowException as e:  # type: ignore
         logger.warning(f"MLFlow exception occurred: {e}")
         logger.warning(
-            f"Champion artifact not found in MLFlow: {mlflow_path}\nTrying to default to local alternative..."
+            f"Champion label encoder artifact not found in MLFlow: {mlflow_path}\nTrying to default to local alternative..."
         )
         path = ENCODER_ARTIFACT_PATH
 
@@ -81,7 +50,7 @@ def load_embedding_model(
     run_id: str,
     mlflow_path: str,
     tmp_dir: str,
-) -> Any:
+) -> SentenceTransformer:
     try:
         path = Path(
             client.download_artifacts(
@@ -94,81 +63,33 @@ def load_embedding_model(
     except mlflow.exceptions.MlflowException as e:  # type: ignore
         logger.warning(f"MLFlow exception occurred: {e}")
         logger.warning(
-            f"Champion artifact not found in MLFlow: {mlflow_path}\nTrying to default to local alternative..."
+            f"Champion embedding model artifact not found in MLFlow: {mlflow_path}\nTrying to default to local alternative..."
         )
         model_str = EMBEDDING_MODEL_STR
 
     return SentenceTransformer(model_str)
 
 
-def get_mlflow_artifact_path(
-    client: mlflow.MlflowClient,
-    run_id: str,
-    mlflow_path: str,
-    tmp_dir: str,
-) -> Path | None:
-    try:
-        return Path(
-            client.download_artifacts(
-                run_id=run_id,
-                path=mlflow_path,
-                dst_path=tmp_dir,
-            )
-        )
-    except mlflow.exceptions.MlflowException as e:  # type: ignore
-        logger.warning(f"MLFlow exception occurred: {e}")
-        logger.warning(
-            f"Champion artifact not found in MLFlow: {mlflow_path}\nTrying to default to local alternative..."
-        )
-
-        return None
-
-
 def get_label_encoder_emb_model_str(
     client: mlflow.MlflowClient, run_id: str
-) -> tuple[LabelEncoder, str]:
+) -> tuple[LabelEncoder, SentenceTransformer]:
     mlflow_label_encoder_path = "preprocessing/label_encoder.joblib"
     mlflow_embedding_model_str_path = "embeddings/embedding_model_str.txt"
 
     with TemporaryDirectory() as tmp_dir:
-        label_encoder: LabelEncoder = get_mlflow_artifact(
+        label_encoder: LabelEncoder = load_label_encoder(
             client,
             run_id,
             mlflow_label_encoder_path,
             tmp_dir,
-            ENCODER_ARTIFACT_PATH,
-            load_joblib,
         )
 
-        embedding_model_str: str = get_mlflow_artifact(
+        embedding_model_str = load_embedding_model(
             client,
             run_id,
             mlflow_embedding_model_str_path,
             tmp_dir,
-            Path(EMBEDDING_MODEL_STR),
-            str,
         )
-
-        # label_encoder_path = get_mlflow_artifact_path(
-        #     client,
-        #     run_id,
-        #     mlflow_label_encoder_path,
-        #     tmp_dir,
-        # ) or ENCODER_ARTIFACT_PATH
-
-        # label_encoder: LabelEncoder = load_joblib(label_encoder_path)
-
-        # embedding_model_path = get_mlflow_artifact_path(
-        #     client,
-        #     run_id,
-        #     mlflow_embedding_model_str_path,
-        #     tmp_dir,
-        # )
-
-        # if embedding_model_path is None:
-        #     embedding_model_str = EMBEDDING_MODEL_STR
-        # else:
-        #     embedding_model_str = load_text(embedding_model_path)
 
     return label_encoder, embedding_model_str
 
@@ -202,8 +123,7 @@ def get_champ_model_prediction_resources() -> PredictionResources:
 
     run_id = get_champion_run_id(client)
 
-    label_encoder, embedding_model_str = get_label_encoder_emb_model_str(client, run_id)
-    embedding_model = SentenceTransformer(embedding_model_str)
+    label_encoder, embedding_model = get_label_encoder_emb_model_str(client, run_id)
     model = get_champion_model()
 
     return PredictionResources(model, label_encoder, embedding_model)
