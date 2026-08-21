@@ -1,11 +1,6 @@
-import os
-
 import requests
-from dotenv import load_dotenv
 
-load_dotenv()
-
-API_URL = os.getenv("API_URL")
+from .environment import API_URL
 
 
 def get_response(title: str, description: str) -> requests.Response:
