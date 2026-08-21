@@ -79,16 +79,6 @@ services:
       - ./mlruns:/app/mlruns
 
 
-  # app:
-  #   profiles: ["main"]
-  #   build:
-  #     context: .
-  #     target: base
-  #   working_dir: /app
-  #   volumes:
-  #     - .:/app
-  #   command: uv run python src/text_classifier/main.py
-
   # ml-pipeline:
   #   profiles: ["ml-pipeline"]
   #   build:
