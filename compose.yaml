@@ -1,5 +1,4 @@
 services:
-  # api
   # train
 
   app:
@@ -24,6 +23,25 @@ services:
       - python
       - -m
       - app.app
+
+
+  api:
+    build:
+      context: .
+      target: base
+
+    working_dir: /app
+
+    ports:
+      - "8000:8000"
+
+    command:
+      - uv
+      - run
+      - --package
+      - api
+      - uvicorn
+      - api.api:app
 
 
   mlflow:
