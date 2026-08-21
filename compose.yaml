@@ -1,8 +1,30 @@
 services:
-  # app
   # api
-  # mlflow
   # train
+
+  app:
+    build:
+      context: .
+      target: base
+
+    working_dir: /app
+
+    ports:
+      - "${GRADIO_SERVER_PORT}:7860"
+
+    environment:
+      GRADIO_SERVER_NAME: "${GRADIO_SERVER_NAME}"
+      GRADIO_SERVER_PORT: "${GRADIO_SERVER_PORT}"
+
+    command:
+      - uv
+      - run
+      - --package
+      - app
+      - python
+      - -m
+      - app.app
+
 
   mlflow:
     image: ghcr.io/mlflow/mlflow:v3.14.0-full
@@ -21,8 +43,8 @@ services:
       - "5000:5000"
 
     environment:
-      MLFLOW_SERVER_ALLOWED_HOSTS: ${MLFLOW_SERVER_ALLOWED_HOSTS}
-      MLFLOW_SERVER_CORS_ALLOWED_ORIGINS: ${MLFLOW_SERVER_CORS_ALLOWED_ORIGINS}
+      MLFLOW_SERVER_ALLOWED_HOSTS: "${MLFLOW_SERVER_ALLOWED_HOSTS}"
+      MLFLOW_SERVER_CORS_ALLOWED_ORIGINS: "${MLFLOW_SERVER_CORS_ALLOWED_ORIGINS}"
 
     volumes:
       - ./mlruns:/app/mlruns
