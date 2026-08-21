@@ -31,6 +31,6 @@ FROM notebook AS dev
 
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --group notebook --group dev
-    
+
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv tool install rust-just
