@@ -24,7 +24,7 @@ run_api:
     uv run --package api uvicorn api.api:app
 
 run_app:
-    uv run --package app app/src/app/app.py
+    uv run --package app python -m app.app
 
 run_app_w_hot_reload:
     uv run --package app gradio app/src/app/app.py
