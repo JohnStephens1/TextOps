@@ -1,33 +1,62 @@
 services:
-  app:
-    profiles: ["main"]
-    build:
-      context: .
-      target: base
-    working_dir: /app
-    volumes:
-      - .:/app
-    command: uv run python src/text_classifier/main.py
+  # app
+  # api
+  # mlflow
+  # train
 
-  ml-pipeline:
-    profiles: ["ml-pipeline"]
-    build:
-      context: .
-      target: base
-    working_dir: /app
-    volumes:
-      - .:/app
-    command: uv run dvc repro
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v3.14.0-full
 
-  notebook:
-    profiles: ["notebook"]
-    build:
-      context: .
-      target: notebook
-    working_dir: /app
+    command:
+      - mlflow
+      - server
+      - --host
+      - 0.0.0.0
+      - --port
+      - "5000"
+      - --backend-store-uri
+      - sqlite:////app/mlruns/mlflow.db
+
+    ports:
+      - "5000:5000"
+
+    environment:
+      MLFLOW_SERVER_ALLOWED_HOSTS: ${MLFLOW_SERVER_ALLOWED_HOSTS}
+      MLFLOW_SERVER_CORS_ALLOWED_ORIGINS: ${MLFLOW_SERVER_CORS_ALLOWED_ORIGINS}
+
     volumes:
-      - .:/app
-    command: uv run jupyter lab --ip=0.0.0.0 --allow-root --no-browser
+      - ./mlruns:/app/mlruns
+
+
+  # app:
+  #   profiles: ["main"]
+  #   build:
+  #     context: .
+  #     target: base
+  #   working_dir: /app
+  #   volumes:
+  #     - .:/app
+  #   command: uv run python src/text_classifier/main.py
+
+  # ml-pipeline:
+  #   profiles: ["ml-pipeline"]
+  #   build:
+  #     context: .
+  #     target: base
+  #   working_dir: /app
+  #   volumes:
+  #     - .:/app
+  #   command: uv run dvc repro
+
+  # notebook:
+  #   profiles: ["notebook"]
+  #   build:
+  #     context: .
+  #     target: notebook
+  #   working_dir: /app
+  #   volumes:
+  #     - .:/app
+  #   command: uv run jupyter lab --ip=0.0.0.0 --allow-root --no-browser
 
   dev:
     profiles: ["dev"]
