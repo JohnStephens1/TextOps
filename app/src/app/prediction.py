@@ -1,11 +1,16 @@
-import requests
+import os
 
-FASTAPI_URL = "http://localhost:8000/predict"
+import requests
+from dotenv import load_dotenv
+
+load_dotenv()
+
+API_URL = os.getenv("API_URL")
 
 
 def get_response(title: str, description: str) -> requests.Response:
     return requests.post(
-        FASTAPI_URL,
+        f"{API_URL}/predict",
         json={"title": title, "description": description},
     )
 
