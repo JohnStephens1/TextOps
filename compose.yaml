@@ -16,6 +16,10 @@ services:
       GRADIO_SERVER_NAME: "${GRADIO_SERVER_NAME}"
       GRADIO_SERVER_PORT: "${GRADIO_SERVER_PORT}"
 
+    depends_on:
+      - api
+      - mlflow
+
     command:
       - uv
       - run
@@ -41,6 +45,9 @@ services:
 
     volumes:
       - ./mlruns:/app/mlruns
+
+    depends_on:
+      - mlflow
 
     command:
       - uv
