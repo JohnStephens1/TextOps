@@ -11,10 +11,6 @@ stages:
       hash: md5
       md5: 1b45fee23e533527263e7d42577c4825
       size: 1723
-    - path: src/text_classifier/config/logging_config.py
-      hash: md5
-      md5: 4d51ed8f80ea87c99476fc107de19754
-      size: 222
     - path: src/text_classifier/data/preprocessing.py
       hash: md5
       md5: 70f96aa3e415fd5b713f6dde901ca3c1

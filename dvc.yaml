@@ -5,7 +5,6 @@ stages:
     deps:
       - data/datasets/raw_dataset.csv
       - src/text_classifier/config/config.py
-      - src/text_classifier/config/logging_config.py
       - src/text_classifier/data/preprocessing.py
       - src/text_classifier/save_load.py
 
@@ -18,7 +17,6 @@ stages:
     deps:
       - data/datasets/preprocessed_dataset.parquet
       - src/text_classifier/config/config.py
-      - src/text_classifier/config/logging_config.py
       - src/text_classifier/data/features.py
       - src/text_classifier/save_load.py
 
@@ -31,7 +29,6 @@ stages:
     deps:
       - data/datasets/feature_dataset.parquet
       - src/text_classifier/config/config.py
-      - src/text_classifier/config/logging_config.py
       - src/text_classifier/data/embeddings.py
       - src/text_classifier/save_load.py
 
@@ -44,7 +41,6 @@ stages:
     deps:
       - data/datasets/embedding_dataset.parquet
       - src/text_classifier/config/config.py
-      - src/text_classifier/config/logging_config.py
       - src/text_classifier/data/model_data.py
       - src/text_classifier/save_load.py
 
@@ -57,7 +53,6 @@ stages:
     deps:
       - data/datasets/model_dataset.parquet
       - src/text_classifier/config/config.py
-      - src/text_classifier/config/logging_config.py
       - src/text_classifier/data/split.py
       - src/text_classifier/save_load.py
       - src/text_classifier/schema.py
@@ -78,7 +73,6 @@ stages:
       - params.yaml
       - src/text_classifier/config/config.py
       - src/text_classifier/config/loader.py
-      - src/text_classifier/config/logging_config.py
       - src/text_classifier/data/loader.py
       - src/text_classifier/model/model_selection.py
       - src/text_classifier/model/models.py
@@ -102,7 +96,6 @@ stages:
       - data/datasets/splits/y_test.parquet
       - artifacts/train/best_estimator.joblib
       - src/text_classifier/config/config.py
-      - src/text_classifier/config/logging_config.py
       - src/text_classifier/data/loader.py
       - src/text_classifier/model/predictions.py
       - src/text_classifier/save_load.py
@@ -127,7 +120,6 @@ stages:
       - artifacts/train/model_version.txt
       - config/promote.yaml
       - src/text_classifier/config/config.py
-      - src/text_classifier/config/logging_config.py
       - src/text_classifier/promotion/promotion.py
       - src/text_classifier/save_load.py
       - src/text_classifier/scripts/promote.py
