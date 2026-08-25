@@ -5,6 +5,7 @@ WORKDIR /app
 COPY pyproject.toml uv.lock README.md ./
 COPY api/pyproject.toml api/pyproject.toml
 COPY app/pyproject.toml app/pyproject.toml
+COPY common/pyproject.toml common/pyproject.toml
 
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-install-workspace
@@ -12,6 +13,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 COPY src ./src
 COPY api ./api
 COPY app ./app
+COPY common ./common
 
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --all-packages --frozen
