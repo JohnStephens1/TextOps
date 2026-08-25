@@ -23,6 +23,11 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 ENTRYPOINT []
 
 
+FROM base AS train
+
+COPY . .
+
+
 FROM base AS dev
 
 RUN --mount=type=cache,target=/root/.cache/uv \
