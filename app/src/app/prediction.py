@@ -1,5 +1,7 @@
 import requests
-from common.environment import API_URL
+from common.environment import get_env_var
+
+API_URL = get_env_var("API_URL")
 
 
 def get_response(title: str, description: str) -> requests.Response:

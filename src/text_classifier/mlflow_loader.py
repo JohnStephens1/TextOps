@@ -3,7 +3,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 import mlflow
-from common.environment import MLFLOW_URL
+from common.environment import get_env_var
 from common.logging_config import setup_logging
 from sentence_transformers import SentenceTransformer
 from sklearn.preprocessing import LabelEncoder
@@ -19,6 +19,9 @@ from text_classifier.schema import PredictionResources
 setup_logging()
 
 logger = logging.getLogger("text_classifier.mlflow_loader")
+
+
+MLFLOW_URL = get_env_var("MLFLOW_URL")
 
 
 def load_label_encoder(
