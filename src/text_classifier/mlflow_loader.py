@@ -3,6 +3,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 import mlflow
+from common.environment import MLFLOW_URL  # type: ignore
 from sentence_transformers import SentenceTransformer
 from sklearn.preprocessing import LabelEncoder
 
@@ -10,7 +11,6 @@ from text_classifier.config.config import (
     EMBEDDING_MODEL_STR,
     ENCODER_ARTIFACT_PATH,
 )
-from text_classifier.config.environment import MLFLOW_URL
 from text_classifier.config.logging_config import setup_logging
 from text_classifier.protocols import Predictor
 from text_classifier.save_load import load_joblib, load_text
