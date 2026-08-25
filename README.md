@@ -39,9 +39,68 @@ Quick problem summary: a skewed classification problem with 4 classes, 2 of whic
 <br> <br>
 - Cached text embedding generation during training
 
+
+## Introduction
+
+### Getting Started
+
+To set up the core application, simply run:
+
+```bash
+docker compose up
+```
+
+This boots up the app, API and MLFlow servers.
+
+
+### Connecting
+
+When running locally, you can then connect to the application using a browser, located at [http://localhost:7860/](http://localhost:7860/)
+When running over SSH, you can connect via `http://<your_server_ip>:7860/`.
+You can get your IP address on Linux by running `hostname -I`. Then replace '<your_server_ip>' with the first displayed IP.
+
+To checkout the MLFlow server, showcasing training and evaluation results, produced models, the current champion as well as logged graphs and metrics, visit [http://localhost:7860/](http://localhost:7860/), or with your respective IP address.
+
+
+At first, the MLFlow server will look a tad barren. To produce some training results, you'll have to run training.
+
+
+### Training
+
+For this, there's two options. Either via smart staging, only executing altered stages, using:
+
+```bash
+docker compose \
+    --profile train-pipe \
+    run --rm train-pipe
+```
+
+Or, you can run the entire pipeline regardless of changes, using:
+
+```bash
+docker compose \
+    --profile train-pipe \
+    run --rm train-pipe -f
+```
+
+(the exact same command, just with a `-f` at the end, or `--force` if you will)
+
+
+### Customizing
+
+Training runs a search by default. Parameters are defined in the `params.yaml` file. Feel free to experiment, altering search parameters, adding more etc.
+
+I've included a champion model in the repository _coming soon_. With some tweaks, you can certainly produce a model with better performance.
+
+
+### Automatic Promotion
+
+At the end of the training pipeline, the model gets evaluated and pitted against the current champion. If the new model surpasses the past champion, it will automatically be promoted: it gets highlighted in MLFlow, will be loaded by FastAPI on future runs, and can be tested live in the app; all without any code changes.
+
+
 ## Plots
 
-While the project is still WIP, since the README's looking a tad barren; here's some nice plots to look at, automatically generated after training and logged through MLFlow when applicable:
+While the project is still WIP; here's some nice plots to look at, automatically generated after training and logged through MLFlow when applicable:
 
 ![Confusion Matrix](plots/confusion_matrix.png)
 
