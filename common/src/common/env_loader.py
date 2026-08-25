@@ -8,7 +8,7 @@ from .logging_config import setup_logging
 setup_logging()
 
 
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
 
 
 class MissingEnvironmentVariableError(RuntimeError):
