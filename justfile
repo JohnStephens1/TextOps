@@ -13,6 +13,9 @@ commit:
     git add .
     git status
 
+train:
+    uv run dvc repro
+
 run_mlflow:
     uv run mlflow server \
      --host 0.0.0.0 \
