@@ -14,23 +14,17 @@ COPY api ./api
 COPY app ./app
 
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen
+    uv sync --all-packages --frozen
 
 
 # entry point necessary, otherwise uv will be used as entrypoint -> janky error messages
 ENTRYPOINT []
 
 
-FROM base AS notebook
+FROM base AS dev
 
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --group notebook
-
-
-FROM notebook AS dev
-
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --group notebook --group dev
+    uv sync --all-packages --frozen --group dev
 
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv tool install rust-just
