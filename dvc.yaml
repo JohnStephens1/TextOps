@@ -101,7 +101,9 @@ stages:
       - src/text_classifier/save_load.py
       - src/text_classifier/schema.py
       - src/text_classifier/protocols.py
-      - src/text_classifier/evaluation/
+      - src/text_classifier/evaluation/eval.py
+      - src/text_classifier/evaluation/metrics.py
+      - src/text_classifier/evaluation/plots.py
 
     metrics:
       - artifacts/eval/metrics/test_metrics.json
