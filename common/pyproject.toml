@@ -1,0 +1,12 @@
+[project]
+name = "common"
+version = "0.1.0"
+authors = [
+    { name = "john", email = "96323078+JohnStephens1@users.noreply.github.com" }
+]
+requires-python = ">=3.12"
+dependencies = []
+
+[build-system]
+requires = ["uv_build>=0.9.30,<0.10.0"]
+build-backend = "uv_build"

@@ -35,4 +35,5 @@ packages = ["src/text_classifier"]
 members = [
     "api",
     "app",
+    "common",
 ]

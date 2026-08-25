@@ -17,6 +17,7 @@ resolution-markers = [
 members = [
     "api",
     "app",
+    "common",
     "text-ops",
 ]
 
@@ -698,6 +699,11 @@ sdist = { url = "https://files.pythonhosted.org/packages/4c/13/7d740c5849255756b
 wheels = [
     { url = "https://files.pythonhosted.org/packages/60/97/891a0971e1e4a8c5d2b20bbe0e524dc04548d2307fee33cdeba148fd4fc7/comm-0.2.3-py3-none-any.whl", hash = "sha256:c615d91d75f7f04f095b30d1c1711babd43bdc6419c1be9886a85f2f4e489417", size = 7294, upload-time = "2025-07-25T14:02:02.896Z" },
 ]
+
+[[package]]
+name = "common"
+version = "0.1.0"
+source = { editable = "common" }
 
 [[package]]
 name = "configobj"
