@@ -1,10 +1,11 @@
 import logging
 
+from common.logging_config import setup_logging
+
 from text_classifier.config.config import (
     X_TEST_PATH,
     Y_TEST_PATH,
 )
-from text_classifier.config.logging_config import setup_logging
 from text_classifier.data.loader import get_x_y_data
 from text_classifier.evaluation.eval import (
     evaluate,

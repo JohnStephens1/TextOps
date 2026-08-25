@@ -1,10 +1,11 @@
 import logging
 
+from common.logging_config import setup_logging
+
 from text_classifier.config.config import (
     FEATURE_DATASET_PATH,
     PREPROCESSED_DATASET_PATH,
 )
-from text_classifier.config.logging_config import setup_logging
 from text_classifier.data.features import add_features
 from text_classifier.save_load import load_parquet, save
 

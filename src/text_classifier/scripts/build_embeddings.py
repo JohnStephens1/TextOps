@@ -1,5 +1,6 @@
 import logging
 
+from common.logging_config import setup_logging
 from sentence_transformers import SentenceTransformer
 
 from text_classifier.config.config import (
@@ -8,7 +9,6 @@ from text_classifier.config.config import (
     EMBEDDING_MODEL_STR_ARTIFACT_PATH,
     FEATURE_DATASET_PATH,
 )
-from text_classifier.config.logging_config import setup_logging
 from text_classifier.data.embeddings import add_text_embeddings
 from text_classifier.save_load import load_parquet, save
 

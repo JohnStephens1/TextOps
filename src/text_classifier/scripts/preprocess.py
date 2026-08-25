@@ -1,7 +1,8 @@
 import logging
 
+from common.logging_config import setup_logging
+
 from text_classifier.config.config import PREPROCESSED_DATASET_PATH, RAW_DATASET_PATH
-from text_classifier.config.logging_config import setup_logging
 from text_classifier.data.preprocessing import preprocess_df
 from text_classifier.save_load import load_csv, save
 

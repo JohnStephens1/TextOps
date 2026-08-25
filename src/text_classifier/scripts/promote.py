@@ -1,11 +1,12 @@
 import logging
 
+from common.logging_config import setup_logging
+
 from text_classifier.config.config import (
     CONFIG_PATH,
     TEST_METRICS_PATH,
     TRAIN_MODEL_VERSION_PATH,
 )
-from text_classifier.config.logging_config import setup_logging
 from text_classifier.promotion.promotion import check_promotion_eligibility, promote
 from text_classifier.save_load import load_json, load_text, load_yaml
 

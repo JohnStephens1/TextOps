@@ -1,12 +1,13 @@
 import logging
 
+from common.logging_config import setup_logging
+
 from text_classifier.config.config import (
     TRAIN_MODEL_VERSION_PATH,
     TRAIN_RUN_ID_PATH,
     X_TRAIN_PATH,
     Y_TRAIN_PATH,
 )
-from text_classifier.config.logging_config import setup_logging
 from text_classifier.data.loader import get_x_y_data
 from text_classifier.model.training import save_search_results, train_from_config
 from text_classifier.save_load import save

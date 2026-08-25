@@ -1,7 +1,8 @@
 import logging
 
+from common.logging_config import setup_logging
+
 from text_classifier.config.config import ENCODER_ARTIFACT_PATH, MODEL_DATASET_PATH
-from text_classifier.config.logging_config import setup_logging
 from text_classifier.data.split import (
     get_train_test_splits_encoder,
     save_data_splits,
