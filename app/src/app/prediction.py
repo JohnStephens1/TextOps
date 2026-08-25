@@ -1,5 +1,5 @@
 import requests
-from common.environment import get_env_var
+from common.env_loader import get_env_var
 
 API_URL = get_env_var("API_URL")
 

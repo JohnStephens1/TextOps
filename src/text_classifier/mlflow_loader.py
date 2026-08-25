@@ -3,7 +3,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 import mlflow
-from common.environment import get_env_var
+from common.env_loader import get_env_var
 from common.logging_config import setup_logging
 from sentence_transformers import SentenceTransformer
 from sklearn.preprocessing import LabelEncoder
