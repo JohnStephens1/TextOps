@@ -251,11 +251,15 @@ name = "app"
 version = "0.1.0"
 source = { editable = "app" }
 dependencies = [
+    { name = "common" },
     { name = "gradio" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "gradio", specifier = ">=6.24.0" }]
+requires-dist = [
+    { name = "common", editable = "common" },
+    { name = "gradio", specifier = ">=6.24.0" },
+]
 
 [[package]]
 name = "appdirs"
