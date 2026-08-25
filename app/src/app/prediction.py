@@ -1,6 +1,5 @@
 import requests
-
-from .environment import API_URL
+from common.environment import API_URL  # type: ignore
 
 
 def get_response(title: str, description: str) -> requests.Response:
