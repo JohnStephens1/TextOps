@@ -19,7 +19,7 @@ class MissingDotEnvFileError(RuntimeError):
     pass
 
 
-def _get_env_var(env_var_str: str) -> str:
+def get_env_var(env_var_str: str) -> str:
     env_var = os.getenv(env_var_str)
 
     if env_var is not None:
@@ -45,7 +45,3 @@ def _get_env_var(env_var_str: str) -> str:
         )
 
     return env_var
-
-
-API_URL = _get_env_var("API_URL")
-MLFLOW_URL = _get_env_var("MLFLOW_URL")
