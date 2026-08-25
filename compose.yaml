@@ -1,6 +1,4 @@
 services:
-  # train
-
   app:
     build:
       context: .
@@ -84,6 +82,35 @@ services:
 
     volumes:
       - ./mlruns:/app/mlruns
+
+
+  train-pipe:
+    profiles: ["train-pipe"]
+
+    working_dir: /app
+
+    build:
+      context: .
+      target: train
+
+    environment:
+      MLFLOW_URL: http://mlflow:5000
+
+    volumes:
+      - ./.dvc:/app/.dvc
+      - ./.git:/app/.git
+      - ./artifacts:/app/artifacts
+      - ./data:/app/data
+      - ./dvc.lock:/app/dvc.lock
+
+    depends_on:
+      - mlflow
+
+    entrypoint:
+      - uv
+      - run
+      - dvc
+      - repro
 
 
   # ml-pipeline:
