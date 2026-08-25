@@ -2,6 +2,7 @@ import logging
 
 import mlflow
 import pandas as pd
+from common.env_loader import get_env_var
 
 from text_classifier.config.config import (
     TRAIN_BEST_ESTIMATOR_PATH,
@@ -17,6 +18,9 @@ from text_classifier.save_load import save
 from text_classifier.schema import XYData
 
 logger = logging.getLogger(__name__)
+
+
+MLFLOW_URL = get_env_var("MLFLOW_URL")
 
 
 def save_search_results(my_model: ModelBase) -> None:
@@ -45,7 +49,7 @@ def train_core(
 def train_w_tracking(
     train_ds: XYData, my_model: ModelBase
 ) -> tuple[ModelBase, str, str]:
-    mlflow.set_tracking_uri("http://localhost:5000")
+    mlflow.set_tracking_uri(MLFLOW_URL)
 
     logger.info("Trying to establish connection to MLFlow server...")
     mlflow.set_experiment("domain-classification")

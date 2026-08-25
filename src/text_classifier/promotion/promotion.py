@@ -2,12 +2,16 @@ import logging
 from typing import Any
 
 import mlflow
+from common.env_loader import get_env_var
 
 logger = logging.getLogger(__name__)
 
 
+MLFLOW_URL = get_env_var("MLFLOW_URL")
+
+
 def get_champ_metrics() -> dict[str, float]:
-    client = mlflow.MlflowClient("http://localhost:5000")
+    client = mlflow.MlflowClient(MLFLOW_URL)
 
     try:
         champion_version = client.get_model_version_by_alias(
@@ -71,6 +75,6 @@ def check_promotion_eligibility(
 
 
 def promote(model_version: str) -> None:
-    client = mlflow.MlflowClient("http://localhost:5000")
+    client = mlflow.MlflowClient(MLFLOW_URL)
 
     client.set_registered_model_alias("text_classifier", "champion", model_version)

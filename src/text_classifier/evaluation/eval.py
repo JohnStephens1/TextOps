@@ -2,6 +2,7 @@ import logging
 
 import mlflow
 import pandas as pd
+from common.env_loader import get_env_var
 from matplotlib.figure import Figure
 from sklearn.preprocessing import LabelEncoder
 
@@ -22,6 +23,9 @@ from text_classifier.save_load import load_joblib, load_text, save
 from text_classifier.schema import XYData
 
 logger = logging.getLogger(__name__)
+
+
+MLFLOW_URL = get_env_var("MLFLOW_URL")
 
 
 def save_metrics_plots_figs(
@@ -82,7 +86,7 @@ def get_metrics_plots_figs(
 def evaluate(
     model: Predictor, ds: XYData, encoder: LabelEncoder, run_id: str
 ) -> tuple[dict[str, float], dict[str, pd.DataFrame], dict[str, Figure]]:
-    mlflow.set_tracking_uri("http://localhost:5000")
+    mlflow.set_tracking_uri(MLFLOW_URL)
 
     logger.info("Trying to establish connection to MLFlow server...")
     with mlflow.start_run(run_id):
