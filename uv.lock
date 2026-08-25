@@ -4618,6 +4618,7 @@ name = "text-ops"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "common" },
     { name = "dvc" },
     { name = "mlflow" },
     { name = "numpy" },
@@ -4639,6 +4640,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "common", editable = "common" },
     { name = "dvc", specifier = ">=3.67.1" },
     { name = "mlflow", specifier = "==3.14" },
     { name = "numpy", specifier = ">=2.5.1" },
