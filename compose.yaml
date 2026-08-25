@@ -113,26 +113,6 @@ services:
       - repro
 
 
-  # ml-pipeline:
-  #   profiles: ["ml-pipeline"]
-  #   build:
-  #     context: .
-  #     target: base
-  #   working_dir: /app
-  #   volumes:
-  #     - .:/app
-  #   command: uv run dvc repro
-
-  # notebook:
-  #   profiles: ["notebook"]
-  #   build:
-  #     context: .
-  #     target: notebook
-  #   working_dir: /app
-  #   volumes:
-  #     - .:/app
-  #   command: uv run jupyter lab --ip=0.0.0.0 --allow-root --no-browser
-
   dev:
     profiles: ["dev"]
     build:
