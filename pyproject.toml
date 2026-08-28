@@ -21,6 +21,7 @@ dependencies = [
 dev = [
     "ipykernel>=7.3.0",
     "jupytext>=1.19.4",
+    "pre-commit>=4.6.2",
     "pytest>=9.1.1",
     "ruff>=0.16.0",
 ]
