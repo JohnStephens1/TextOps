@@ -23,8 +23,4 @@ dist/
 mlruns/
 mlartifacts
 
-test_df
-test_embeddings.npz
-test_embeddings2.npz
-
 artifacts/
