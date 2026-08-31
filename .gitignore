@@ -12,9 +12,11 @@ dist/
 
 *.ipynb
 
-*.parquet
 *.csv
+*.parquet
 *.npz
+
+!data/datasets/raw_dataset.csv
 
 .env
 
