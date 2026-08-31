@@ -31,11 +31,15 @@ Quick problem summary: a skewed classification problem with 4 classes, 2 of whic
 <br> <br>
 - **GitHub Actions** : automatically runs tests on pull requests  _coming soon_
 <br> <br>
-- **uv** : dependency management
-- **Ruff** : linting and code formatting
+- **pre-commit** : automatic code checking and formatting, using Ruff and yamllint
 <br> <br>
-- **PyDantic** : inference type checking
+- **uv** : dependency management
 - **pytest** : quality assurance
+<br> <br>
+- **Ruff** : Python linting and code formatting
+- **PyDantic** : inference type checking
+- **Pylance** : in strict mode, for consistent typing
+- **yamllint** : YAML linting
 <br> <br>
 - Cached text embedding generation during training
 
