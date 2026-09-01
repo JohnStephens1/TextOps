@@ -14,8 +14,8 @@
             "extensions": [
                 "ms-python.python",
                 "ms-python.vscode-pylance",
-                "charliermarsh.ruff",
                 "ms-toolsai.jupyter",
+                "charliermarsh.ruff",
                 "tamasfe.even-better-toml"
             ]
         }
