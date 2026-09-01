@@ -52,7 +52,11 @@ def train_w_tracking(
     mlflow.set_tracking_uri(MLFLOW_URL)
 
     logger.info("Trying to establish connection to MLFlow server...")
-    mlflow.set_experiment("domain-classification")
+    experiment = mlflow.set_experiment("ml-domain-classification")
+
+    logger.info("experiment id: " + experiment.experiment_id)
+    logger.info("artifact loc: " + experiment.artifact_location)
+
     logger.info("Connection established")
 
     mlflow.sklearn.autolog()  # type: ignore
