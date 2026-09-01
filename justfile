@@ -17,11 +17,12 @@ train:
     uv run dvc repro
 
 run_mlflow:
+    (cd ./mlruns && \
     uv run mlflow server \
-     --host 0.0.0.0 \
-     --port 5000 \
-     --default-artifact-root ./mlruns \
-     --backend-store-uri sqlite:///./mlruns/mlflow.db
+        --host 0.0.0.0 \
+        --port "5000" \
+        --backend-store-uri sqlite:///./mlflow.db \
+        --artifacts-destination ./mlartifacts)
 
 run_api:
     uv run --package api uvicorn api.api:app
