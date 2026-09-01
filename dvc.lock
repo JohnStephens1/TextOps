@@ -102,23 +102,23 @@ stages:
     outs:
     - path: artifacts/train/best_estimator.joblib
       hash: md5
-      md5: d27ee47f19492af5a2014b67e807b821
-      size: 1116306
+      md5: aa564955d2e5215759ee71d826f931b8
+      size: 510354
     - path: artifacts/train/best_params.json
       hash: md5
-      md5: a670c40b035c75eaa3ae0b3a069e411f
-      size: 222
+      md5: ae2a933d50fe2b926deb5c69c325d848
+      size: 221
     - path: artifacts/train/best_score.txt
       hash: md5
-      md5: 908d2e8335759040e9ef69938d9ad157
-      size: 17
+      md5: a013b15b24fd50012e4035447e92bdca
+      size: 18
     - path: artifacts/train/cv_results.parquet
       hash: md5
-      md5: 3355343204b000232635f62e4cd5966f
-      size: 14929
+      md5: d53422497568ca0748d5705a93d353e9
+      size: 14927
     - path: artifacts/train/run_id.txt
       hash: md5
-      md5: f9ee09d2c1736ae6635411022d2726ae
+      md5: fc1e670038e22d7e8c08eb606144fce0
       size: 32
   build_model_dataset:
     cmd: uv run src/text_classifier/scripts/build_model_dataset.py
@@ -193,8 +193,8 @@ stages:
     deps:
     - path: artifacts/train/best_estimator.joblib
       hash: md5
-      md5: d27ee47f19492af5a2014b67e807b821
-      size: 1116306
+      md5: aa564955d2e5215759ee71d826f931b8
+      size: 510354
     - path: data/datasets/splits/X_test.parquet
       hash: md5
       md5: 6665507e8ab81f779bad859edde46b85
@@ -242,28 +242,28 @@ stages:
     outs:
     - path: artifacts/eval/figs
       hash: md5
-      md5: a491aca2a7a1a37301d3aec9a6c8081a.dir
-      size: 95115
+      md5: be7b61369da7bc103195ff6ec6e80559.dir
+      size: 96223
       nfiles: 3
     - path: artifacts/eval/metrics/test_metrics.json
       hash: md5
-      md5: 43afeddd0bc4b3f9ec6d3b1ff7ef6950
-      size: 369
+      md5: b41e94cf766c271df976c7ece3488268
+      size: 368
     - path: artifacts/eval/plots
       hash: md5
-      md5: 84e873f8ced52e584c6805b18305f22d.dir
-      size: 63795
+      md5: 4a7003eb8d4c367e59d0a2d46251d94b.dir
+      size: 67421
       nfiles: 3
   promote:
     cmd: uv run src/text_classifier/scripts/promote.py
     deps:
     - path: artifacts/eval/metrics/test_metrics.json
       hash: md5
-      md5: 43afeddd0bc4b3f9ec6d3b1ff7ef6950
-      size: 369
+      md5: b41e94cf766c271df976c7ece3488268
+      size: 368
     - path: artifacts/train/model_version.txt
       hash: md5
-      md5: 1ff1de774005f8da13f42943881c655f
+      md5: 8e296a067a37563370ded05f5a3bf3ec
       size: 2
     - path: config/promote.yaml
       hash: md5
