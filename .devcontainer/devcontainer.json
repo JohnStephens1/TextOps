@@ -12,7 +12,6 @@
     "customizations": {
         "vscode": {
             "extensions": [
-                // "caenrigen.jupytext-sync",
                 "ms-python.python",
                 "ms-python.vscode-pylance",
                 "charliermarsh.ruff",
