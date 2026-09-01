@@ -102,6 +102,7 @@ services:
       - ./artifacts:/app/artifacts
       - ./data:/app/data
       - ./dvc.lock:/app/dvc.lock
+      - ./params.yaml:/app/params.yaml
 
     depends_on:
       - mlflow
