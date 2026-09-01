@@ -19,6 +19,4 @@ dist/
 !data/datasets/raw_dataset.csv
 
 mlruns/
-mlartifacts
-
 artifacts/
