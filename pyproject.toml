@@ -20,6 +20,7 @@ dependencies = [
 [dependency-groups]
 dev = [
     "boto3>=1.43.88",
+    "boto3-stubs[s3]>=1.43.88",
     "ipykernel>=7.3.0",
     "jupytext>=1.19.4",
     "pre-commit>=4.6.2",
