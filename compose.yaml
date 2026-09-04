@@ -38,7 +38,7 @@ services:
       - "8000:8000"
 
     environment:
-      MLFLOW_URL: http://mlflow:5000
+      MLFLOW_URL: "http://mlflow:5000"
 
     depends_on:
       - mlflow
@@ -80,9 +80,9 @@ services:
     environment:
       MLFLOW_SERVER_ALLOWED_HOSTS: "${MLFLOW_SERVER_ALLOWED_HOSTS}"
       MLFLOW_SERVER_CORS_ALLOWED_ORIGINS: "${MLFLOW_SERVER_CORS_ALLOWED_ORIGINS}"
-      MLFLOW_S3_ENDPOINT_URL: http://seaweedfs:8333
-      AWS_ACCESS_KEY_ID: ${S3_ACCESS_KEY}
-      AWS_SECRET_ACCESS_KEY: ${S3_SECRET_KEY}
+      MLFLOW_S3_ENDPOINT_URL: "http://seaweedfs:8333"
+      AWS_ACCESS_KEY_ID: "${S3_ACCESS_KEY}"
+      AWS_SECRET_ACCESS_KEY: "${S3_SECRET_KEY}"
 
     volumes:
       - mlflow-data:/data
@@ -97,8 +97,8 @@ services:
       - "8333:8333"
 
     environment:
-      AWS_ACCESS_KEY_ID: ${S3_ACCESS_KEY}
-      AWS_SECRET_ACCESS_KEY: ${S3_SECRET_KEY}
+      AWS_ACCESS_KEY_ID: "${S3_ACCESS_KEY}"
+      AWS_SECRET_ACCESS_KEY: "${S3_SECRET_KEY}"
 
     volumes:
       - seaweedfs-data:/data
@@ -114,7 +114,7 @@ services:
       target: train
 
     environment:
-      MLFLOW_URL: http://mlflow:5000
+      MLFLOW_URL: "http://mlflow:5000"
 
     volumes:
       - ./.dvc:/app/.dvc
