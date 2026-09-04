@@ -16,6 +16,7 @@ Quick problem summary: a skewed classification problem with 4 classes, 2 of whic
     - _experiment tracking_ : full reproducibility and detailed history
     - _model registry_ : clean overview of produced models, each with associated run info, parameters, artifacts, metrics
     - _automatic promotion_ and serving when training produces a model that surpasses the current champion
+    - _S3 artifact storage_ : using **SeaweedFS**, MLFlow artifacts are stored in and retrieved from the _mlflow-artifacts_ S3 bucket
 <br> <br>
 - **DVC**
     - _pipeline_ : clean, separated training stages. Small alterations don't require the whole training to rerun, only affected stages.
