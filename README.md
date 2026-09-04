@@ -55,7 +55,7 @@ To set up the core application, simply run:
 docker compose up
 ```
 
-This boots up the app, API and MLFlow servers.
+This boots up the app, API, SeaweedFS and MLFlow services.
 
 
 ### Connecting
