@@ -62,8 +62,6 @@ services:
   mlflow:
     image: ghcr.io/mlflow/mlflow:v3.14.0-full
 
-    working_dir: /mlruns
-
     depends_on:
       - seaweedfs
 
