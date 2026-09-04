@@ -40,9 +40,6 @@ services:
     environment:
       MLFLOW_URL: http://mlflow:5000
 
-    volumes:
-      - ./mlruns:/app/mlruns
-
     depends_on:
       - mlflow
 
