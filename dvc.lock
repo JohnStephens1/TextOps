@@ -102,23 +102,23 @@ stages:
     outs:
     - path: artifacts/train/best_estimator.joblib
       hash: md5
-      md5: 5d39674daf8ceb50195c1393050c20ba
-      size: 480018
+      md5: 408b185654bcbb9b5f47a88e22a3c7c3
+      size: 827154
     - path: artifacts/train/best_params.json
       hash: md5
-      md5: 07876e824fe154077d3eefbd1dab138a
-      size: 221
+      md5: e84aa54ec35548bf1a599cad33d0dc14
+      size: 222
     - path: artifacts/train/best_score.txt
       hash: md5
-      md5: 7be4dc8bb250f8c9622b5a0ebedfe2fe
-      size: 17
+      md5: c7e15ee3f46370bbfc0e8d794e92619b
+      size: 18
     - path: artifacts/train/cv_results.parquet
       hash: md5
-      md5: 9222d87f4a7e5fddf3493858ba4a60ff
-      size: 14930
+      md5: f1457b05fc4c741e1a05acb4db9217ee
+      size: 14929
     - path: artifacts/train/run_id.txt
       hash: md5
-      md5: 77ba092df58bb1b317c43ce7734c7c54
+      md5: 123d3b2845f03f97586224e8e2388308
       size: 32
   build_model_dataset:
     cmd: uv run src/text_classifier/scripts/build_model_dataset.py
