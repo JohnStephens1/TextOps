@@ -75,9 +75,7 @@ services:
       - --port
       - "5000"
       - --backend-store-uri
-      - sqlite:////mlruns/mlflow.db
-      # - --artifacts-destination
-      # - /mlruns/mlartifacts
+      - sqlite:////data/mlflow.db
       - --artifacts-destination
       - s3://mlflow-artifacts
 
@@ -92,7 +90,7 @@ services:
       AWS_SECRET_ACCESS_KEY: ${S3_SECRET_KEY}
 
     volumes:
-      - ./mlruns:/mlruns
+      - mlflow-data:/data
 
 
   seaweedfs:
@@ -154,3 +152,4 @@ services:
 
 volumes:
   seaweedfs-data:
+  mlflow-data:
