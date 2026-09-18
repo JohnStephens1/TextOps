@@ -37,7 +37,7 @@ The classifier itself is intentionally conventional. The focus of the project is
 
 TextOps consists of independent services for the user interface, inference, model lifecycle management, artifact storage, and training.
 
-<!-- ```mermaid
+```mermaid
 flowchart LR
     U[User] --> G[Gradio]
     G --> A[FastAPI]
@@ -49,7 +49,7 @@ flowchart LR
     T -->|artifacts| S
 
     T --> D[Versioned Data]
-``` -->
+```
 
 The application stack is brought up with Docker Compose:
 
