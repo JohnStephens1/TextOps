@@ -37,7 +37,7 @@ The classifier itself is intentionally conventional. The focus of the project is
 
 TextOps consists of independent services for the user interface, inference, model lifecycle management, artifact storage, and training.
 
-```mermaid
+<!-- ```mermaid
 flowchart LR
     U[User] --> G[Gradio]
     G --> A[FastAPI]
@@ -49,7 +49,7 @@ flowchart LR
     T -->|artifacts| S
 
     T --> D[Versioned Data]
-```
+``` -->
 
 The application stack is brought up with Docker Compose:
 
@@ -143,13 +143,13 @@ Model selection is deliberately not based on a single aggregate metric.
 The classification problem contains significantly underrepresented classes, so a candidate model is promoted only when **both** conditions are satisfied:
 
 $$
-\min_k \operatorname{Recall}_k \geq 0.75
+\min_k \mathrm{Recall}_k \geq 0.75
 $$
 
 and
 
 $$
-F_1(\text{candidate}) \geq F_1(\text{champion}) + 0.01
+\mathrm{F}_1(\text{candidate}) \geq \mathrm{F}_1(\text{champion}) + 0.01
 $$
 
 In other words:
