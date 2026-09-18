@@ -1,6 +1,6 @@
 # TextOps
 
-**TextOps is a production-oriented, end-to-end ML platform for reproducible experimentation, automated model governance, artifact management, and decoupled model serving.**
+**TextOps is a production-oriented, end-to-end ML platform for reproducible experimentation, automated model governance, versioned artifact management, and decoupled model serving.**
 
 The project uses a deliberately small text-classification problem as a vehicle for engineering the infrastructure around an ML system rather than focusing on model complexity.
 
