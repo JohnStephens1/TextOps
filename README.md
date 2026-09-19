@@ -302,7 +302,7 @@ For development, the repository also provides a VS Code Dev Container.
 
 ---
 
-### Prepare the Environment
+### 1. Prepare the Environment
 
 Before running the project, copy the example environment file:
 
@@ -316,38 +316,7 @@ The credentials in `.env.example` are for the local SeaweedFS setup and are safe
 
 ---
 
-### Start the Application
-
-Start the application stack with:
-
-```bash
-docker compose up
-```
-
-This starts the application services, including:
-
-* Gradio frontend
-* FastAPI inference service
-* MLflow
-* SeaweedFS artifact storage
-
-Once the services are running, open the Gradio interface at:
-
-```text
-http://localhost:7860/
-```
-
-The inference API is available separately and is consumed by the Gradio frontend.
-
-The MLflow server can be accessed at:
-
-```
-http://localhost:5000/
-```
-
----
-
-## Run the Training Pipeline
+### 2. Run the Training Pipeline
 
 The training pipeline is provided as a separate Compose service.
 
@@ -377,6 +346,37 @@ data preparation
 ```
 
 After completion, experiment results, metrics and produced models can be inspected through MLflow.
+
+---
+
+### 3. Start the Application
+
+Start the application stack with:
+
+```bash
+docker compose up
+```
+
+This starts the application services, including:
+
+* Gradio frontend
+* FastAPI inference service
+* MLflow
+* SeaweedFS artifact storage
+
+Once the services are running, open the Gradio interface at:
+
+```text
+http://localhost:7860/
+```
+
+The inference API is available separately and is consumed by the Gradio frontend.
+
+The MLflow server can be accessed at:
+
+```
+http://localhost:5000/
+```
 
 ---
 
