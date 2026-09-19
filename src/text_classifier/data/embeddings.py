@@ -26,6 +26,7 @@ def save_embeddings(
         file_path (Path): file path to save location
         model (str, optional): used embedding model name. Defaults to EMBEDDING_MODEL_STR.
     """
+    file_path.parent.mkdir(exist_ok=True, parents=True)
     np.savez(file_path, ids=ids, embeddings=embeddings, model=model)
 
 
