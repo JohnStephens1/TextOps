@@ -340,9 +340,7 @@ The training pipeline is provided as a separate Compose service.
 To execute only stages affected by changes:
 
 ```bash
-docker compose \
-    --profile train-pipe \
-    run --rm train-pipe
+docker compose --profile train-pipe run --rm train-pipe
 ```
 
 DVC determines which stages require execution.
@@ -350,9 +348,7 @@ DVC determines which stages require execution.
 To force execution of the complete pipeline:
 
 ```bash
-docker compose \
-    --profile train-pipe \
-    run --rm train-pipe --force
+docker compose --profile train-pipe run --rm train-pipe --force
 ```
 
 The pipeline performs:
