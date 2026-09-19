@@ -92,9 +92,9 @@ Promotion Gate
  ├── rejected
  │
  └── promoted → MLflow Champion
-                         │
-                         ▼
-                    FastAPI serving
+                       │
+                       ▼
+                FastAPI serving
 ```
 
 This separation allows the model-development lifecycle to evolve without requiring changes to the inference application.
