@@ -16,6 +16,8 @@ dist/
 *.parquet
 *.npz
 
+.env
+
 !data/datasets/raw_dataset.csv
 
 mlruns/
