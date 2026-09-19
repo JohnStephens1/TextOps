@@ -302,6 +302,20 @@ For development, the repository also provides a VS Code Dev Container.
 
 ---
 
+### Prepare the Environment
+
+Before running the project, copy the example environment file:
+
+```
+cp .env.example .env
+```
+
+The credentials in `.env.example` are for the local SeaweedFS setup and are safe to share. If you connect to an external S3-compatible service such as AWS, replace them with your own credentials in `.env`.
+
+**Do not edit or commit `.env.example` with real credentials.** Keep your credentials in `.env`, which is excluded from version control.
+
+---
+
 ### Start the Application
 
 Start the application stack with:
