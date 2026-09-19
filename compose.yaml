@@ -62,6 +62,10 @@ services:
     depends_on:
       - seaweedfs
 
+      # adding condition significantly increases startup time
+      # seaweedfs:
+        # condition: service_healthy
+
     command:
       - mlflow
       - server
@@ -91,6 +95,11 @@ services:
 
   seaweedfs:
     image: chrislusf/seaweedfs:4.45
+
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://seaweedfs:8333/healthz"]
+      start_period: 30s
+      start_interval: 2s
 
     command: server -dir=/data -s3
 
