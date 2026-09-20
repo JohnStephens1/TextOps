@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 
 from text_classifier.config.config import (
+    SEED,
     X_TEST_PATH,
     X_TRAIN_PATH,
     Y_TEST_PATH,
@@ -48,13 +49,12 @@ def get_train_test_splits(
     X: pd.DataFrame,
     y_encoded: pd.DataFrame,
     test_size: float = 0.2,
-    seed: int = 1234,
 ) -> TrainTestSplits:
     # TODO could extract split config | save split metadata
 
     return TrainTestSplits(
         *train_test_split(
-            X, y_encoded, stratify=y_encoded, test_size=test_size, random_state=seed
+            X, y_encoded, stratify=y_encoded, test_size=test_size, random_state=SEED
         )
     )
 

@@ -8,6 +8,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 from xgboost import XGBClassifier
 
+from text_classifier.config.config import SEED
 from text_classifier.config.loader import load_and_parse_config
 from text_classifier.model.model_selection import get_search
 from text_classifier.model.pipeline import get_model_pipe
@@ -52,6 +53,9 @@ class ModelBase(ABC):
             if instantiate_w_default_params
             else model_cls()
         )
+
+        if "random_state" in self.model.get_params():
+            self.model.set_params(random_state=SEED)
 
         self.pipe = get_model_pipe(self.model)
         self.search = get_search(

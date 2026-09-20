@@ -16,6 +16,7 @@ from sklearn.metrics import (
 )
 from sklearn.preprocessing import label_binarize
 
+from text_classifier.config.config import SEED
 from text_classifier.model.models import ModelBase
 from text_classifier.schema import Predictions, PredictionsEncoder, XYData
 
@@ -116,7 +117,6 @@ def print_perm_importance(
     my_model: ModelBase,
     test_ds: XYData,
     n_repeats: int = 10,
-    random_state: int = 42,
 ) -> None:
     print(f"scorer: {my_model.search.scorer_}")
 
@@ -126,7 +126,7 @@ def print_perm_importance(
         test_ds.y,
         scoring=my_model.search.scorer_,
         n_repeats=n_repeats,
-        random_state=random_state,
+        random_state=SEED,
     )
 
     print(result)

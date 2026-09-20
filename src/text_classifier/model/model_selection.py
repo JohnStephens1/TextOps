@@ -4,6 +4,8 @@ from sklearn.base import BaseEstimator
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV, StratifiedKFold
 from sklearn.pipeline import Pipeline
 
+from text_classifier.config.config import SEED
+
 
 def get_model(
     model_cls: type[BaseEstimator], model_params: dict[str, Any]
@@ -12,7 +14,7 @@ def get_model(
 
 
 def get_cv_splitter() -> StratifiedKFold:
-    return StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
+    return StratifiedKFold(n_splits=5, shuffle=True, random_state=SEED)
 
 
 def get_search(

@@ -51,3 +51,5 @@ TRAIN_METADATA_PATH = PROJECT_ROOT / "artifacts/train_metadata.json"
 
 EMBEDDING_MODEL_STR = "all-MiniLM-L6-v2"
 EMBEDDING_DIM = 384
+
+SEED = 42
