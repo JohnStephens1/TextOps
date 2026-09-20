@@ -1,7 +1,11 @@
 from typing import Any
 
 from sklearn.base import BaseEstimator
-from sklearn.model_selection import GridSearchCV, RandomizedSearchCV, StratifiedKFold
+from sklearn.model_selection import (
+    GridSearchCV,
+    RandomizedSearchCV,
+    RepeatedStratifiedKFold,
+)
 from sklearn.pipeline import Pipeline
 
 from text_classifier.config.config import SEED
@@ -13,8 +17,8 @@ def get_model(
     return model_cls(**model_params)
 
 
-def get_cv_splitter() -> StratifiedKFold:
-    return StratifiedKFold(n_splits=5, shuffle=True, random_state=SEED)
+def get_cv_splitter() -> RepeatedStratifiedKFold:
+    return RepeatedStratifiedKFold(n_splits=5, n_repeats=5, random_state=SEED)
 
 
 def get_search(
